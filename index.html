@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Act 6 - Final Choice</title>
   <style>
     @font-face {
@@ -9,55 +9,126 @@
       src: url('https://fonts.gstatic.com/s/pressstart2p/v11/e3t4euO8T-267oIAQAu6jDQyKzI.woff2') format('woff2');
     }
 
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
       background: #000;
       font-family: 'Press Start 2P', monospace;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      color: white;
       height: 100vh;
       overflow: hidden;
-      flex-direction: column;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #background {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(2px 2px at 10% 10%, #eee, transparent),
+        radial-gradient(1.5px 1.5px at 40% 30%, #ccc, transparent),
+        radial-gradient(2px 2px at 70% 70%, #ddd, transparent),
+        radial-gradient(1px 1px at 80% 50%, #bbb, transparent),
+        #000;
+      background-repeat: repeat;
+      animation: starDrift 60s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes starDrift {
+      0% { background-position: 0 0, 0 0, 0 0, 0 0; }
+      100% { background-position: -1000px 1000px, 500px -500px, -600px 1200px, 400px 200px; }
     }
 
     .screen {
       display: none;
       text-align: center;
       padding: 20px;
-      animation: fadeIn 1.5s forwards;
+      max-width: 80%;
+      animation: pixelFadeIn 1.5s ease forwards;
     }
 
-    .fragment {
-      width: 40px;
-      height: 40px;
-      margin: 20px;
+    @keyframes pixelFadeIn {
+      0% {
+        filter: brightness(0) contrast(0);
+        opacity: 0;
+      }
+      50% {
+        filter: brightness(1.5) contrast(3);
+        opacity: 0.5;
+      }
+      100% {
+        filter: none;
+        opacity: 1;
+      }
+    }
+
+    .typewriter {
       display: inline-block;
-      background: #fcd34d;
-      border-radius: 50%;
-      animation: pixelPulse 1s infinite alternate;
-      cursor: pointer;
+      overflow: hidden;
+      white-space: pre-wrap;
+      font-size: 12px;
+      line-height: 1.7;
+      max-width: 650px;
+    }
+
+    /* Memory container with pixelated glowing stars */
+    .memory-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      gap: 40px;
       position: relative;
     }
 
-    .fragment:hover::after {
+    .memory {
+      position: relative;
+      width: 18px;
+      height: 18px;
+      background: #fef08a;
+      box-shadow: 0 0 8px 3px #fef08a;
+      image-rendering: pixelated;
+      cursor: pointer;
+      animation: flicker 1s ease-in-out infinite;
+      border-radius: 4px;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Undertale style dialogue pop-up on hover */
+    .memory:hover::before {
       content: attr(data-title);
       position: absolute;
-      top: -24px;
+      bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
       background: #111;
-      padding: 5px;
-      border: 1px solid #fcd34d;
-      font-size: 10px;
+      border: 2px solid #fef08a;
+      padding: 6px 12px;
+      font-size: 9px;
       white-space: nowrap;
+      color: #fef08a;
+      font-family: 'Press Start 2P';
+      pointer-events: none;
+      z-index: 100;
+      filter: drop-shadow(0 0 1px #fef08a);
+      border-radius: 4px;
     }
 
-    .dialogue, #finalChoice p, #mewbyIntro {
+    .dialogue {
       font-size: 12px;
+      margin-top: 25px;
       white-space: pre-line;
-      line-height: 1.8;
+      min-height: 70px;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
     }
 
     .choice-button {
@@ -65,134 +136,204 @@
       background: #fff;
       color: #000;
       border: none;
-      padding: 10px 20px;
+      padding: 12px 20px;
       margin: 15px;
       cursor: pointer;
+      font-size: 10px;
+      border-radius: 4px;
+      box-shadow: 0 0 8px #fef08a;
+      transition: background 0.3s ease;
     }
 
     .choice-button:hover {
-      background: #fcd34d;
+      background: #facc15;
+      box-shadow: 0 0 15px #facc15;
     }
 
     .aria-sprite {
-      width: 80px;
-      margin-top: 20px;
+      margin-top: 30px;
+      width: 96px;
       image-rendering: pixelated;
-    }
-
-    @keyframes pixelPulse {
-      from { box-shadow: 0 0 2px #fcd34d; }
-      to { box-shadow: 0 0 12px #fcd34d; }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .typewriter {
-      display: inline-block;
-      overflow: hidden;
-      white-space: nowrap;
-      animation: typing 2.5s steps(40, end);
-    }
-
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
+      filter: drop-shadow(0 0 6px #fef08a);
     }
   </style>
 </head>
 <body>
+  <div id="background"></div>
 
-<!-- Mewby Intro -->
-<div class="screen" id="mewbyIntro">
-  <p class="typewriter">Mewby<br>The journey wasn’t perfect.<br>But it was real.<br><br>And look — it brought you here.<br>To the person who never stopped waiting.</p>
-</div>
-
-<!-- Memory Scene -->
-<div class="screen" id="gameContainer">
-  <p>Walk up to each memory.</p>
-  <div>
-    <div class="fragment" data-title="The Break" onclick="collectFragment(0)"></div>
-    <div class="fragment" data-title="The Return" onclick="collectFragment(1)"></div>
-    <div class="fragment" data-title="The Hard Days" onclick="collectFragment(2)"></div>
+  <!-- Mewby Intro -->
+  <div class="screen" id="mewbyIntro">
+    <div class="typewriter" id="mewbyText"></div>
   </div>
-  <div id="dialogue" class="dialogue"></div>
-</div>
 
-<!-- Final Choice -->
-<div class="screen" id="finalChoice">
-  <p>Mewby</p>
-  <p>You’ve seen it all —<br>The good, the bad, and everything in between.<br><br>So...<br>What do you choose?</p>
-  <button class="choice-button" onclick="chooseEasy()">Choose Easy</button>
-  <button class="choice-button" onclick="chooseHer()">Choose Her</button>
-</div>
+  <!-- Memory Scene -->
+  <div class="screen" id="memoryScene">
+    <p style="font-size:10px; margin-bottom: 15px;">Walk up to each memory.</p>
+    <div class="memory-container">
+      <div class="memory" data-title="The Break" onclick="collectMemory(0)"></div>
+      <div class="memory" data-title="The Return" onclick="collectMemory(1)"></div>
+      <div class="memory" data-title="The Hard Days" onclick="collectMemory(2)"></div>
+    </div>
+    <div class="dialogue" id="memoryDialogue"></div>
+  </div>
 
-<!-- Aria Ending -->
-<div class="screen" id="ariaScene">
-  <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria" class="aria-sprite"><br><br>
-  💛 You made it.<br><br>
-  Through the break, the silence, the doubt.<br>
-  You found your way back.<br><br>
-  And you chose her.<br><br>
-  Thank you for loving me the way you do.<br>
-  And just this once... I hope you choose yourself too.<br><br>
-  — Aria
-</div>
+  <!-- Final Choice -->
+  <div class="screen" id="finalChoice">
+    <div class="dialogue">
+      Mewby  
+      <br>You’ve seen it all —  
+      <br>The good, the bad, and everything in between.  
+      <br><br>So...  
+      <br>What do you choose?
+    </div>
+    <button class="choice-button" onclick="chooseEasy()">Choose Easy</button>
+    <button class="choice-button" onclick="chooseHer()">Choose Her</button>
+  </div>
 
-<!-- Empty Ending -->
-<div class="screen" id="emptyScene">
-  (You chose what felt easier. And sometimes, that’s okay too.)<br><br>
-  But some stories never get told that way.
-</div>
+  <!-- Aria Ending -->
+  <div class="screen" id="ariaScene">
+    <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria" class="aria-sprite" />
+    <div class="dialogue" style="white-space: pre-wrap; font-size: 11px; max-width: 700px; margin: 20px auto;">
+You made it.
 
-<!-- Sound Effects -->
-<audio id="wind" src="https://cdn.pixabay.com/download/audio/2023/03/27/audio_87d354e5fd.mp3" loop autoplay></audio>
-<audio id="sparkle" src="https://cdn.pixabay.com/download/audio/2021/09/17/audio_5b8b555a12.mp3"></audio>
+After everything.
+Even after how messy things got before.
 
-<script>
-  const lines = [
-    `"We didn’t plan it. It just… fell apart."`,
-    `"I didn’t expect to see you again — but when I did, I saw you differently."`,
-    `"It wasn’t easy. But we didn’t give up."`
-  ];
+I still remember how it all fell apart —
+the group, the friendships, everything.
 
-  let collected = [false, false, false];
+Back then, it hurt.
+And we didn’t really talk.
 
-  function collectFragment(index) {
-    if (!collected[index]) {
-      document.getElementById('dialogue').textContent = lines[index];
-      collected[index] = true;
+But somehow… you came back into my life.
+And when you did,
+I saw you in a way I hadn’t before.
+
+That’s when everything changed.
+That’s when we started.
+
+And honestly…
+Even if it means going through all the hard parts again,
+I’d still choose this.
+I’d still choose you.
+
+Because being with you —
+even on the hardest days —
+means more than any easy version of life without you.
+
+Thank you for loving me when I shut down.
+When I cry out of nowhere.
+When I’m not making sense.
+
+You love me on my worst days just as much as my best —
+and that means everything to me.
+
+Some people only want love when it's simple.
+But I’d go through the hard stuff all over again,
+as long as it leads me to you.
+
+You’re my home now.
+My everything.
+
+And just this once…
+I hope you choose you, too.
+
+Because I’ll keep choosing you.
+Every time.
+
+Happy Birthday.
+Thank you for coming back.
+Thank you for letting me love you now.
+    </div>
+  </div>
+
+  <!-- Easy Ending -->
+  <div class="screen" id="emptyScene">
+    <div class="dialogue" style="max-width: 700px; margin: auto;">
+      (You chose what felt easier. And sometimes, that’s okay too.)  
+
+      But some stories never get told that way.
+    </div>
+  </div>
+
+  <!-- Sounds -->
+  <audio id="wind" src="https://cdn.pixabay.com/download/audio/2023/03/27/audio_87d354e5fd.mp3" autoplay loop></audio>
+  <audio id="sparkle" src="https://cdn.pixabay.com/download/audio/2021/09/17/audio_5b8b555a12.mp3"></audio>
+
+  <script>
+    // Mewby typewriter text lines
+    const mewbyLines = [
+      "Mewby",
+      "The journey wasn’t perfect.",
+      "But it was real.",
+      "",
+      "And look — it brought you here.",
+      "Now, what do you choose?"
+    ];
+
+    let currentLine = 0;
+    let textEl = document.getElementById('mewbyText');
+
+    // Typewriter effect for mewbyLines
+    function typeMewbyLine() {
+      if(currentLine >= mewbyLines.length) {
+        setTimeout(() => {
+          showScreen('memoryScene');
+        }, 800);
+        return;
+      }
+      let line = mewbyLines[currentLine];
+      let i = 0;
+      textEl.textContent = '';
+      let interval = setInterval(() => {
+        textEl.textContent += line.charAt(i);
+        i++;
+        if(i > line.length) {
+          clearInterval(interval);
+          currentLine++;
+          setTimeout(typeMewbyLine, 800);
+        }
+      }, 40);
     }
 
-    if (collected.every(Boolean)) {
-      setTimeout(() => {
-        document.getElementById('gameContainer').style.display = 'none';
-        document.getElementById('finalChoice').style.display = 'block';
-      }, 1200);
+    // Memory dialogues on hover/click
+    const memories = [
+      "The group drifted apart, and silence filled the spaces we once shared. That time still stings.",
+      "You came back, unexpectedly, lighting a spark I thought was gone forever.",
+      "Even on days I shut down or cry for no reason, you stayed. You loved me through the chaos."
+    ];
+
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+      const screen = document.getElementById(screenId);
+      if(screen) {
+        screen.style.display = 'block';
+        screen.style.animation = 'none'; // Reset animation
+        // trigger reflow to restart
+        void screen.offsetWidth;
+        screen.style.animation = 'pixelFadeIn 1.5s ease forwards';
+      }
     }
-  }
 
-  function chooseEasy() {
-    document.getElementById('finalChoice').style.display = 'none';
-    document.getElementById('emptyScene').style.display = 'block';
-  }
+    // Initialize with Mewby Intro
+    showScreen('mewbyIntro');
+    typeMewbyLine();
 
-  function chooseHer() {
-    document.getElementById('sparkle').play();
-    document.getElementById('finalChoice').style.display = 'none';
-    document.getElementById('ariaScene').style.display = 'block';
-  }
+    // Memory click function to show dialogue text
+    function collectMemory(index) {
+      const dialogueEl = document.getElementById('memoryDialogue');
+      dialogueEl.textContent = memories[index];
+      document.getElementById('sparkle').play();
+    }
 
-  window.onload = () => {
-    document.getElementById('mewbyIntro').style.display = 'block';
-    setTimeout(() => {
-      document.getElementById('mewbyIntro').style.display = 'none';
-      document.getElementById('gameContainer').style.display = 'block';
-    }, 8000); // show memories after Mewby intro
-  };
-</script>
+    // Choices
+    function chooseEasy() {
+      showScreen('emptyScene');
+    }
 
+    function chooseHer() {
+      showScreen('ariaScene');
+    }
+  </script>
 </body>
 </html>
