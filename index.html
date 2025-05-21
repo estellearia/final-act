@@ -191,13 +191,17 @@
     <button class="button" id="mewbyContinue" onclick="showMemories()" style="display:none;">Continue</button>
   </div>
 
-  <!-- Memory Lane (hidden by default) -->
-  <div class="pixel-frame hidden" id="memoryFrame">
-    <p class="pixel-text" style="margin-bottom:1em;">Memory Lane</p>
-    <div id="memoryFragments" style="display:flex; flex-wrap:wrap; justify-content:center; gap:18px 12px; min-height: 66px;"></div>
-    <div id="tooltip" class="pixel-quote" style="margin-bottom: 0; margin-top: 16px; min-height:32px;"></div>
-    <button class="button" id="memoriesNext" style="margin-top:18px;opacity:0.3;" disabled>Next</button>
+
+<!-- 2. MEMORIES SCENE (Dreamy star lane with interactive stars) -->
+<div id="memories" class="scene" aria-live="polite" role="region" aria-label="Memories Scene">
+  <canvas id="starCanvas" class="star-canvas"></canvas>
+  <h2 style="font-size: 14px; margin-bottom: 8px; color: #ffe764; text-shadow: 0 0 7px #fffbe3;">Your memories with me</h2>
+  <div id="memoryFragments" style="max-width: 480px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+    <!-- Memory fragments circles inserted here by JS -->
   </div>
+  <div id="tooltip" aria-live="polite" role="alert" aria-atomic="true"></div>
+  <button class="button" id="memoriesNext" aria-label="Next to final scene" style="opacity:0.3;" disabled>Next</button>
+</div>
 
   <!-- Final Choice Scene -->
   <div class="pixel-frame hidden" id="finalFrame">
@@ -217,23 +221,107 @@
 
   <script>
     // Pixel background stars
-    function drawPixelStars() {
-      const bg = document.getElementById('pixelBgStars');
-      bg.innerHTML = '';
-      let w = window.innerWidth, h = window.innerHeight;
-      let n = Math.min(Math.floor(w * h / 4400), 24);
-      for (let i = 0; i < n; i++) {
-        const star = document.createElement('div');
-        star.className = 'pixel-star';
-        const left = Math.random() * 92 + 3, top = Math.random() * 83 + 8;
-        star.style.left = left + 'vw';
-        star.style.top = top + 'vh';
-        star.style.width = star.style.height = (Math.random() < 0.75 ? 2 : 3) + 'px';
-        star.style.opacity = (Math.random() * 0.7 + 0.2);
-        star.style.animationDelay = (Math.random() * 2.5) + "s";
-        bg.appendChild(star);
-      }
+  // ====== STAR CANVAS BACKGROUND ======
+  function drawStars() {
+    const canvas = document.getElementById('starCanvas');
+    if (!canvas) return;
+    const parent = document.getElementById('memories');
+    canvas.width = parent.offsetWidth;
+    canvas.height = 340;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    for (let i = 0; i < 55; i++) {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height * 0.9 + 5;
+      const size = Math.random() < 0.8 ? 2 : 4;
+      ctx.save();
+      ctx.globalAlpha = Math.random() * 0.4 + 0.5;
+      ctx.fillStyle = Math.random() > 0.5 ? "#ffe764" : "#fffbe3";
+      ctx.beginPath();
+      ctx.arc(Math.floor(x), Math.floor(y), size, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.restore();
     }
+  }
+  window.addEventListener('resize', drawStars);
+
+  // ====== 2. MEMORIES SCENE ======
+  const memoriesData = [
+    { title: "First time we talked", desc: "That night when we stayed up late, just talking.", visited: false },
+    { title: "Hospital visit", desc: "When I was sick and you stayed by my side.", visited: false },
+    { title: "Long distance calls", desc: "Our endless phone calls across the miles.", visited: false },
+    { title: "Work stress days", desc: "You encouraged me even on my worst days.", visited: false },
+    { title: "Our first video game night", desc: "Laughing and playing like no distance existed.", visited: false },
+    { title: "The first 'I love you'", desc: "That shy, unforgettable moment.", visited: false },
+  ];
+
+  const memoryFragmentsEl = document.getElementById('memoryFragments');
+  const tooltipEl = document.getElementById('tooltip');
+  const memoriesNextBtn = document.getElementById('memoriesNext');
+
+  function initMemories() {
+    drawStars();
+    memoryFragmentsEl.innerHTML = '';
+    memoriesData.forEach((memory, i) => {
+      const circle = document.createElement('div');
+      circle.className = 'memory-fragment';
+      circle.tabIndex = 0;
+      circle.setAttribute('role', 'button');
+      circle.setAttribute('aria-label', `${memory.title} memory`);
+      circle.dataset.index = i;
+
+      circle.addEventListener('mouseenter', () => {
+        if (!memory.visited) {
+          tooltipEl.textContent = memory.title;
+          tooltipEl.style.opacity = '1';
+        }
+      });
+      circle.addEventListener('mouseleave', () => {
+        if (!memory.visited) {
+          tooltipEl.textContent = '';
+          tooltipEl.style.opacity = '0.5';
+        }
+      });
+
+      circle.addEventListener('click', () => {
+        if (memory.visited) return;
+        memory.visited = true;
+        circle.classList.add('visited');
+        tooltipEl.textContent = memory.desc;
+        tooltipEl.style.opacity = '1';
+
+        // If all visited, enable Next button
+        if (memoriesData.every(m => m.visited)) {
+          memoriesNextBtn.disabled = false;
+          memoriesNextBtn.style.opacity = 1;
+          memoriesNextBtn.setAttribute('aria-disabled', 'false');
+        }
+      });
+
+      // Keyboard accessibility: Enter or Space triggers click
+      circle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          circle.click();
+        }
+      });
+
+      memoryFragmentsEl.appendChild(circle);
+    });
+
+    tooltipEl.textContent = '';
+    tooltipEl.style.opacity = '0.5';
+    memoriesNextBtn.disabled = true;
+    memoriesNextBtn.style.opacity = 0.3;
+    memoriesNextBtn.setAttribute('aria-disabled', 'true');
+
+    memoriesNextBtn.onclick = () => {
+      document.getElementById('memories').classList.remove('visible');
+      document.getElementById('finalFrame').classList.remove('hidden');
+      document.getElementById('finalFrame').classList.add('visible');
+    };
+  }
     window.addEventListener('resize', drawPixelStars);
 
     // Mewby intro typing effect
