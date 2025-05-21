@@ -16,6 +16,7 @@
       padding: 0;
       overflow-x: hidden;
       font-size: 13px;
+      text-align: center;
     }
     body {
       display: flex;
@@ -27,6 +28,7 @@
         repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 8px);
       min-height: 100vh;
       min-width: 100vw;
+      text-align: center;
     }
     .hidden { display: none !important; }
     .memory-title {
@@ -55,6 +57,7 @@
       box-sizing: border-box;
       position: relative;
       display: block;
+      text-align: center;
     }
     @media (max-width: 500px) {
       .pixel-frame { max-width: 98vw; padding: 7vw 1vw; }
@@ -81,6 +84,7 @@
       font-family: 'Press Start 2P', monospace;
       word-break: break-word;
       font-weight: normal;
+      text-align: center;
     }
     .pixel-quote {
       color: #ffe764;
@@ -99,6 +103,7 @@
       letter-spacing: 0.5px;
       line-height: 1.9;
       white-space: pre-line;
+      text-align: center;
     }
     .button, .pixel-button {
       font-family: 'Press Start 2P', monospace;
@@ -137,11 +142,13 @@
       justify-content: center;
       align-items: center;
       width: 100%;
+      text-align: center;
     }
     .center-btn > *, .mewby-center-btn > *, .aria-btn-center > * {
       margin-left: 0 !important;
       margin-right: 0 !important;
       display: block;
+      text-align: center;
     }
     .star-canvas {
       position: absolute;
@@ -179,6 +186,7 @@
       gap: 14px;
       max-width: 120px;
       margin: 0 auto;
+      text-align: center;
     }
     #tooltip {
       font-size: 13px;
@@ -214,6 +222,7 @@
       margin-bottom: 3px;
       letter-spacing: 0.5px;
       line-height: 1.4;
+      text-align: center;
     }
     .tooltip-desc {
       font-size: 9px;
@@ -223,6 +232,7 @@
       line-height: 1.7;
       letter-spacing: 0.2px;
       white-space: pre-line;
+      text-align: center;
     }
     .aria-box {
       background: rgba(38, 39, 80, 0.56);
@@ -260,6 +270,7 @@
       box-shadow: 0 0 10px #ffe76455, 0 0 0 1px #ffe764;
       image-rendering: pixelated;
       margin-bottom: 4px;
+      text-align: center;
     }
     @keyframes glow {
       from { box-shadow: 0 0 8px #ffe764, 0 0 20px #fffbe3; }
@@ -361,7 +372,7 @@
         el.textContent += mewbyGreetingText[mewbyGreetingIndex++];
         setTimeout(typeMewbyGreeting, 60);
       } else {
-        // Hide quote container after greeting is done
+        // Show quote container after greeting is done
         setTimeout(() => {
           document.getElementById('mewbyQuote').textContent = ""; // reset before typing quote lines
           document.getElementById('mewbyQuoteContainer').style.display = 'block';
@@ -389,16 +400,13 @@
       } else {
         setTimeout(() => {
           document.getElementById('mewbyContinue').style.display = 'inline-block';
-          // Hide the quote container for better appearance after typing
-          setTimeout(() => {
-            quoteContainer.style.display = "none";
-          }, 400);
+          // Do NOT hide the quote container!
         }, 400);
       }
     }
     window.addEventListener("DOMContentLoaded", () => {
-      // Hide the quote container initially
-      document.getElementById('mewbyQuoteContainer').style.display = "none";
+      // Show the quote container initially
+      document.getElementById('mewbyQuoteContainer').style.display = "block";
       typeMewbyGreeting();
       drawPixelStars();
       document.getElementById('memoryTitle').style.display = "none";
@@ -451,7 +459,6 @@
       const memoriesNextBtnContainer = document.getElementById('memoriesNextBtnContainer');
       memoryFragmentsEl.innerHTML = '';
       let showingDesc = false;
-      // Hide tooltip at first
       tooltipEl.textContent = '';
       tooltipEl.classList.remove('active');
       // Hide Next button container at first
