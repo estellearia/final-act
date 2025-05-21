@@ -99,13 +99,17 @@
     .memory-fragment:hover {
       box-shadow: 0 0 20px #fcd34d;
     }
+    .memory-fragment.visited {
+      opacity: 0.4;
+      pointer-events: none;
+    }
 
     /* Tooltip to show memory text */
     #tooltip {
       font-size: 10px;
       color: #FFD700;
       margin-top: 10px;
-      min-height: 30px;
+      min-height: 40px;
       white-space: pre-wrap;
       animation: fadeInText 0.3s ease forwards;
       position: relative;
@@ -113,7 +117,6 @@
       max-width: 400px;
       margin-left: auto;
       margin-right: auto;
-      min-height: 40px;
       line-height: 1.2;
     }
 
@@ -136,7 +139,7 @@
 
 <!-- Mewby Intro Scene -->
 <div id="mewby" class="scene visible">
-  <img src="https://i.imgur.com/9OC7GRw.gif" alt="Mewby" class="avatar" />
+  <img src="https://64.media.tumblr.com/647ca06c5a608d1ea1c416b21b839ea3/9a98a57c72a06121-2a/s250x400/7f925df3ce70975efc97a7f0ffac27ea3838ae3e.gif" alt="Mewby" class="avatar" />
   <p>Hey, you made it.</p>
   <p style="color: #aaa; font-size: 10px; margin-top: 20px;">
     "The journey wasn’t perfect. But it was real. And it brought you here."
@@ -167,7 +170,7 @@
 <div class="scene centered aria-scene" id="ariaScene" style="display:none; position: relative;">
   <div class="sparkle-bg"></div>
   <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria" class="aria-sprite" />
-  <div id="ariaText" class="message-box"></div>
+  <div id="ariaText" class="message-box" style="white-space: pre-wrap; margin: 20px auto; max-width: 400px; min-height: 120px;"></div>
   <button class="pixel-button" id="endButton" style="display:none;" onclick="window.location.href='https://frdffsdx.carrd.co/#home';">
     Return Home
   </button>
@@ -179,18 +182,20 @@
   function showMemories() {
     document.getElementById("mewby").classList.remove("visible");
     document.getElementById("memories").classList.add("visible");
+    document.getElementById("tooltip").style.display = "block";
   }
 
   function visitMemory(element) {
     const tooltip = document.getElementById("tooltip");
     const line = element.getAttribute("data-line");
 
-    tooltip.textContent = `"${line}"`;
+    tooltip.textContent = line;
 
     if (!element.classList.contains("visited")) {
       element.classList.add("visited");
       memoriesVisited++;
       element.style.opacity = "0.4"; // visually mark visited
+      element.style.pointerEvents = "none"; // disable clicking again
     }
 
     if (memoriesVisited >= 3) {
@@ -239,19 +244,16 @@
       clearInterval(typingInterval);
       ariaIndex++;
       if (ariaIndex < ariaLines.length) {
-        // Show next line button
         setTimeout(() => {
           showNextAriaLineButton();
         }, 400);
       } else {
-        // Show end button
         document.getElementById("endButton").style.display = "inline-block";
       }
     }
   }
 
   function showNextAriaLineButton() {
-    // create or show a button to continue typing
     if (!document.getElementById("nextLineBtn")) {
       const btn = document.createElement("button");
       btn.textContent = "Next";
@@ -277,6 +279,7 @@
     const ariaScene = document.getElementById("ariaScene");
     ariaScene.style.display = "block";
     ariaScene.classList.add("visible");
+    ariaIndex = 0;
     startTyping();
   }
 </script>
