@@ -335,7 +335,7 @@
       if (memoryInstructionLine < memoryInstructionLines.length) {
         if (memoryInstructionChar < memoryInstructionLines[memoryInstructionLine].length) {
           el.textContent += memoryInstructionLines[memoryInstructionLine][memoryInstructionChar++];
-          setTimeout(typeMemoryInstructionLine, 33);
+          setTimeout(typeMemoryInstructionLine, 60);
         } else {
           if (memoryInstructionLine < memoryInstructionLines.length - 1) {
             el.innerHTML += '<br><br>';
