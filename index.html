@@ -1,377 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pixelated Memories & Aria Message</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-  /* Basic resets and full center */
-  html, body {
-    margin: 0; padding: 0; height: 100%;
-    background: #1b1b2f; /* deep navy/purple */
-    font-family: 'Press Start 2P', cursive;
-    color: #eee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-  }
-
-  /* Container for all scenes */
-  .container {
-    width: 480px;
-    min-height: 500px;
-    background: linear-gradient(145deg, #2e2e4f, #222240);
-    border: 6px solid #8360c3;
-    box-shadow:
-      0 0 0 4px #9b88e3,
-      inset 0 0 8px #7f69d9,
-      6px 6px 12px #110e23;
-    border-radius: 12px;
-    padding: 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  /* Hide all scenes by default */
-  .scene {
-    display: none;
-    text-align: center;
-  }
-
-  /* Show active scene */
-  .scene.visible {
-    display: block;
-  }
-
-  /* Pixel avatar style */
-  .avatar {
-    width: 96px;
-    height: 96px;
-    image-rendering: pixelated;
-    margin: 0 auto 20px;
-    filter: drop-shadow(1px 1px 0 #8360c3);
-  }
-
-  /* Mewby intro text styling */
-  #mewbyText {
-    font-size: 12px;
-    line-height: 1.6;
-    max-width: 420px;
-    margin: 0 auto;
-    color: #d9d9ff;
-    text-shadow:
-      1px 1px 0 #4e47a3,
-      0 0 5px #9085f0;
-    cursor: pointer;
-    user-select: none;
-  }
-  #mewbyText .typing-cursor {
-    display: inline-block;
-    width: 8px;
-    height: 16px;
-    background: #8360c3;
-    animation: blink 1s step-start infinite;
-    vertical-align: bottom;
-    margin-left: 4px;
-  }
-
-  @keyframes blink {
-    0%, 50% { opacity: 1; }
-    50.01%, 100% { opacity: 0; }
-  }
-
-  /* Memories scene */
-  #memoryFragments {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 18px;
-    margin-top: 20px;
-  }
-  .memory-fragment {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: #4b4399;
-    box-shadow:
-      0 0 4px 1px #6d66c1,
-      inset 0 0 8px #9a94e6;
-    cursor: pointer;
-    transition: background 0.3s, box-shadow 0.3s;
-    border: 2px solid #8360c3;
-  }
-  .memory-fragment.visited {
-    background: #b49aff;
-    box-shadow:
-      0 0 10px 2px #b49aff,
-      inset 0 0 12px #d5c9ff;
-    border-color: #d9ccff;
-  }
-  .memory-fragment:focus {
-    outline: 3px solid #d9ccff;
-    outline-offset: 2px;
-  }
-
-  /* Tooltip styling */
-  #tooltip {
-    margin-top: 18px;
-    font-size: 11px;
-    min-height: 28px;
-    color: #c1baff;
-    text-shadow: 0 0 3px #6a5f9a;
-    opacity: 0.7;
-    transition: opacity 0.3s;
-    max-width: 440px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* Next button */
-  #memoriesNext {
-    margin-top: 28px;
-    padding: 10px 18px;
-    font-size: 10px;
-    font-family: 'Press Start 2P', cursive;
-    background: #5f53a6;
-    border: 3px solid #8360c3;
-    color: #e6dcff;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-    user-select: none;
-  }
-  #memoriesNext:disabled {
-    opacity: 0.3;
-    cursor: default;
-  }
-  #memoriesNext:not(:disabled):hover {
-    background: #8e81e9;
-    color: #fff;
-  }
-
-  /* FINAL ARIA SCENE */
-
-  /* Sparkle background */
-  .sparkle-bg {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background:
-      radial-gradient(circle at 20% 25%, #a29bff 2px, transparent 6px),
-      radial-gradient(circle at 50% 50%, #7a6eff 1.5px, transparent 5px),
-      radial-gradient(circle at 80% 70%, #b8aaff 2px, transparent 6px);
-    background-repeat: no-repeat;
-    animation: sparkleMove 8s linear infinite;
-    z-index: -1;
-  }
-  @keyframes sparkleMove {
-    0% { background-position: 20% 25%, 50% 50%, 80% 70%; }
-    50% { background-position: 30% 35%, 40% 40%, 85% 65%; }
-    100% { background-position: 20% 25%, 50% 50%, 80% 70%; }
-  }
-
-  #ariaScene {
-    position: relative;
-    padding: 0 24px 24px;
-    min-height: 400px;
-    color: #d6d0ff;
-    text-shadow:
-      1px 1px 3px #433b77;
-    user-select: text;
-  }
-
-  .aria-sprite {
-    image-rendering: pixelated;
-    width: 96px;
-    height: 96px;
-    margin: 0 auto 20px;
-    filter: drop-shadow(1px 1px 1px #8360c3);
-    display: block;
-  }
-
-  #ariaText {
-    font-size: 11px;
-    line-height: 1.5;
-    white-space: pre-wrap;
-    max-width: 440px;
-    margin: 0 auto;
-    background: #2f2e4a;
-    border: 3px solid #9a8cfc;
-    border-radius: 10px;
-    padding: 18px 16px;
-    box-shadow:
-      inset 0 0 14px #8f7bef,
-      0 0 8px #7d71e8;
-  }
-
-  #endButton {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 10px;
-    margin: 28px auto 0;
-    display: inline-block;
-    padding: 12px 24px;
-    background: #7c72e0;
-    border: 4px solid #b3a9ff;
-    border-radius: 8px;
-    color: #e0d9ff;
-    cursor: pointer;
-    box-shadow: 0 0 6px #b9afff;
-    transition: background 0.3s ease;
-    user-select: none;
-  }
-  #endButton:hover {
-    background: #a7a1f7;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Always Choose Her</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    html, body {
+      height: 100%;
+      background: radial-gradient(ellipse at 50% 75%, #353a5c 0%, #141332 70%, #06061a 100%);
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      min-height: 100vh;
+      color: #fff8e7;
+      font-family: 'Press Start 2P', monospace;
+      overflow-x: hidden;
+    }
+    body {
+      min-height: 100vh;
+      min-width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 8px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 8px);
+    }
+    .pixel-frame {
+      position: relative;
+      padding: 34px 20px;
+      background: rgba(20,16,40,0.93);
+      border-radius: 16px;
+      box-shadow:
+        0 0 0 3px #ffe76480,
+        0 0 0 6px #353a5c,
+        0 0 50px 8px #0a0a1a77,
+        0 0 0 1.5px #ffe764;
+      margin: 0 auto;
+      max-width: 350px;
+      min-width: 0;
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 10;
+      image-rendering: pixelated;
+    }
+    @media (max-width: 500px) {
+      .pixel-frame { max-width: 98vw; padding: 10vw 1vw; }
+    }
+    .avatar {
+      width: 64px;
+      height: 64px;
+      image-rendering: pixelated;
+      display: block;
+      margin: 0 auto 16px auto;
+      border-radius: 8px;
+      box-shadow: 0 0 12px #ffe76466, 0 0 0 2px #ffe764;
+      border: 1px solid #ffe764;
+      background: #191830;
+    }
+    .pixel-text {
+      color: #fffbe3;
+      text-shadow: 1px 1px 0 #353a5c, 0 0 6px #ffe7646b;
+      font-size: 0.8em;
+      margin: 0.7em 0 0.4em 0;
+      line-height: 1.6;
+      letter-spacing: 1.1px;
+      font-family: 'Press Start 2P', monospace;
+      word-break: break-word;
+    }
+    .pixel-quote {
+      color: #ffe764;
+      font-size: 0.72em;
+      margin-top: 1.3em;
+      margin-bottom: 0.6em;
+      text-shadow: 1px 1px 0 #353a5c, 0 0 7px #fffbe3b5;
+      background: rgba(38, 39, 80, 0.44);
+      border-radius: 4px;
+      padding: 7px 11px;
+      border: 1px solid #ffe76455;
+      display: inline-block;
+      font-style: italic;
+      image-rendering: pixelated;
+    }
+    .button, .pixel-button {
+      font-family: 'Press Start 2P', monospace;
+      background: repeating-linear-gradient(135deg, #191830 0 5px, #ffe764 5px 7px, #191830 7px 14px);
+      color: #ffe764;
+      border: 2px solid #ffe764;
+      border-radius: 5px;
+      box-shadow: 0 0 6px #ffe76470, 0 2px 0 0 #353a5c;
+      padding: 7px 19px;
+      cursor: pointer;
+      margin: 26px 0 0 0;
+      font-size: 10px;
+      font-weight: bold;
+      text-shadow: 1px 1px 0 #353a5c, 0 0 6px #fffbe3b5;
+      letter-spacing: 1.5px;
+      transition: background 0.13s, color 0.13s, border-color 0.13s, transform 0.07s;
+      image-rendering: pixelated;
+      position: relative;
+      z-index: 1;
+    }
+    .button:hover, .pixel-button:hover {
+      background: #ffe764;
+      color: #191830;
+      border-color: #fffbe3;
+      transform: scale(1.05) translateY(-1px);
+      box-shadow: 0 0 14px #ffe764ad, 0 4px 0 0 #353a5c;
+    }
+    /* Star bg */
+    .pixel-bg-stars {
+      position: absolute;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .pixel-star {
+      position: absolute;
+      width: 3px; height: 3px;
+      background: #ffe764;
+      border-radius: 1px;
+      opacity: 0.7;
+      box-shadow: 0 0 7px #ffe764aa, 0 0 0 1.5px #fffbe3;
+      image-rendering: pixelated;
+      animation: pixel-star-blink 2.5s linear infinite;
+    }
+    @keyframes pixel-star-blink {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+      70% { opacity: 0.5; }
+    }
+    .aria-box {
+      background: rgba(38, 39, 80, 0.56);
+      border-radius: 7px;
+      padding: 15px 12px 14px 12px;
+      margin: 14px 0 0 0;
+      box-shadow: 0 0 7px #ffe76422;
+      font-size: 0.81em;
+      color: #ffeebc;
+      text-shadow: 0 0 4px #ffe76444, 1px 1px 0 #353a5c;
+      border: 1px solid #ffe76444;
+      font-family: 'Press Start 2P', monospace;
+      white-space: pre-line;
+      line-height: 1.7;
+    }
+    #ariaSprite {
+      width: 54px;
+      height: 54px;
+      display: block;
+      margin: 0 auto 7px auto;
+      border-radius: 5px;
+      background: #191830;
+      border: 1px solid #ffe764;
+      box-shadow: 0 0 10px #ffe76455, 0 0 0 1px #ffe764;
+      image-rendering: pixelated;
+    }
+    .centered {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .hidden { display: none; }
+    /* Custom scrollbar for aria */
+    .aria-box::-webkit-scrollbar {
+      width: 6px;
+      background: #222;
+    }
+    .aria-box::-webkit-scrollbar-thumb {
+      background: #ffe76466;
+      border-radius: 6px;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
+  <div class="pixel-bg-stars" id="pixelBgStars"></div>
 
-    <!-- 1. MEWBY INTRO SCENE WITH TYPING EFFECT -->
-    <div id="mewby" class="scene visible" aria-live="polite" role="region" aria-label="Mewby Introduction">
-      <img src="https://i.imgur.com/qpJz0Ro.gif" alt="Mewby pixel avatar" class="avatar" />
-      <div id="mewbyText" aria-live="polite" aria-atomic="true" role="textbox" tabindex="0"></div>
-    </div>
-
-    <!-- 2. MEMORIES SCENE -->
-    <div id="memories" class="scene" aria-live="polite" role="region" aria-label="Memories Scene">
-      <h2 style="font-size: 12px; margin-bottom: 8px; color:#d1caff; text-shadow: 1px 1px 3px #443f7a;">Your memories with me</h2>
-      <div id="memoryFragments" aria-label="Memory fragments, click each to reveal description"></div>
-      <div id="tooltip" aria-live="polite" role="alert" aria-atomic="true"></div>
-      <button class="pixel-button" id="memoriesNext" aria-label="Next to final scene">Next</button>
-    </div>
-
-    <!-- 3. FINAL CHOOSEHER SCENE -->
-    <div id="ariaScene" class="scene" aria-live="polite" role="region" aria-label="Final scene with Aria">
-      <div class="sparkle-bg" aria-hidden="true"></div>
-      <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria avatar" class="aria-sprite" />
-      <div id="ariaText" aria-atomic="true" aria-live="polite" tabindex="0"></div>
-      <button id="endButton" class="pixel-button" style="display:none;">End</button>
-    </div>
+  <!-- Main pixel frame -->
+  <div class="pixel-frame" id="mainFrame">
+    <img src="https://64.media.tumblr.com/647ca06c5a608d1ea1c416b21b839ea3/9a98a57c72a06121-2a/s250x400/7f925df3ce70975efc97a7f0ffac27ea3838ae3e.gif"
+      alt="Mewby" class="avatar" id="mainAvatar" />
+    <p id="mewbyGreeting" class="pixel-text" style="min-height: 1.5em"></p>
+    <p id="mewbyQuote" class="pixel-quote"></p>
+    <button class="button" id="mewbyContinue" onclick="showAriaMessage()" style="display:none;">Continue</button>
   </div>
 
-<script>
-  /* ====== 1. MEWBY INTRO TYPING ====== */
-  const mewbyTextEl = document.getElementById('mewbyText');
-  const mewbyLines = [
-    "Hey! I'm Mewby, your guide.",
-    "We’re about to take a little walk through memories and moments between us.",
-    "Click to start your journey."
-  ];
+  <!-- Aria message frame (hidden by default) -->
+  <div class="pixel-frame centered hidden" id="ariaFrame">
+    <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria" id="ariaSprite" />
+    <div class="aria-box" id="ariaMsg"></div>
+    <button class="pixel-button" onclick="window.location.href='https://frdffsdx.carrd.co/#home';" style="margin-top:16px;">
+      return home
+    </button>
+  </div>
 
-  // Typewriter effect function for Mewby intro text
-  function typeWriter(element, text, speed = 40) {
-    return new Promise((resolve) => {
-      let i = 0;
-      element.textContent = '';
-      function typing() {
-        if (i < text.length) {
-          element.textContent += text.charAt(i);
-          i++;
-          setTimeout(typing, speed);
-        } else {
-          resolve();
+  <script>
+    // Typing effect for greeting and quote
+    const mewbyGreetingText = "Hey, you made it.";
+    const mewbyQuoteText = "\"The journey wasn’t perfect. But it was real. And it brought you here.\"";
+    let mewbyGreetingIndex = 0, mewbyQuoteIndex = 0;
+    function typeMewbyGreeting() {
+      const el = document.getElementById('mewbyGreeting');
+      if (mewbyGreetingIndex < mewbyGreetingText.length) {
+        el.textContent += mewbyGreetingText[mewbyGreetingIndex++];
+        setTimeout(typeMewbyGreeting, 29);
+      } else {
+        setTimeout(() => { typeMewbyQuote(); }, 340);
+      }
+    }
+    function typeMewbyQuote() {
+      const el = document.getElementById('mewbyQuote');
+      if (mewbyQuoteIndex < mewbyQuoteText.length) {
+        el.textContent += mewbyQuoteText[mewbyQuoteIndex++];
+        setTimeout(typeMewbyQuote, 16);
+      } else {
+        setTimeout(() => {
+          document.getElementById('mewbyContinue').style.display = 'inline-block';
+        }, 400);
+      }
+    }
+    window.addEventListener("DOMContentLoaded", () => {
+      typeMewbyGreeting();
+      drawPixelStars();
+    });
+
+    // Pixel stars background (centered, subtle)
+    function drawPixelStars() {
+      const bg = document.getElementById('pixelBgStars');
+      bg.innerHTML = '';
+      let w = window.innerWidth, h = window.innerHeight;
+      let n = Math.min(Math.floor(w * h / 4400), 24); // density
+      for (let i = 0; i < n; i++) {
+        const star = document.createElement('div');
+        star.className = 'pixel-star';
+        const left = Math.random() * 92 + 3, top = Math.random() * 83 + 8;
+        star.style.left = left + 'vw';
+        star.style.top = top + 'vh';
+        star.style.width = star.style.height = (Math.random() < 0.75 ? 2 : 3) + 'px';
+        star.style.opacity = (Math.random() * 0.7 + 0.2);
+        star.style.animationDelay = (Math.random() * 2.5) + "s";
+        bg.appendChild(star);
+      }
+    }
+    window.addEventListener('resize', drawPixelStars);
+
+    // Aria message as one block (Undertale vibes, not dialogue-by-dialogue)
+    function showAriaMessage() {
+      document.getElementById('mainFrame').classList.add('hidden');
+      document.getElementById('ariaFrame').classList.remove('hidden');
+      document.getElementById('ariaFrame').scrollIntoView({behavior:'smooth'});
+
+      // Undertale-style spacing, one message per line, pre-line
+      const ariaLines = [
+        "You made it.",
+        "After everything. Even after how messy things got before.",
+        "I still remember how it all fell apart — the group, the friendships, everything.",
+        "Back then, it hurt. And we didn’t really talk.",
+        "But somehow… you came back into my life. And when you did, I saw you in a way I hadn’t before.",
+        "That’s when everything changed. That’s when we started.",
+        "And honestly… Even if it means going through all the hard parts again, I’d still choose this. I’d still choose you.",
+        "Because being with you — even on the hardest days — means more than any easy version of life without you.",
+        "Thank you for loving me when I shut down. When I cry out of nowhere. When I’m not making sense.",
+        "You love me on my worst days just as much as my best — and that means everything to me.",
+        "I love you. Always."
+      ];
+      const box = document.getElementById('ariaMsg');
+      box.textContent = ""; // clear
+      // Typing effect for whole message
+      let allText = ariaLines.join("\n\n");
+      let idx = 0;
+      function typeAriaAll() {
+        if(idx <= allText.length){
+          box.textContent = allText.substring(0, idx);
+          idx++;
+          setTimeout(typeAriaAll, 9);
         }
       }
-      typing();
-    });
-  }
-
-  async function playMewbyIntro() {
-    for (const line of mewbyLines) {
-      await typeWriter(mewbyTextEl, line);
-      await new Promise(r => setTimeout(r, 700));
+      typeAriaAll();
     }
-    mewbyTextEl.innerHTML += ' <span class="typing-cursor"></span>';
-  }
-
-  // On click anywhere in #mewby, go to memories scene
-  document.getElementById('mewby').addEventListener('click', () => {
-    document.getElementById('mewby').classList.remove('visible');
-    document.getElementById('memories').classList.add('visible');
-    initMemories();
-  });
-
-  playMewbyIntro();
-
-  /* ====== 2. MEMORIES SCENE ====== */
-  const memoriesData = [
-    { title: "First time we talked", desc: "That night when we stayed up late, just talking.", visited: false },
-    { title: "Hospital visit", desc: "When I was sick and you stayed by my side.", visited: false },
-    { title: "Long distance calls", desc: "Our endless phone calls across the miles.", visited: false },
-    { title: "Work stress days", desc: "You encouraged me even on my worst days.", visited: false },
-    { title: "Our first video game night", desc: "Laughing and playing like no distance existed.", visited: false },
-    { title: "The first 'I love you'", desc: "That shy, unforgettable moment.", visited: false },
-  ];
-
-  const memoryFragmentsEl = document.getElementById('memoryFragments');
-  const tooltipEl = document.getElementById('tooltip');
-  const memoriesNextBtn = document.getElementById('memoriesNext');
-
-  function initMemories() {
-    // Clear previous
-    memoryFragmentsEl.innerHTML = '';
-    tooltipEl.textContent = "Click each memory fragment to reveal it.";
-    memoriesNextBtn.disabled = true;
-
-    memoriesData.forEach((mem, i) => {
-      const frag = document.createElement('button');
-      frag.className = 'memory-fragment';
-      frag.setAttribute('aria-label', `Memory fragment: ${mem.title}`);
-      frag.setAttribute('tabindex', '0');
-      frag.addEventListener('click', () => {
-        if (!mem.visited) {
-          mem.visited = true;
-          frag.classList.add('visited');
-          tooltipEl.textContent = mem.desc;
-          checkAllVisited();
-        }
-      });
-      memoryFragmentsEl.appendChild(frag);
-    });
-  }
-
-  function checkAllVisited() {
-    if (memoriesData.every(m => m.visited)) {
-      memoriesNextBtn.disabled = false;
-      tooltipEl.textContent = "All memories revealed! Click Next to continue.";
-    }
-  }
-
-  memoriesNextBtn.addEventListener('click', () => {
-    document.getElementById('memories').classList.remove('visible');
-    showAriaMessage();
-  });
-
-  /* ====== 3. FINAL ARIA MESSAGE ====== */
-
-  const ariaTextEl = document.getElementById('ariaText');
-  const ariaSceneEl = document.getElementById('ariaScene');
-  const endButton = document.getElementById('endButton');
-
-  const ariaMessage = `\n  I know it’s been a tough journey.\n\n
-  I see your strength—the way you always put others first, the way you keep going even when things get hard.\n\n
-  You are the most hardworking person I’ve ever known.\n\n
-  Sometimes I wish you’d choose yourself, just as I choose you every day.\n\n
-  Through distance, through challenges,\n
-  no matter what comes,\n
-  I will always choose you.\n\n
-  Thank you for being my safe place.`;
-
-  function showAriaMessage() {
-    ariaSceneEl.classList.add('visible');
-    ariaTextEl.textContent = ariaMessage.trim();
-    ariaTextEl.focus();
-    endButton.style.display = 'inline-block';
-  }
-
-  endButton.addEventListener('click', () => {
-    alert('Thank you for sharing this moment 💜');
-  });
-</script>
+  </script>
 </body>
 </html>
