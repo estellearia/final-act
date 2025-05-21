@@ -32,33 +32,16 @@
     }
     .hidden { display: none !important; }
     .memory-title {
-      font-size: 16px;
+      font-size: 12px;
       color: #ffe764;
-      text-shadow: 0 0 10px #fffbe3, 0 0 8px #ffe764b5;
+      text-shadow: 0 0 9px #fffbe3, 0 0 6px #ffe764b5;
       font-family: 'Press Start 2P', monospace;
       font-weight: normal;
       letter-spacing: 0.6px;
-      margin-bottom: 8px;
+      margin-bottom: 11px;
       margin-top: 24px;
       text-align: center;
       user-select: none;
-      line-height: 1.25;
-    }
-    #memoryInstruction {
-      font-size: 11px;
-      color: #ffe764;
-      margin-bottom: 14px;
-      margin-top: 0;
-      line-height: 1.7;
-      text-align: center;
-      letter-spacing: 0.2px;
-      background: rgba(38,39,80,0.22);
-      border-radius: 7px;
-      padding: 5px 9px 6px 9px;
-      display: inline-block;
-      border: 1px solid #ffe76433;
-      box-shadow: 0 0 5px #ffe76411;
-      font-family: 'Press Start 2P', monospace;
     }
     .pixel-frame {
       background: rgba(20,16,40,0.93);
@@ -78,7 +61,6 @@
     }
     @media (max-width: 500px) {
       .pixel-frame { max-width: 98vw; padding: 7vw 1vw; }
-      .memory-title { font-size: 13px; }
     }
     .avatar {
       width: 54px;
@@ -154,6 +136,7 @@
       transform: scale(1.07) translateY(-1px);
       box-shadow: 0 0 14px #ffe764ad, 0 3px 0 0 #353a5c;
     }
+    /* Center all buttons on the page */
     .center-btn, .mewby-center-btn, .aria-btn-center {
       display: flex;
       justify-content: center;
@@ -205,45 +188,51 @@
       margin: 0 auto;
       text-align: center;
     }
-    #memoryInfoBox {
-      margin-top: 18px;
-      margin-bottom: 0;
-      min-height: 54px;
-      background: rgba(38,39,80,0.28);
-      border: 1px solid #ffe76444;
-      border-radius: 8px;
+    #tooltip {
+      font-size: 13px;
+      color: #ffe764;
+      margin-top: 10px;
+      min-height: 26px;
+      white-space: pre-line;
+      text-shadow: 0 0 4px #fffbe3;
+      background: rgba(16, 20, 56, 0.52);
+      border-radius: 7px;
+      border: 1px solid #ffe764;
       box-shadow: 0 0 7px #ffe76422;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      max-width: 230px;
-      padding: 13px 10px 13px 10px;
+      display: none;
+      max-width: 220px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+      opacity: 0.94;
       text-align: center;
-      transition: background 0.15s, border 0.15s;
-      font-size: 11px;
+      transition: opacity 0.2s, display 0.2s;
+      letter-spacing: 0.4px;
+      padding: 8px 12px;
     }
-    .memory-info-title {
-      font-size: 11px;
+    #tooltip.active {
+      display: block;
+      opacity: 1;
+    }
+    .tooltip-title {
+      font-size: 13px;
       font-weight: bold;
       color: #ffe764;
-      letter-spacing: 0.4px;
-      line-height: 1.4;
-      margin-bottom: 10px;
-      text-align: center;
-      text-shadow: 0 0 2px #fffbe3;
       display: block;
+      margin-bottom: 3px;
+      letter-spacing: 0.5px;
+      line-height: 1.4;
+      text-align: center;
     }
-    .memory-info-desc {
-      font-size: 11px;
+    .tooltip-desc {
+      font-size: 9px;
       color: #fffbe3;
+      display: block;
+      margin-top: 2px;
       line-height: 1.7;
       letter-spacing: 0.2px;
+      white-space: pre-line;
       text-align: center;
-      font-weight: normal;
-      display: block;
-      margin-bottom: 0;
-      margin-top: 0;
     }
     .aria-box {
       background: rgba(38, 39, 80, 0.56);
@@ -292,11 +281,7 @@
 <body>
   <div class="pixel-bg-stars" id="pixelBgStars"></div>
 
-  <div class="memory-title" id="memoryTitle">Your memories with Aria</div>
-  <div id="memoryInstruction">
-    Click each memory fragment one at a time.<br>
-    Wait for the memory to finish before choosing the next.
-  </div>
+  <div class="memory-title" id="memoryTitle">Your memories with me</div>
 
   <!-- Main pixel frame -->
   <div class="pixel-frame" id="mainFrame">
@@ -315,10 +300,7 @@
   <div class="pixel-frame hidden" id="memoriesFrame">
     <canvas id="starCanvas" class="star-canvas"></canvas>
     <div id="memoryFragments"></div>
-    <div id="memoryInfoBox">
-      <span id="memoryInfoTitle" class="memory-info-title"></span>
-      <span id="memoryInfoDesc" class="memory-info-desc"></span>
-    </div>
+    <div id="tooltip" aria-live="polite" role="alert" aria-atomic="true"></div>
     <div class="center-btn" id="memoriesNextBtnContainer" style="display:none;">
       <button class="button" id="memoriesNext" aria-label="Next to final scene">Next</button>
     </div>
@@ -351,10 +333,8 @@
         document.getElementById(x).classList.add('hidden');
       });
       document.getElementById(id).classList.remove('hidden');
-      // Hide the memory lane title/instructions unless we're in memoriesFrame
-      const showMemoryStuff = (id === 'memoriesFrame');
-      document.getElementById('memoryTitle').style.display = showMemoryStuff ? 'block' : 'none';
-      document.getElementById('memoryInstruction').style.display = showMemoryStuff ? 'inline-block' : 'none';
+      // Hide the memory lane title unless we're in memoriesFrame
+      document.getElementById('memoryTitle').style.display = (id === 'memoriesFrame') ? 'block' : 'none';
       window.scrollTo(0,0);
     }
 
@@ -380,6 +360,7 @@
 
     // Mewby intro typing
     const mewbyGreetingText = "Hey! Mewby is herwe!";
+    // Each line will be typed with 60ms per character
     const mewbyQuoteLines = [
       "We’re about to take a little walk through memories and moments between you and Aria.",
       "Click to start your journey."
@@ -408,6 +389,7 @@
           el.textContent += mewbyQuoteLines[mewbyQuoteLine][mewbyQuoteChar++];
           setTimeout(typeMewbyQuoteLine, 60);
         } else {
+          // After finishing the line, add line break except for last line
           if (mewbyQuoteLine < mewbyQuoteLines.length - 1) {
             el.innerHTML += '<br><br>';
           }
@@ -418,15 +400,16 @@
       } else {
         setTimeout(() => {
           document.getElementById('mewbyContinue').style.display = 'inline-block';
+          // Do NOT hide the quote container!
         }, 400);
       }
     }
     window.addEventListener("DOMContentLoaded", () => {
+      // Show the quote container initially
       document.getElementById('mewbyQuoteContainer').style.display = "block";
       typeMewbyGreeting();
       drawPixelStars();
       document.getElementById('memoryTitle').style.display = "none";
-      document.getElementById('memoryInstruction').style.display = "none";
     });
 
     document.getElementById('mewbyContinue').onclick = () => {
@@ -444,41 +427,45 @@
       { title: "The first 'I love you'", desc: "That shy, unforgettable moment.", visited: false }
     ];
 
-    // For fade effect on memoryInfoBox
-    function fadeMemoryInfoBoxOut() {
-      const box = document.getElementById('memoryInfoBox');
-      box.style.transition = "opacity 0.5s";
-      box.style.opacity = 0;
-    }
-    function fadeMemoryInfoBoxIn() {
-      const box = document.getElementById('memoryInfoBox');
-      box.style.transition = "opacity 0.3s";
-      box.style.opacity = 1;
-    }
+    function drawStars() {
+      const canvas = document.getElementById('starCanvas');
+      if (!canvas) return;
+      const parent = document.getElementById('memoriesFrame');
+      canvas.width = parent.offsetWidth;
+      canvas.height = 180;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    let memoryInfoTimeout = null;
-    let waitingForFade = false;
+      for (let i = 0; i < 40; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height * 0.9 + 5;
+        const size = Math.random() < 0.8 ? 2 : 4;
+        ctx.save();
+        ctx.globalAlpha = Math.random() * 0.4 + 0.5;
+        ctx.fillStyle = Math.random() > 0.5 ? "#ffe764" : "#fffbe3";
+        ctx.beginPath();
+        ctx.arc(Math.floor(x), Math.floor(y), size, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+    window.addEventListener('resize', drawStars);
 
     function initMemories() {
       drawStars();
       const memoryFragmentsEl = document.getElementById('memoryFragments');
-      const infoBox = document.getElementById('memoryInfoBox');
-      const infoTitle = document.getElementById('memoryInfoTitle');
-      const infoDesc = document.getElementById('memoryInfoDesc');
+      const tooltipEl = document.getElementById('tooltip');
       const memoriesNextBtn = document.getElementById('memoriesNext');
       const memoriesNextBtnContainer = document.getElementById('memoriesNextBtnContainer');
       memoryFragmentsEl.innerHTML = '';
-      infoTitle.textContent = "";
-      infoDesc.textContent = "";
-      infoBox.style.opacity = 1;
-      waitingForFade = false;
+      let showingDesc = false;
+      tooltipEl.textContent = '';
+      tooltipEl.classList.remove('active');
+      // Hide Next button container at first
       memoriesNextBtnContainer.style.display = "none";
       memoriesNextBtn.disabled = true;
       memoriesNextBtn.style.opacity = 0.3;
       memoriesNextBtn.setAttribute('aria-disabled', 'true');
-      if (memoryInfoTimeout) clearTimeout(memoryInfoTimeout);
-
-      memoriesData.forEach((memory, i) => memory.visited = false);
 
       memoriesData.forEach((memory, i) => {
         const circle = document.createElement('div');
@@ -488,29 +475,21 @@
         circle.setAttribute('aria-label', `${memory.title} memory`);
         circle.dataset.index = i;
 
+        // Only show tooltip (title and description) when clicked
         circle.addEventListener('click', () => {
-          if (memory.visited || waitingForFade) return;
+          if (memory.visited) return;
           memory.visited = true;
           circle.classList.add('visited');
-          waitingForFade = true;
-
-          // Show the title/desc, fade in
-          infoTitle.textContent = memory.title;
-          infoDesc.textContent = "";
+          showingDesc = true;
+          tooltipEl.innerHTML = `<span class="tooltip-title">${memory.title}</span><span class="tooltip-desc">${memory.desc}</span>`;
+          tooltipEl.classList.add('active');
+          // Hide desc after 3.2 seconds unless all are visited (longer delay!)
           setTimeout(() => {
-            infoDesc.textContent = memory.desc;
-          }, 10);
-          fadeMemoryInfoBoxIn();
-
-          if (memoryInfoTimeout) clearTimeout(memoryInfoTimeout);
-          memoryInfoTimeout = setTimeout(() => {
-            fadeMemoryInfoBoxOut();
-            setTimeout(() => {
-              infoTitle.textContent = "";
-              infoDesc.textContent = "";
-              fadeMemoryInfoBoxIn();
-              waitingForFade = false;
-            }, 600);
+            showingDesc = false;
+            if (!memoriesData.every(m => m.visited)) {
+              tooltipEl.classList.remove('active');
+              tooltipEl.innerHTML = '';
+            }
           }, 3200);
 
           // If all visited, enable Next button and show last desc
@@ -518,11 +497,9 @@
             memoriesNextBtn.disabled = false;
             memoriesNextBtn.style.opacity = 1;
             memoriesNextBtn.setAttribute('aria-disabled', 'false');
-            infoTitle.textContent = "All memories revisited.";
-            infoDesc.textContent = "";
-            fadeMemoryInfoBoxIn();
+            tooltipEl.innerHTML = `<span class="tooltip-title">All memories revisited.</span>`;
+            tooltipEl.classList.add('active');
             memoriesNextBtnContainer.style.display = "flex";
-            if (memoryInfoTimeout) clearTimeout(memoryInfoTimeout);
           }
         });
 
