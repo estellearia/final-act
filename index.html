@@ -143,16 +143,15 @@
 .memory-fragment {
   width: 22px;
   height: 22px;
-  margin: 10px; /* increase margin to avoid overlap when scaled */
+  margin: 4px; /* tight grid */
   display: inline-block;
   background: linear-gradient(145deg, #fffbe3 30%, #fcd34d 80%);
   border-radius: 50%;
   animation: glow 1.9s infinite alternate;
   cursor: pointer;
   position: relative;
-  will-change: transform;
   box-shadow: 0 0 9px #fffbe3, 0 0 20px #ffe764;
-  transition: box-shadow 0.15s, transform 0.16s;
+  transition: box-shadow 0.15s;
   outline: 1.5px solid #fffbe3;
   outline-offset: 2px;
   isolation: isolate;
@@ -161,11 +160,10 @@
 
 .memory-fragment:hover,
 .memory-fragment:focus {
-  box-shadow: 0 0 18px #ffe764, 0 0 28px #fcd34d;
-  transform: scale(1.08); /* pixel pop, safe margin */
+  box-shadow: 0 0 24px #ffe764, 0 0 38px #fcd34d;
+  /* no transform! */
   z-index: 2;
 }
-
     .memory-fragment.visited {
       opacity: 0.22;
       pointer-events: none;
