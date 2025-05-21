@@ -58,84 +58,73 @@
       background-color: #444;
     }
 
-    .memory {
-      border: 2px solid white;
-      padding: 10px;
-      margin: 10px auto;
-      max-width: 400px;
-      cursor: pointer;
+    /* Memory fragments as yellow circles */
+    #memories {
       position: relative;
-      z-index: 2;
+      overflow: hidden;
+      padding-top: 20px;
     }
-
-    .memory.visited {
-      opacity: 0.4;
-    }
-
-    .tooltip {
-      font-size: 10px;
-      color: #FFD700;
-      margin-top: 10px;
-      animation: fadeInText 0.3s ease forwards;
-      position: relative;
-      z-index: 2;
-    }
-
-    .message-box, #ariaText {
-      background-color: rgba(0, 0, 0, 0.85);
-      border: 2px solid white;
-      border-radius: 10px;
-      box-shadow: 0 0 8px white;
-      padding: 20px;
-      margin: 20px auto 0 auto;
-      max-width: 600px;
-      text-align: left;
-      font-size: 10px;
-      line-height: 1.8;
-      font-family: 'Press Start 2P', monospace;
-      color: white;
-      position: relative;
-      z-index: 2;
-      min-height: 150px;
-    }
-
-    /* Sparkle effect behind Aria */
-    .sparkle-bg {
+    .pixel-stars {
       position: absolute;
       top: 0; left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(white 1px, transparent 1px);
-      background-size: 10px 10px;
-      opacity: 0.05;
-      pointer-events: none;
-      animation: sparkleMove 10s linear infinite;
-      z-index: 1; /* behind avatar and text */
-    }
-
-    /* Twinkling stars for memories scene */
-    #memories::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(white 1.5px, transparent 1.5px);
+      background:
+        radial-gradient(white 2px, transparent 2px),
+        radial-gradient(white 2px, transparent 2px);
+      background-position: 0 0, 7.5px 7.5px;
       background-size: 15px 15px;
-      opacity: 0.15;
+      opacity: 0.25;
       pointer-events: none;
       animation: twinkle 5s ease-in-out infinite alternate;
+      image-rendering: pixelated;
       z-index: 0;
     }
 
-    @keyframes sparkleMove {
-      from { background-position: 0 0; }
-      to { background-position: 100% 100%; }
+    .memory-fragment {
+      width: 30px;
+      height: 30px;
+      background: #fcd34d; /* yellow */
+      border-radius: 50%;
+      margin: 30px 15px;
+      display: inline-block;
+      animation: glow 1.5s infinite alternate;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 0 5px #fcd34d;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .memory-fragment:hover {
+      box-shadow: 0 0 20px #fcd34d;
+    }
+
+    /* Tooltip to show memory text */
+    #tooltip {
+      font-size: 10px;
+      color: #FFD700;
+      margin-top: 10px;
+      min-height: 30px;
+      white-space: pre-wrap;
+      animation: fadeInText 0.3s ease forwards;
+      position: relative;
+      z-index: 2;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      min-height: 40px;
+      line-height: 1.2;
+    }
+
+    @keyframes glow {
+      from { box-shadow: 0 0 5px #fcd34d; }
+      to { box-shadow: 0 0 20px #fcd34d; }
     }
 
     @keyframes twinkle {
-      0%, 100% { opacity: 0.15; }
-      50% { opacity: 0.5; }
+      0%, 100% { opacity: 0.25; }
+      50% { opacity: 0.6; }
     }
 
     @keyframes fadeInText {
@@ -157,10 +146,13 @@
 
 <!-- Memory Selection Scene -->
 <div id="memories" class="scene">
+  <div class="pixel-stars"></div>
   <p>Tap each memory to remember...</p>
-  <div class="memory" data-title="The Break" data-line="The group drifted apart, and silence filled the spaces we once shared. That time still stings." onclick="visitMemory(this)">The Break</div>
-  <div class="memory" data-title="The Return" data-line="I didn’t expect to see you again — but when I did, I saw you differently." onclick="visitMemory(this)">The Return</div>
-  <div class="memory" data-title="The Hard Days" data-line="It wasn’t easy. But we didn’t give up." onclick="visitMemory(this)">The Hard Days</div>
+  <div>
+    <div class="memory-fragment" data-title="The Break" data-line="The group drifted apart, and silence filled the spaces we once shared. That time still stings." onclick="visitMemory(this)" title="The Break"></div>
+    <div class="memory-fragment" data-title="The Return" data-line="I didn’t expect to see you again — but when I did, I saw you differently." onclick="visitMemory(this)" title="The Return"></div>
+    <div class="memory-fragment" data-title="The Hard Days" data-line="It wasn’t easy. But we didn’t give up." onclick="visitMemory(this)" title="The Hard Days"></div>
+  </div>
   <div id="tooltip" class="tooltip"></div>
 </div>
 
@@ -182,7 +174,6 @@
 </div>
 
 <script>
-  // Memory scene tracking
   let memoriesVisited = 0;
 
   function showMemories() {
@@ -195,11 +186,11 @@
     const line = element.getAttribute("data-line");
 
     tooltip.textContent = `"${line}"`;
-    tooltip.style.display = "block";
 
     if (!element.classList.contains("visited")) {
       element.classList.add("visited");
       memoriesVisited++;
+      element.style.opacity = "0.4"; // visually mark visited
     }
 
     if (memoriesVisited >= 3) {
@@ -211,7 +202,6 @@
     }
   }
 
-  // Final choice to show Aria scene with typed lines
   function chooseHer() {
     document.getElementById("chooseHerBtn").style.display = "none";
     document.getElementById("chooseEasyBtn").style.display = "none";
@@ -220,10 +210,8 @@
 
   function chooseEasy() {
     alert("You chose the easy way out... But this story is about choosing love.");
-    // Optional: You can add logic here to show a different scene or message.
   }
 
-  // Typing effect for Aria scene
   const ariaLines = [
     "You made it.",
     "After everything. Even after how messy things got before.",
@@ -235,48 +223,61 @@
     "Because being with you — even on the hardest days — means more than any easy version of life without you.",
     "Thank you for loving me when I shut down. When I cry out of nowhere. When I’m not making sense.",
     "You love me on my worst days just as much as my best — and that means everything to me.",
-    "Some people only want love when it's simple. But I’d go through the hard stuff all over again, as long as it leads me to you.",
-    "You’re my home now. My everything.",
-    "And just this once… I hope you choose you, too.",
-    "Because I’ll keep choosing you. Every time.",
-    "",
-    "Happy Birthday.",
-    "Thank you for coming back.",
-    "Thank you for letting me love you now."
+    "I love you. Always.",
   ];
 
-  function showAriaScene() {
-    const ariaScene = document.getElementById('ariaScene');
-    const ariaText = document.getElementById('ariaText');
-    const endButton = document.getElementById('endButton');
-    ariaScene.style.display = 'block';
-    ariaText.innerHTML = '';
-    endButton.style.display = 'none';
+  let ariaIndex = 0;
+  let ariaCharIndex = 0;
+  let typingInterval;
 
-    let i = 0;
-
-    function typeLine() {
-      if (i < ariaLines.length) {
-        const p = document.createElement('p');
-        p.textContent = "";
-        ariaText.appendChild(p);
-        let j = 0;
-        const line = ariaLines[i];
-        const interval = setInterval(() => {
-          if (j < line.length) {
-            p.textContent += line[j++];
-          } else {
-            clearInterval(interval);
-            i++;
-            setTimeout(typeLine, 300); // pause between lines
-          }
-        }, 25); // typing speed
+  function typeNextChar() {
+    const ariaText = document.getElementById("ariaText");
+    if (ariaCharIndex < ariaLines[ariaIndex].length) {
+      ariaText.textContent += ariaLines[ariaIndex][ariaCharIndex];
+      ariaCharIndex++;
+    } else {
+      clearInterval(typingInterval);
+      ariaIndex++;
+      if (ariaIndex < ariaLines.length) {
+        // Show next line button
+        setTimeout(() => {
+          showNextAriaLineButton();
+        }, 400);
       } else {
-        endButton.style.display = 'inline-block';
+        // Show end button
+        document.getElementById("endButton").style.display = "inline-block";
       }
     }
+  }
 
-    typeLine();
+  function showNextAriaLineButton() {
+    // create or show a button to continue typing
+    if (!document.getElementById("nextLineBtn")) {
+      const btn = document.createElement("button");
+      btn.textContent = "Next";
+      btn.className = "pixel-button";
+      btn.id = "nextLineBtn";
+      btn.style.marginTop = "20px";
+      btn.onclick = () => {
+        btn.remove();
+        startTyping();
+      };
+      document.getElementById("ariaScene").appendChild(btn);
+    }
+  }
+
+  function startTyping() {
+    ariaCharIndex = 0;
+    document.getElementById("ariaText").textContent = "";
+    typingInterval = setInterval(typeNextChar, 40);
+  }
+
+  function showAriaScene() {
+    document.getElementById("final").classList.remove("visible");
+    const ariaScene = document.getElementById("ariaScene");
+    ariaScene.style.display = "block";
+    ariaScene.classList.add("visible");
+    startTyping();
   }
 </script>
 
