@@ -1,5 +1,3 @@
--- final act
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +31,7 @@
     }
     .pixel-frame {
       position: relative;
-      padding: 34px 20px;
+      padding: 32px 18px;
       background: rgba(20,16,40,0.93);
       border-radius: 16px;
       box-shadow:
@@ -50,9 +48,10 @@
       align-items: center;
       z-index: 10;
       image-rendering: pixelated;
+      background-clip: padding-box;
     }
     @media (max-width: 500px) {
-      .pixel-frame { max-width: 98vw; padding: 10vw 1vw; }
+      .pixel-frame { max-width: 98vw; padding: 8vw 1vw; }
     }
     .avatar {
       width: 64px;
@@ -68,7 +67,7 @@
     .pixel-text {
       color: #fffbe3;
       text-shadow: 1px 1px 0 #353a5c, 0 0 6px #ffe7646b;
-      font-size: 10px;
+      font-size: 0.8em;
       margin: 0.7em 0 0.4em 0;
       line-height: 1.6;
       letter-spacing: 1.1px;
@@ -77,7 +76,7 @@
     }
     .pixel-quote {
       color: #ffe764;
-      font-size: 10px;
+      font-size: 0.72em;
       margin-top: 1.3em;
       margin-bottom: 0.6em;
       text-shadow: 1px 1px 0 #353a5c, 0 0 7px #fffbe3b5;
@@ -89,68 +88,117 @@
       font-style: italic;
       image-rendering: pixelated;
     }
+    /* Improved Button */
     .button, .pixel-button {
       font-family: 'Press Start 2P', monospace;
-      background: repeating-linear-gradient(135deg, #191830 0 5px, #ffe764 5px 7px, #191830 7px 14px);
+      background: #191830;
       color: #ffe764;
       border: 2px solid #ffe764;
-      border-radius: 5px;
-      box-shadow: 0 0 6px #ffe76470, 0 2px 0 0 #353a5c;
-      padding: 7px 19px;
+      border-radius: 6px;
+      box-shadow: 0 2px 0 0 #353a5c, 0 0 8px #ffe76470 inset;
+      padding: 5px 13px 6px 13px;
       cursor: pointer;
-      margin: 26px 0 0 0;
-      font-size: 10px;
+      margin: 18px 0 0 0;
+      font-size: 11px;
       font-weight: bold;
-      text-shadow: 1px 1px 0 #353a5c, 0 0 6px #fffbe3b5;
-      letter-spacing: 1.5px;
-      transition: background 0.13s, color 0.13s, border-color 0.13s, transform 0.07s;
+      letter-spacing: 1.1px;
+      text-shadow: 1px 1px 0 #353a5c, 0 0 4px #fffbe3b5;
+      transition: background 0.16s, color 0.13s, border-color 0.13s, transform 0.07s;
       image-rendering: pixelated;
       position: relative;
       z-index: 1;
+      outline: 0;
     }
     .button:hover, .pixel-button:hover {
       background: #ffe764;
       color: #191830;
       border-color: #fffbe3;
-      transform: scale(1.05) translateY(-1px);
-      box-shadow: 0 0 14px #ffe764ad, 0 4px 0 0 #353a5c;
+      transform: scale(1.07) translateY(-1px);
+      box-shadow: 0 0 14px #ffe764ad, 0 3px 0 0 #353a5c;
     }
-    /* Star bg */
-    .pixel-bg-stars {
+    .star-canvas {
       position: absolute;
-      top: 0; left: 0; width: 100vw; height: 100vh;
+      left: 0; top: 0;
+      width: 100%;
+      height: 100%;
       z-index: 0;
       pointer-events: none;
-      overflow: hidden;
     }
-    .pixel-star {
-      position: absolute;
-      width: 3px; height: 3px;
-      background: #ffe764;
-      border-radius: 1px;
-      opacity: 0.7;
-      box-shadow: 0 0 7px #ffe764aa, 0 0 0 1.5px #fffbe3;
-      image-rendering: pixelated;
-      animation: pixel-star-blink 2.5s linear infinite;
+    .memory-fragment {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(145deg, #fffbe3 30%, #fcd34d 80%);
+      border-radius: 50%;
+      margin: 18px 10px;
+      display: inline-block;
+      animation: glow 1.9s infinite alternate;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 0 9px #fffbe3, 0 0 20px #ffe764;
+      transition: box-shadow 0.3s, transform 0.2s;
+      outline: 1.5px solid #fffbe3;
+      outline-offset: 2px;
     }
-    @keyframes pixel-star-blink {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 1; }
-      70% { opacity: 0.5; }
+    .memory-fragment:hover, .memory-fragment:focus {
+      box-shadow: 0 0 18px #ffe764, 0 0 28px #fcd34d;
+      transform: scale(1.09);
+      z-index: 3;
+    }
+    .memory-fragment.visited {
+      opacity: 0.22;
+      pointer-events: none;
+      box-shadow: none;
+      outline: 1px dashed #ffe764;
+      background: #282840;
+      transition: opacity 0.5s;
+    }
+    #memoriesFrame h2 {
+      font-size: 11px !important;
+      margin-bottom: 8px;
+      color: #ffe764;
+      text-shadow: 0 0 7px #fffbe3;
+      letter-spacing: 1.2px;
+    }
+    #tooltip {
+      font-size: 10px;
+      color: #ffe764;
+      margin-top: 10px;
+      min-height: 26px;
+      white-space: pre-wrap;
+      text-shadow: 0 0 4px #fffbe3;
+      letter-spacing: 1px;
+      background: rgba(16, 20, 56, 0.52);
+      border-radius: 7px;
+      padding: 4px 7px;
+      border: 1px solid #ffe764;
+      box-shadow: 0 0 7px #ffe76422;
+      display: block;
+      max-width: 220px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.28;
+      opacity: 0.94;
     }
     .aria-box {
       background: rgba(38, 39, 80, 0.56);
       border-radius: 7px;
-      padding: 15px 12px 14px 12px;
+      padding: 11px 10px 15px 10px;
       margin: 14px 0 0 0;
       box-shadow: 0 0 7px #ffe76422;
-      font-size: 10px;
+      font-size: 12px;
       color: #ffeebc;
       text-shadow: 0 0 4px #ffe76444, 1px 1px 0 #353a5c;
       border: 1px solid #ffe76444;
       font-family: 'Press Start 2P', monospace;
       white-space: pre-line;
-      line-height: 1.7;
+      line-height: 1.45;
+      max-width: 240px;
+      min-width: 0;
+      min-height: 90px;
+      word-break: break-word;
+      margin-left: auto;
+      margin-right: auto;
     }
     #ariaSprite {
       width: 54px;
@@ -163,78 +211,28 @@
       box-shadow: 0 0 10px #ffe76455, 0 0 0 1px #ffe764;
       image-rendering: pixelated;
     }
-    .centered {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .hidden { display: none; }
-    /* Custom scrollbar for aria */
-    .aria-box::-webkit-scrollbar {
-      width: 6px;
-      background: #222;
-    }
-    .aria-box::-webkit-scrollbar-thumb {
-      background: #ffe76466;
-      border-radius: 6px;
-    }
-    .star-canvas {
-      position: absolute;
-      left: 0; top: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .memory-fragment {
-      width: 36px;
-      height: 36px;
-      background: linear-gradient(145deg, #fffbe3 30%, #fcd34d 80%);
-      border-radius: 50%;
-      margin: 32px 22px;
-      display: inline-block;
-      animation: glow 1.9s infinite alternate;
-      cursor: pointer;
-      position: relative;
-      z-index: 2;
-      box-shadow: 0 0 12px #fffbe3, 0 0 40px #ffe764;
-      transition: box-shadow 0.3s, transform 0.2s;
-      outline: 2px solid #fffbe3;
-      outline-offset: 2px;
-    }
-    .memory-fragment:hover, .memory-fragment:focus {
-      box-shadow: 0 0 26px #ffe764, 0 0 70px #fcd34d;
-      transform: scale(1.13);
-      z-index: 3;
-    }
-    .memory-fragment.visited {
-      opacity: 0.24;
-      pointer-events: none;
-      box-shadow: none;
-      outline: 1px dashed #ffe764;
-      background: #282840;
-      transition: opacity 0.5s;
+    @keyframes glow {
+      from { box-shadow: 0 0 8px #ffe764, 0 0 20px #fffbe3; }
+      to { box-shadow: 0 0 16px #ffe764, 0 0 28px #fcd34d; }
     }
   </style>
 </head>
 <body>
   <div class="pixel-bg-stars" id="pixelBgStars"></div>
-
   <!-- Main pixel frame -->
   <div class="pixel-frame" id="mainFrame">
     <img src="https://64.media.tumblr.com/647ca06c5a608d1ea1c416b21b839ea3/9a98a57c72a06121-2a/s250x400/7f925df3ce70975efc97a7f0ffac27ea3838ae3e.gif"
-      alt="Mewby" class="avatar" id="mainAvatar" />
+      alt="Mewby" class="avatar" />
     <p id="mewbyGreeting" class="pixel-text" style="min-height: 1.5em"></p>
     <p id="mewbyQuote" class="pixel-quote"></p>
     <button class="button" id="mewbyContinue" style="display:none;">Continue</button>
   </div>
 
-  <!-- 2. MEMORIES SCENE -->
+  <!-- MEMORIES SCENE -->
   <div class="pixel-frame hidden" id="memoriesFrame">
     <canvas id="starCanvas" class="star-canvas"></canvas>
-    <h2 style="font-size: 14px; margin-bottom: 8px; color: #ffe764; text-shadow: 0 0 7px #fffbe3;">Your memories with me</h2>
-    <div id="memoryFragments" style="max-width: 480px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+    <h2>Your memories with me</h2>
+    <div id="memoryFragments" style="max-width: 220px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
       <!-- Memory fragments circles inserted here by JS -->
     </div>
     <div id="tooltip" aria-live="polite" role="alert" aria-atomic="true"></div>
@@ -330,11 +328,11 @@
       if (!canvas) return;
       const parent = document.getElementById('memoriesFrame');
       canvas.width = parent.offsetWidth;
-      canvas.height = 340;
+      canvas.height = 240;
       const ctx = canvas.getContext('2d');
       ctx.clearRect(0,0,canvas.width,canvas.height);
 
-      for (let i = 0; i < 55; i++) {
+      for (let i = 0; i < 40; i++) {
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height * 0.9 + 5;
         const size = Math.random() < 0.8 ? 2 : 4;
@@ -487,7 +485,7 @@ Thank you for letting me love you now.`;
         if(idx <= ariaMessage.length){
           box.textContent = ariaMessage.substring(0, idx);
           idx++;
-          setTimeout(typeAria, 10);
+          setTimeout(typeAria, 60); // SLOWER TYPING SPEED
         }
       }
       typeAria();
