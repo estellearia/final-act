@@ -139,44 +139,32 @@
     }
 
     /* GLITCH-FREE GRID LAYOUT FOR MEMORY FRAGMENTS */
-    #memoryFragments.memory-grid {
+    #memoryFragments {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(32px, 1fr));
-      gap: 10px;
-      justify-content: center;
-      max-width: 220px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 120px;
       margin: 0 auto;
-      position: relative;
     }
     .memory-fragment {
       width: 22px;
       height: 22px;
-      background: linear-gradient(145deg, #fffbe3 30%, #fcd34d 80%);
-      border-radius: 50%;
-      animation: glow 1.9s infinite alternate;
-      cursor: pointer;
-      will-change: box-shadow;
-      box-shadow: 0 0 8px #fffbe3, 0 0 18px #ffe764;
-      transition: box-shadow 0.18s, background 0.15s, border-color 0.15s;
-      outline: 1.5px solid #fffbe3;
-      outline-offset: 2px;
-      border: 2px solid #ffe764;
-      background-clip: padding-box;
       display: block;
+      background: #ffe764;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #fffbe3;
+      transition: background 0.15s;
     }
     .memory-fragment:hover,
     .memory-fragment:focus {
-      box-shadow: 0 0 28px #ffe764, 0 0 44px #fcd34d;
-      border-color: #fffbe3;
-      background: linear-gradient(120deg, #fffbe3 40%, #fff8e7 100%);
+      background: #fffbe3;
     }
     .memory-fragment.visited {
       opacity: 0.22;
       pointer-events: none;
-      box-shadow: none;
-      outline: 1px dashed #ffe764;
       background: #282840;
-      transition: opacity 0.5s;
+      border: 2px solid #ffe764;
     }
 
     /* Tooltip/desc for memories: centered and only shown when populated */
@@ -267,11 +255,11 @@
   <!-- MEMORIES SCENE -->
   <div class="pixel-frame hidden" id="memoriesFrame">
     <canvas id="starCanvas" class="star-canvas"></canvas>
-    <div id="memoryFragments" class="memory-grid"></div>
+    <div id="memoryFragments"></div>
     <div id="tooltip" aria-live="polite" role="alert" aria-atomic="true"></div>
     <button class="button" id="memoriesNext" aria-label="Next to final scene" style="opacity:0.3;" disabled>Next</button>
   </div>
-
+ 
   <!-- Final Choice Scene -->
   <div class="pixel-frame hidden" id="finalFrame">
     <p class="pixel-text">You've remembered enough. What will you do?</p>
