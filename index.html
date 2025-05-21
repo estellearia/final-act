@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <title>Act 6 - Final Choice</title>
   <style>
+    @font-face {
+      font-family: 'Press Start 2P';
+      src: url('https://fonts.gstatic.com/s/pressstart2p/v11/e3t4euO8T-267oIAQAu6jDQyKzI.woff2') format('woff2');
+    }
+
     body {
       margin: 0;
       background: #000;
@@ -17,34 +22,46 @@
       flex-direction: column;
     }
 
-    #gameContainer, #finalChoice, #ariaScene, #emptyScene {
+    .screen {
       display: none;
       text-align: center;
+      padding: 20px;
+      animation: fadeIn 1.5s forwards;
     }
 
     .fragment {
-      width: 20px;
-      height: 20px;
-      background: #fcd34d;
-      border-radius: 50%;
+      width: 40px;
+      height: 40px;
       margin: 20px;
       display: inline-block;
-      animation: glow 1.5s infinite alternate;
+      background: #fcd34d;
+      border-radius: 50%;
+      animation: pixelPulse 1s infinite alternate;
       cursor: pointer;
+      position: relative;
     }
 
-    @keyframes glow {
-      from { box-shadow: 0 0 5px #fcd34d; }
-      to { box-shadow: 0 0 20px #fcd34d; }
+    .fragment:hover::after {
+      content: attr(data-title);
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111;
+      padding: 5px;
+      border: 1px solid #fcd34d;
+      font-size: 10px;
+      white-space: nowrap;
     }
 
-    .dialogue {
-      margin-top: 20px;
+    .dialogue, #finalChoice p, #mewbyIntro {
       font-size: 12px;
+      white-space: pre-line;
+      line-height: 1.8;
     }
 
     .choice-button {
-      font-family: 'Press Start 2P', monospace;
+      font-family: 'Press Start 2P';
       background: #fff;
       color: #000;
       border: none;
@@ -57,38 +74,64 @@
       background: #fcd34d;
     }
 
-    #ariaScene, #emptyScene {
-      font-size: 14px;
-      white-space: pre-line;
-      line-height: 1.6;
+    .aria-sprite {
+      width: 80px;
+      margin-top: 20px;
+      image-rendering: pixelated;
     }
 
-    @font-face {
-      font-family: 'Press Start 2P';
-      src: url('https://fonts.gstatic.com/s/pressstart2p/v11/e3t4euO8T-267oIAQAu6jDQyKzI.woff2') format('woff2');
+    @keyframes pixelPulse {
+      from { box-shadow: 0 0 2px #fcd34d; }
+      to { box-shadow: 0 0 12px #fcd34d; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .typewriter {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      animation: typing 2.5s steps(40, end);
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
     }
   </style>
 </head>
 <body>
 
-<div id="gameContainer">
+<!-- Mewby Intro -->
+<div class="screen" id="mewbyIntro">
+  <p class="typewriter">Mewby<br>The journey wasn’t perfect.<br>But it was real.<br><br>And look — it brought you here.<br>To the person who never stopped waiting.</p>
+</div>
+
+<!-- Memory Scene -->
+<div class="screen" id="gameContainer">
   <p>Walk up to each memory.</p>
   <div>
-    <div class="fragment" onclick="collectFragment(0)" title="The Break"></div>
-    <div class="fragment" onclick="collectFragment(1)" title="The Return"></div>
-    <div class="fragment" onclick="collectFragment(2)" title="The Hard Days"></div>
+    <div class="fragment" data-title="The Break" onclick="collectFragment(0)"></div>
+    <div class="fragment" data-title="The Return" onclick="collectFragment(1)"></div>
+    <div class="fragment" data-title="The Hard Days" onclick="collectFragment(2)"></div>
   </div>
   <div id="dialogue" class="dialogue"></div>
 </div>
 
-<div id="finalChoice">
+<!-- Final Choice -->
+<div class="screen" id="finalChoice">
   <p>Mewby</p>
   <p>You’ve seen it all —<br>The good, the bad, and everything in between.<br><br>So...<br>What do you choose?</p>
   <button class="choice-button" onclick="chooseEasy()">Choose Easy</button>
   <button class="choice-button" onclick="chooseHer()">Choose Her</button>
 </div>
 
-<div id="ariaScene">
+<!-- Aria Ending -->
+<div class="screen" id="ariaScene">
+  <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria" class="aria-sprite"><br><br>
   💛 You made it.<br><br>
   Through the break, the silence, the doubt.<br>
   You found your way back.<br><br>
@@ -98,10 +141,15 @@
   — Aria
 </div>
 
-<div id="emptyScene">
+<!-- Empty Ending -->
+<div class="screen" id="emptyScene">
   (You chose what felt easier. And sometimes, that’s okay too.)<br><br>
   But some stories never get told that way.
 </div>
+
+<!-- Sound Effects -->
+<audio id="wind" src="https://cdn.pixabay.com/download/audio/2023/03/27/audio_87d354e5fd.mp3" loop autoplay></audio>
+<audio id="sparkle" src="https://cdn.pixabay.com/download/audio/2021/09/17/audio_5b8b555a12.mp3"></audio>
 
 <script>
   const lines = [
@@ -122,7 +170,7 @@
       setTimeout(() => {
         document.getElementById('gameContainer').style.display = 'none';
         document.getElementById('finalChoice').style.display = 'block';
-      }, 1000);
+      }, 1200);
     }
   }
 
@@ -132,12 +180,17 @@
   }
 
   function chooseHer() {
+    document.getElementById('sparkle').play();
     document.getElementById('finalChoice').style.display = 'none';
     document.getElementById('ariaScene').style.display = 'block';
   }
 
   window.onload = () => {
-    document.getElementById('gameContainer').style.display = 'block';
+    document.getElementById('mewbyIntro').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('mewbyIntro').style.display = 'none';
+      document.getElementById('gameContainer').style.display = 'block';
+    }, 8000); // show memories after Mewby intro
   };
 </script>
 
