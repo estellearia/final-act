@@ -1,3 +1,5 @@
+-- final
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -141,29 +143,28 @@
 .memory-fragment {
   width: 22px;
   height: 22px;
+  margin: 10px; /* increase margin to avoid overlap when scaled */
+  display: inline-block;
   background: linear-gradient(145deg, #fffbe3 30%, #fcd34d 80%);
   border-radius: 50%;
-  margin: 10px 7px;
-  display: inline-block;
   animation: glow 1.9s infinite alternate;
   cursor: pointer;
   position: relative;
   will-change: transform;
   box-shadow: 0 0 9px #fffbe3, 0 0 20px #ffe764;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition: box-shadow 0.15s, transform 0.16s;
   outline: 1.5px solid #fffbe3;
   outline-offset: 2px;
   isolation: isolate;
-  transform-origin: center center; /* Prevent layout jumps */
-  backface-visibility: hidden;
+  z-index: 1;
 }
 
 .memory-fragment:hover,
 .memory-fragment:focus {
-  box-shadow: 0 0 12px #ffe764, 0 0 22px #fcd34d; /* smaller shadow change */
-  transform: scale(1.03); /* slightly smaller scale to prevent overlap */
+  box-shadow: 0 0 18px #ffe764, 0 0 28px #fcd34d;
+  transform: scale(1.08); /* pixel pop, safe margin */
+  z-index: 2;
 }
-
 
     .memory-fragment.visited {
       opacity: 0.22;
