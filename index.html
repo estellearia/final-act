@@ -39,7 +39,9 @@
       width: 100%;
       max-width: 360px;
       margin: 0 auto 14px auto;
-      display: block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       text-align: center;
     }
     .memory-instruction-quote {
@@ -225,10 +227,15 @@
       transition: background 0.15s, border 0.15s, opacity 0.3s;
       font-size: 11px;
       opacity: 1;
+      margin-left: auto;
+      margin-right: auto;
     }
     #memoryInfoBox.visible {
       display: flex;
       opacity: 1;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
     .memory-info-title {
       font-size: 11px;
@@ -382,7 +389,7 @@
       // Hide the memory lane title/instructions unless we're in memoriesFrame
       const showMemoryStuff = (id === 'memoriesFrame');
       document.getElementById('memoryTitle').style.display = showMemoryStuff ? 'block' : 'none';
-      document.getElementById('memoryInstructionLines').style.display = showMemoryStuff ? 'block' : 'none';
+      document.getElementById('memoryInstructionLines').style.display = showMemoryStuff ? 'flex' : 'none';
       window.scrollTo(0,0);
     }
 
