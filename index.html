@@ -12,23 +12,14 @@
       background: radial-gradient(ellipse at 50% 75%, #353a5c 0%, #141332 70%, #06061a 100%);
       color: #fff8e7;
       font-family: 'Press Start 2P', monospace;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-      font-size: 13px;
-      text-align: center;
+      margin: 0; padding: 0; overflow-x: hidden; font-size: 13px; text-align: center;
     }
     body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       background-image:
         repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 8px),
         repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 8px);
-      min-height: 100vh;
-      min-width: 100vw;
-      text-align: center;
+      min-height: 100vh; min-width: 100vw; text-align: center;
     }
     .hidden { display: none !important; }
     .memory-title {
@@ -91,6 +82,101 @@
       .memory-title { font-size: 13px; }
       #memoryInstructionLines { max-width: 98vw; }
     }
+    .avatar {
+      width: 54px;
+      height: 54px;
+      display: block;
+      margin: 0 auto 16px auto;
+      border-radius: 8px;
+      box-shadow: 0 0 12px #ffe76466, 0 0 0 2px #ffe764;
+      border: 1px solid #ffe764;
+      background: #191830;
+      image-rendering: pixelated;
+      margin-bottom: 10px;
+    }
+    .pixel-text {
+      color: #fffbe3;
+      text-shadow: 1px 1px 0 #353a5c, 0 0 6px #ffe7646b;
+      font-size: 0.72em;
+      margin: 0.7em 0 0.4em 0;
+      line-height: 1.7;
+      letter-spacing: 0.7px;
+      font-family: 'Press Start 2P', monospace;
+      word-break: break-word;
+      font-weight: normal;
+      text-align: center;
+    }
+    .pixel-quote {
+      color: #ffe764;
+      font-size: 0.64em;
+      margin-top: 1em;
+      margin-bottom: 0.4em;
+      text-shadow: 1px 1px 0 #353a5c, 0 0 7px #fffbe3b5;
+      background: rgba(38, 39, 80, 0.44);
+      border-radius: 4px;
+      padding: 5px 8px;
+      border: 1px solid #ffe76455;
+      display: inline-block;
+      font-style: italic;
+      image-rendering: pixelated;
+      font-weight: normal;
+      letter-spacing: 0.5px;
+      line-height: 1.9;
+      white-space: pre-line;
+      text-align: center;
+    }
+    .button, .pixel-button {
+      font-family: 'Press Start 2P', monospace;
+      background: #191830;
+      color: #ffe764;
+      border: 2px solid #ffe764;
+      border-radius: 6px;
+      box-shadow: 0 2px 0 0 #353a5c, 0 0 8px #ffe76470 inset;
+      padding: 4px 10px 4px 10px;
+      cursor: pointer;
+      margin: 13px 0 0 0;
+      font-size: 10px;
+      font-weight: normal;
+      letter-spacing: 0.7px;
+      text-shadow: 1px 1px 0 #353a5c, 0 0 4px #fffbe3b5;
+      transition: background 0.16s, color 0.13s, border-color 0.13s, transform 0.07s;
+      image-rendering: pixelated;
+      position: relative;
+      z-index: 1;
+      outline: 0;
+      min-width: 70px;
+      min-height: 26px;;
+      text-align: center;
+      display: inline-block;
+    }
+    .button:hover, .pixel-button:hover {
+      background: #ffe764;
+      color: #191830;
+      border-color: #fffbe3;
+      transform: scale(1.07) translateY(-1px);
+      box-shadow: 0 0 14px #ffe764ad, 0 3px 0 0 #353a5c;
+    }
+    .center-btn, .mewby-center-btn, .aria-btn-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      text-align: center;
+    }
+    .center-btn > *, .mewby-center-btn > *, .aria-btn-center > * {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      display: block;
+      text-align: center;
+    }
+    .star-canvas {
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
     .memory-fragment {
       width: 22px;
       height: 22px;
@@ -139,6 +225,46 @@
       letter-spacing: 0.2px;
       opacity: 1;
       transition: opacity 0.3s;
+      position: relative;
+      z-index: 2;
+    }
+    .aria-box {
+      background: rgba(38, 39, 80, 0.56);
+      border-radius: 7px;
+      padding: 10px 8px 12px 8px;
+      margin: 14px 0 0 0;
+      box-shadow: 0 0 7px #ffe76422;
+      font-size: 10px;
+      color: #ffeebc;
+      text-shadow: 0 0 4px #ffe76444, 1px 1px 0 #353a5c;
+      border: 1px solid #ffe76444;
+      font-family: 'Press Start 2P', monospace;
+      white-space: pre-line;
+      line-height: 1.5;
+      max-width: 330px;
+      min-width: 0;
+      min-height: 90px;
+      word-break: break-word;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      box-sizing: border-box;
+      transition: min-height 0.3s, max-width 0.3s;
+      overflow-wrap: break-word;
+      text-align: center;
+    }
+    #ariaSprite {
+      width: 44px;
+      height: 44px;
+      display: block;
+      margin: 0 auto 7px auto;
+      border-radius: 5px;
+      background: #191830;
+      border: 1px solid #ffe764;
+      box-shadow: 0 0 10px #ffe76455, 0 0 0 1px #ffe764;
+      image-rendering: pixelated;
+      margin-bottom: 4px;
+      text-align: center;
     }
     @keyframes glow {
       from { box-shadow: 0 0 8px #ffe764, 0 0 20px #fffbe3; }
@@ -154,13 +280,51 @@
     <span class="memory-instruction-quote" id="memoryInstructionQuote"></span>
   </div>
 
-  <div class="pixel-frame" id="memoriesFrame">
+  <!-- MEWBIE INTRO SCENE -->
+  <div class="pixel-frame" id="mainFrame">
+    <img src="https://64.media.tumblr.com/647ca06c5a608d1ea1c416b21b839ea3/9a98a57c72a06121-2a/s250x400/7f925df3ce70975efc97a7f0ffac27ea3838ae3e.gif"
+      alt="Mewby" class="avatar" />
+    <p id="mewbyGreeting" class="pixel-text" style="min-height: 1.5em"></p>
+    <div id="mewbyQuoteContainer" style="width:100%;">
+      <p id="mewbyQuote" class="pixel-quote"></p>
+    </div>
+    <div class="center-btn mewby-center-btn">
+      <button class="button" id="mewbyContinue" style="display:none;">Continue</button>
+    </div>
+  </div>
+
+  <!-- MEMORIES SCENE -->
+  <div class="pixel-frame hidden" id="memoriesFrame" style="position:relative;">
+    <canvas id="starCanvas" class="star-canvas"></canvas>
     <div id="memoryFragments"></div>
     <div id="memoryMessageBox"></div>
+    <div class="center-btn" id="memoriesNextBtnContainer" style="display:none;">
+      <button class="button" id="memoriesNext" aria-label="Next to final scene">Next</button>
+    </div>
+  </div>
+
+  <!-- FINAL CHOICE SCENE -->
+  <div class="pixel-frame hidden" id="finalFrame">
+    <p class="pixel-text">You've remembered enough. What will you do?</p>
+    <div class="center-btn">
+      <button class="button" id="chooseEasyBtn" onclick="chooseEasy()">Choose Easy</button>
+      <button class="button" id="chooseHerBtn" onclick="chooseHer()">Choose Her</button>
+    </div>
+  </div>
+
+  <!-- ARIA MESSAGE SCENE -->
+  <div class="pixel-frame centered hidden" id="ariaFrame">
+    <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria" id="ariaSprite" />
+    <div class="aria-box" id="ariaMsg"></div>
+    <div class="center-btn aria-btn-center">
+      <button class="pixel-button" id="ariaHomeBtn" onclick="window.location.href='https://frdffsdx.carrd.co/#home';" style="display:none;">
+        return home
+      </button>
+    </div>
   </div>
 
   <script>
-    // Memory instructions (optional, animated typing)
+    // --- INSTRUCTIONS TYPING ---
     const memoryInstructionLines = [
       "Click each memory fragment one at a time.",
       "Wait for the memory to finish before choosing the next."
@@ -182,17 +346,125 @@
         }
       }
     }
-    // Show instructions on load
+
+    // --- STAR BACKGROUND ---
+    function drawPixelStars() {
+      const bg = document.getElementById('pixelBgStars');
+      bg.innerHTML = '';
+      let w = window.innerWidth, h = window.innerHeight;
+      let n = Math.min(Math.floor(w * h / 4400), 24);
+      for (let i = 0; i < n; i++) {
+        const star = document.createElement('div');
+        star.className = 'pixel-star';
+        const left = Math.random() * 92 + 3, top = Math.random() * 83 + 8;
+        star.style.left = left + 'vw';
+        star.style.top = top + 'vh';
+        star.style.width = star.style.height = (Math.random() < 0.75 ? 2 : 3) + 'px';
+        star.style.opacity = (Math.random() * 0.7 + 0.2);
+        star.style.animationDelay = (Math.random() * 2.5) + "s";
+        bg.appendChild(star);
+      }
+    }
+    window.addEventListener('resize', drawPixelStars);
+
+    // --- MEWBIE INTRO TYPING ---
+    const mewbyGreetingText = "Hey! Mewby is herwe!";
+    const mewbyQuoteLines = [
+      "We’re about to take a little walk through memories and moments between you and Aria.",
+      "Click to start your journey."
+    ];
+    let mewbyGreetingIndex = 0, mewbyQuoteLine = 0, mewbyQuoteChar = 0;
+    function typeMewbyGreeting() {
+      const el = document.getElementById('mewbyGreeting');
+      if (mewbyGreetingIndex < mewbyGreetingText.length) {
+        el.textContent += mewbyGreetingText[mewbyGreetingIndex++];
+        setTimeout(typeMewbyGreeting, 60);
+      } else {
+        setTimeout(() => {
+          document.getElementById('mewbyQuote').textContent = "";
+          document.getElementById('mewbyQuoteContainer').style.display = 'block';
+          typeMewbyQuoteLine();
+        }, 440);
+      }
+    }
+    function typeMewbyQuoteLine() {
+      const quoteContainer = document.getElementById('mewbyQuoteContainer');
+      quoteContainer.style.display = "block";
+      const el = document.getElementById('mewbyQuote');
+      if (mewbyQuoteLine < mewbyQuoteLines.length) {
+        if (mewbyQuoteChar < mewbyQuoteLines[mewbyQuoteLine].length) {
+          el.textContent += mewbyQuoteLines[mewbyQuoteLine][mewbyQuoteChar++];
+          setTimeout(typeMewbyQuoteLine, 60);
+        } else {
+          if (mewbyQuoteLine < mewbyQuoteLines.length - 1) {
+            el.innerHTML += '<br><br>';
+          }
+          mewbyQuoteLine++;
+          mewbyQuoteChar = 0;
+          setTimeout(typeMewbyQuoteLine, 400);
+        }
+      } else {
+        setTimeout(() => {
+          document.getElementById('mewbyContinue').style.display = 'inline-block';
+        }, 400);
+      }
+    }
     window.addEventListener("DOMContentLoaded", () => {
-      document.getElementById('memoryTitle').style.display = "block";
-      document.getElementById('memoryInstructionLines').style.display = "block";
-      document.getElementById('memoryInstructionQuote').textContent = "";
-      memoryInstructionLine = 0; memoryInstructionChar = 0;
-      typeMemoryInstructionLine();
-      initMemories();
+      document.getElementById('mewbyQuoteContainer').style.display = "block";
+      typeMewbyGreeting();
+      drawPixelStars();
+      document.getElementById('memoryTitle').style.display = "none";
+      document.getElementById('memoryInstructionLines').style.display = "none";
     });
 
-    // MEMORY LANE DATA
+    // --- SCENE MANAGEMENT ---
+    function showOnly(id) {
+      ['mainFrame','memoriesFrame','finalFrame','ariaFrame'].forEach(x => {
+        document.getElementById(x).classList.add('hidden');
+      });
+      document.getElementById(id).classList.remove('hidden');
+      // Hide the memory lane title/instructions unless we're in memoriesFrame
+      const showMemoryStuff = (id === 'memoriesFrame');
+      document.getElementById('memoryTitle').style.display = showMemoryStuff ? 'block' : 'none';
+      document.getElementById('memoryInstructionLines').style.display = showMemoryStuff ? 'block' : 'none';
+      if (showMemoryStuff) drawStars();
+      window.scrollTo(0,0);
+    }
+
+    document.getElementById('mewbyContinue').onclick = () => {
+      document.getElementById('memoryInstructionQuote').innerHTML = '';
+      memoryInstructionLine = 0; memoryInstructionChar = 0;
+      showOnly('memoriesFrame');
+      setTimeout(typeMemoryInstructionLine, 420);
+      initMemories();
+    };
+
+    // --- STAR CANVAS FOR MEMORY LANE ---
+    function drawStars() {
+      const canvas = document.getElementById('starCanvas');
+      if (!canvas) return;
+      const parent = document.getElementById('memoriesFrame');
+      canvas.width = parent.offsetWidth;
+      canvas.height = 180;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      for (let i = 0; i < 40; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height * 0.9 + 5;
+        const size = Math.random() < 0.8 ? 2 : 4;
+        ctx.save();
+        ctx.globalAlpha = Math.random() * 0.4 + 0.5;
+        ctx.fillStyle = Math.random() > 0.5 ? "#ffe764" : "#fffbe3";
+        ctx.beginPath();
+        ctx.arc(Math.floor(x), Math.floor(y), size, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+    window.addEventListener('resize', drawStars);
+
+    // --- MEMORY LANE LOGIC ---
     const memoriesData = [
       { title: "First time we talked", desc: "That night when we stayed up late, just talking.", visited: false },
       { title: "Hospital visit", desc: "When I was sick and you stayed by my side.", visited: false },
@@ -201,14 +473,21 @@
       { title: "Our first video game night", desc: "Laughing and playing like no distance existed.", visited: false },
       { title: "The first 'I love you'", desc: "That shy, unforgettable moment.", visited: false }
     ];
-
     let memoryMessageTimeout = null;
     function initMemories() {
+      drawStars();
       const memoryFragmentsEl = document.getElementById('memoryFragments');
       const messageBox = document.getElementById('memoryMessageBox');
+      const memoriesNextBtn = document.getElementById('memoriesNext');
+      const memoriesNextBtnContainer = document.getElementById('memoriesNextBtnContainer');
       memoryFragmentsEl.innerHTML = '';
       messageBox.style.display = "none";
       messageBox.textContent = "";
+      memoriesNextBtnContainer.style.display = "none";
+      memoriesNextBtn.disabled = true;
+      memoriesNextBtn.style.opacity = 0.3;
+      memoriesNextBtn.setAttribute('aria-disabled', 'true');
+      if (memoryMessageTimeout) clearTimeout(memoryMessageTimeout);
 
       memoriesData.forEach((memory, i) => memory.visited = false);
 
@@ -239,8 +518,21 @@
               messageBox.innerHTML = "";
             }, 600);
           }, 3200);
+
+          // If all visited, enable Next button and show last desc
+          if (memoriesData.every(m => m.visited)) {
+            memoriesNextBtn.disabled = false;
+            memoriesNextBtn.style.opacity = 1;
+            memoriesNextBtn.setAttribute('aria-disabled', 'false');
+            messageBox.innerHTML = `<span style="font-size:11px;font-weight:bold;color:#ffe764;display:block;margin-bottom:10px;">All memories revisited.</span>`;
+            messageBox.style.display = "block";
+            messageBox.style.opacity = "1";
+            memoriesNextBtnContainer.style.display = "flex";
+            if (memoryMessageTimeout) clearTimeout(memoryMessageTimeout);
+          }
         });
 
+        // Keyboard accessibility: Enter or Space triggers click
         circle.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
@@ -250,6 +542,91 @@
 
         memoryFragmentsEl.appendChild(circle);
       });
+
+      memoriesNextBtn.onclick = () => {
+        showOnly('finalFrame');
+      };
+    }
+
+    // --- FINAL CHOICE LOGIC ---
+    function chooseHer() {
+      document.getElementById("chooseHerBtn").style.display = "none";
+      document.getElementById("chooseEasyBtn").style.display = "none";
+      showAriaMessage();
+    }
+    function chooseEasy() {
+      alert("You chose the easy way out... But this story is about choosing love.");
+    }
+
+    // --- ARIA MESSAGE SCENE ---
+    const ariaMessage = `You made it.
+
+After everything.
+Even after how messy things got before.
+
+I still remember how it all fell apart —
+the group, the friendships, everything.
+
+Back then, it hurt.
+And we didn’t really talk.
+
+But somehow… you came back into my life.
+And when you did,
+I saw you in a way I hadn’t before.
+
+That’s when everything changed.
+That’s when we started.
+
+And honestly…
+Even if it means going through all the hard parts again,
+I’d still choose this.
+I’d still choose you.
+
+Because being with you —
+even on the hardest days —
+means more than any easy version of life without you.
+
+Thank you for loving me when I shut down.
+When I cry out of nowhere.
+When I’m not making sense.
+
+You love me on my worst days just as much as my best —
+and that means everything to me.
+
+Some people only want love when it's simple.
+But I’d go through the hard stuff all over again,
+as long as it leads me to you.
+
+You’re my home now.
+My everything.
+
+And just this once…
+I hope you choose you, too.
+
+Because I’ll keep choosing you.
+Every time.
+
+Happy Birthday.
+Thank you for coming back.
+Thank you for letting me love you now.`;
+
+    function showAriaMessage() {
+      showOnly('ariaFrame');
+      const box = document.getElementById('ariaMsg');
+      const homeBtn = document.getElementById('ariaHomeBtn');
+      box.textContent = "";
+      homeBtn.style.display = "none";
+      let idx = 0;
+      function typeAria() {
+        if(idx <= ariaMessage.length){
+          box.textContent = ariaMessage.substring(0, idx);
+          idx++;
+          setTimeout(typeAria, 60);
+        } else {
+          homeBtn.style.display = "inline-block";
+        }
+      }
+      typeAria();
     }
   </script>
 </body>
