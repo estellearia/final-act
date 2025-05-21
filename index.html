@@ -15,7 +15,7 @@
       margin: 0;
       padding: 0;
       overflow-x: hidden;
-      font-size: 13px; 
+      font-size: 13px;
     }
     body {
       display: flex;
@@ -290,11 +290,11 @@
     <canvas id="starCanvas" class="star-canvas"></canvas>
     <div id="memoryFragments"></div>
     <div id="tooltip" aria-live="polite" role="alert" aria-atomic="true"></div>
-    <div class="center-btn">
-      <button class="button" id="memoriesNext" aria-label="Next to final scene" style="opacity:0.3;" disabled>Next</button>
+    <div class="center-btn" id="memoriesNextBtnContainer" style="display:none;">
+      <button class="button" id="memoriesNext" aria-label="Next to final scene">Next</button>
     </div>
   </div>
- 
+
   <!-- Final Choice Scene -->
   <div class="pixel-frame hidden" id="finalFrame">
     <p class="pixel-text">You've remembered enough. What will you do?</p>
@@ -362,7 +362,7 @@
         setTimeout(typeMewbyGreeting, 60);
       } else {
         // Hide quote container after greeting is done
-        setTimeout(() => { 
+        setTimeout(() => {
           document.getElementById('mewbyQuote').textContent = ""; // reset before typing quote lines
           document.getElementById('mewbyQuoteContainer').style.display = 'block';
           typeMewbyQuoteLine();
@@ -448,11 +448,18 @@
       const memoryFragmentsEl = document.getElementById('memoryFragments');
       const tooltipEl = document.getElementById('tooltip');
       const memoriesNextBtn = document.getElementById('memoriesNext');
+      const memoriesNextBtnContainer = document.getElementById('memoriesNextBtnContainer');
       memoryFragmentsEl.innerHTML = '';
       let showingDesc = false;
       // Hide tooltip at first
       tooltipEl.textContent = '';
       tooltipEl.classList.remove('active');
+      // Hide Next button container at first
+      memoriesNextBtnContainer.style.display = "none";
+      memoriesNextBtn.disabled = true;
+      memoriesNextBtn.style.opacity = 0.3;
+      memoriesNextBtn.setAttribute('aria-disabled', 'true');
+
       memoriesData.forEach((memory, i) => {
         const circle = document.createElement('div');
         circle.className = 'memory-fragment';
@@ -485,6 +492,7 @@
             memoriesNextBtn.setAttribute('aria-disabled', 'false');
             tooltipEl.innerHTML = `<span class="tooltip-title">All memories revisited.</span>`;
             tooltipEl.classList.add('active');
+            memoriesNextBtnContainer.style.display = "flex";
           }
         });
 
@@ -498,10 +506,6 @@
 
         memoryFragmentsEl.appendChild(circle);
       });
-
-      memoriesNextBtn.disabled = true;
-      memoriesNextBtn.style.opacity = 0.3;
-      memoriesNextBtn.setAttribute('aria-disabled', 'true');
 
       memoriesNextBtn.onclick = () => {
         showOnly('finalFrame');
