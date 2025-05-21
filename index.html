@@ -2,33 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Act 6 - Choose Her</title>
+  <title>Act 6 - Final Choice</title>
   <style>
     body {
       margin: 0;
-      background-color: #000;
+      background: #000;
       font-family: 'Press Start 2P', monospace;
       color: #fff;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
+      overflow: hidden;
+      flex-direction: column;
     }
 
-    #mewbyText, #gameContainer {
-      opacity: 0;
-      transition: opacity 2s ease;
-      max-width: 90%;
+    #gameContainer, #finalChoice, #ariaScene, #emptyScene {
+      display: none;
       text-align: center;
     }
 
-    #gameContainer {
-      margin-top: 30px;
+    .fragment {
+      width: 20px;
+      height: 20px;
+      background: #fcd34d;
+      border-radius: 50%;
+      margin: 20px;
+      display: inline-block;
+      animation: glow 1.5s infinite alternate;
+      cursor: pointer;
     }
 
-    .memory {
-      margin: 8px 0;
+    @keyframes glow {
+      from { box-shadow: 0 0 5px #fcd34d; }
+      to { box-shadow: 0 0 20px #fcd34d; }
+    }
+
+    .dialogue {
+      margin-top: 20px;
+      font-size: 12px;
     }
 
     .choice-button {
@@ -37,21 +49,18 @@
       color: #000;
       border: none;
       padding: 10px 20px;
-      margin-top: 30px;
+      margin: 15px;
       cursor: pointer;
-      transition: background 0.3s;
     }
 
     .choice-button:hover {
       background: #fcd34d;
     }
 
-    #endingMessage {
-      margin-top: 30px;
+    #ariaScene, #emptyScene {
       font-size: 14px;
-      line-height: 1.5;
       white-space: pre-line;
-      display: none;
+      line-height: 1.6;
     }
 
     @font-face {
@@ -62,67 +71,73 @@
 </head>
 <body>
 
-<div id="mewbyText">
-  <p>Mewby</p>
-  <p>The journey wasn’t perfect.<br>But it was real.</p>
-  <p>And look — it brought you here.<br>To the person who never stopped waiting.</p>
+<div id="gameContainer">
+  <p>Walk up to each memory.</p>
+  <div>
+    <div class="fragment" onclick="collectFragment(0)" title="The Break"></div>
+    <div class="fragment" onclick="collectFragment(1)" title="The Return"></div>
+    <div class="fragment" onclick="collectFragment(2)" title="The Hard Days"></div>
+  </div>
+  <div id="dialogue" class="dialogue"></div>
 </div>
 
-<div id="gameContainer">
-  <div id="memories"></div>
-  <button class="choice-button" onclick="showEnding()">Choose Her</button>
-  <div id="endingMessage"></div>
+<div id="finalChoice">
+  <p>Mewby</p>
+  <p>You’ve seen it all —<br>The good, the bad, and everything in between.<br><br>So...<br>What do you choose?</p>
+  <button class="choice-button" onclick="chooseEasy()">Choose Easy</button>
+  <button class="choice-button" onclick="chooseHer()">Choose Her</button>
+</div>
+
+<div id="ariaScene">
+  💛 You made it.<br><br>
+  Through the break, the silence, the doubt.<br>
+  You found your way back.<br><br>
+  And you chose her.<br><br>
+  Thank you for loving me the way you do.<br>
+  And just this once... I hope you choose yourself too.<br><br>
+  — Aria
+</div>
+
+<div id="emptyScene">
+  (You chose what felt easier. And sometimes, that’s okay too.)<br><br>
+  But some stories never get told that way.
 </div>
 
 <script>
-  const memories = [
-    "🌙 Late night calls where words weren’t even needed.",
-    "💬 Laughing at things no one else would find funny.",
-    "🌧️ Crying, fighting, pausing… and still coming back.",
-    "🤝 Choosing each other even when it was hard.",
-    "💛 Realizing that no matter what — it was always her."
+  const lines = [
+    `"We didn’t plan it. It just… fell apart."`,
+    `"I didn’t expect to see you again — but when I did, I saw you differently."`,
+    `"It wasn’t easy. But we didn’t give up."`
   ];
 
-  const memoryDelay = 1500;
+  let collected = [false, false, false];
 
-  function fadeIn(element) {
-    element.style.opacity = 1;
+  function collectFragment(index) {
+    if (!collected[index]) {
+      document.getElementById('dialogue').textContent = lines[index];
+      collected[index] = true;
+    }
+
+    if (collected.every(Boolean)) {
+      setTimeout(() => {
+        document.getElementById('gameContainer').style.display = 'none';
+        document.getElementById('finalChoice').style.display = 'block';
+      }, 1000);
+    }
   }
 
-  function showMemories() {
-    const memoryBox = document.getElementById("memories");
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i < memories.length) {
-        const p = document.createElement("p");
-        p.className = "memory";
-        p.textContent = memories[i];
-        memoryBox.appendChild(p);
-        i++;
-      } else {
-        clearInterval(interval);
-      }
-    }, memoryDelay);
+  function chooseEasy() {
+    document.getElementById('finalChoice').style.display = 'none';
+    document.getElementById('emptyScene').style.display = 'block';
   }
 
-  function showEnding() {
-    const ending = document.getElementById("endingMessage");
-    ending.style.display = "block";
-    ending.innerText = `You made it.\n\nThrough the storm...\nThrough the noise...\nThrough everything that tried to stop you.\n\nShe saw every step.\nAnd never stopped hoping you'd arrive.\n\nNo matter the world...\nNo matter the silence...\nNo matter the pain...\n\nYou choose her.\nAnd she always chose you.\n\n💛 Happy Birthday, my love.\n\nThank you for existing.\nNow — just this once, I hope you choose you, too.`;
+  function chooseHer() {
+    document.getElementById('finalChoice').style.display = 'none';
+    document.getElementById('ariaScene').style.display = 'block';
   }
 
   window.onload = () => {
-    const mewby = document.getElementById("mewbyText");
-    const game = document.getElementById("gameContainer");
-
-    setTimeout(() => {
-      fadeIn(mewby);
-    }, 500);
-
-    setTimeout(() => {
-      fadeIn(game);
-      showMemories();
-    }, 6000);
+    document.getElementById('gameContainer').style.display = 'block';
   };
 </script>
 
