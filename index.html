@@ -7,8 +7,7 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
     html, body {
-      min-height: 100vh;
-      min-width: 100vw;
+      min-height: 100vh; min-width: 100vw;
       background: radial-gradient(ellipse at 50% 75%, #353a5c 0%, #141332 70%, #06061a 100%);
       color: #fff8e7;
       font-family: 'Press Start 2P', monospace;
@@ -23,61 +22,32 @@
     }
     .hidden { display: none !important; }
     .memory-title {
-      font-size: 16px;
-      color: #ffe764;
+      font-size: 16px; color: #ffe764;
       text-shadow: 0 0 10px #fffbe3, 0 0 8px #ffe764b5;
       font-family: 'Press Start 2P', monospace;
-      font-weight: normal;
-      letter-spacing: 0.6px;
-      margin-bottom: 8px;
-      margin-top: 24px;
-      text-align: center;
-      user-select: none;
-      line-height: 1.25;
+      font-weight: normal; letter-spacing: 0.6px;
+      margin-bottom: 8px; margin-top: 24px; text-align: center; user-select: none; line-height: 1.25;
     }
     #memoryInstructionLines {
-      width: 100%;
-      max-width: 360px;
-      margin: 0 auto 14px auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
+      width: 100%; max-width: 360px; margin: 0 auto 14px auto;
+      display: flex; justify-content: center; align-items: center; text-align: center;
     }
     .memory-instruction-quote {
-      color: #ffe764;
-      font-size: 0.64em;
-      background: rgba(38, 39, 80, 0.44);
-      border-radius: 4px;
-      padding: 9px 10px 8px 10px;
-      border: 1px solid #ffe76455;
-      display: inline-block;
-      font-style: italic;
-      image-rendering: pixelated;
-      font-weight: normal;
-      letter-spacing: 0.5px;
-      line-height: 1.8;
-      white-space: pre-line;
-      text-align: center;
-      margin: 0 auto 0 auto;
-      user-select: none;
-      box-shadow: 0 0 6px #ffe7641c;
+      color: #ffe764; font-size: 0.64em;
+      background: rgba(38, 39, 80, 0.44); border-radius: 4px;
+      padding: 9px 10px 8px 10px; border: 1px solid #ffe76455;
+      display: inline-block; font-style: italic; image-rendering: pixelated;
+      font-weight: normal; letter-spacing: 0.5px; line-height: 1.8;
+      white-space: pre-line; text-align: center; margin: 0 auto 0 auto;
+      user-select: none; box-shadow: 0 0 6px #ffe7641c;
     }
     .pixel-frame {
       background: rgba(20,16,40,0.93);
       border-radius: 16px;
       box-shadow: 0 0 0 3px #ffe76480, 0 0 0 6px #353a5c, 0 0 50px 8px #0a0a1a77, 0 0 0 1.5px #ffe764;
-      max-width: 370px;
-      width: 100%;
-      margin: 0 auto;
-      margin-top: 0;
-      margin-bottom: 25px;
-      image-rendering: pixelated;
-      padding: 22px 12px 18px 12px;
-      box-sizing: border-box;
-      position: relative;
-      display: block;
-      text-align: center;
+      max-width: 370px; width: 100%; margin: 0 auto; margin-top: 0; margin-bottom: 25px;
+      image-rendering: pixelated; padding: 22px 12px 18px 12px; box-sizing: border-box;
+      position: relative; display: block; text-align: center;
     }
     @media (max-width: 500px) {
       .pixel-frame { max-width: 98vw; padding: 7vw 1vw; }
@@ -85,217 +55,90 @@
       #memoryInstructionLines { max-width: 98vw; }
     }
     .avatar {
-      width: 54px;
-      height: 54px;
-      display: block;
-      margin: 0 auto 16px auto;
-      border-radius: 8px;
-      box-shadow: 0 0 12px #ffe76466, 0 0 0 2px #ffe764;
-      border: 1px solid #ffe764;
-      background: #191830;
-      image-rendering: pixelated;
-      margin-bottom: 10px;
+      width: 54px; height: 54px; display: block; margin: 0 auto 16px auto;
+      border-radius: 8px; box-shadow: 0 0 12px #ffe76466, 0 0 0 2px #ffe764; border: 1px solid #ffe764;
+      background: #191830; image-rendering: pixelated; margin-bottom: 10px;
     }
     .pixel-text {
-      color: #fffbe3;
-      text-shadow: 1px 1px 0 #353a5c, 0 0 6px #ffe7646b;
-      font-size: 0.72em;
-      margin: 0.7em 0 0.4em 0;
-      line-height: 1.7;
-      letter-spacing: 0.7px;
-      font-family: 'Press Start 2P', monospace;
-      word-break: break-word;
-      font-weight: normal;
-      text-align: center;
+      color: #fffbe3; text-shadow: 1px 1px 0 #353a5c, 0 0 6px #ffe7646b; font-size: 0.72em;
+      margin: 0.7em 0 0.4em 0; line-height: 1.7; letter-spacing: 0.7px;
+      font-family: 'Press Start 2P', monospace; word-break: break-word; font-weight: normal; text-align: center;
     }
     .pixel-quote {
-      color: #ffe764;
-      font-size: 0.64em;
-      margin-top: 1em;
-      margin-bottom: 0.4em;
-      text-shadow: 1px 1px 0 #353a5c, 0 0 7px #fffbe3b5;
-      background: rgba(38, 39, 80, 0.44);
-      border-radius: 4px;
-      padding: 5px 8px;
-      border: 1px solid #ffe76455;
-      display: inline-block;
-      font-style: italic;
-      image-rendering: pixelated;
-      font-weight: normal;
-      letter-spacing: 0.5px;
-      line-height: 1.9;
-      white-space: pre-line;
-      text-align: center;
+      color: #ffe764; font-size: 0.64em; margin-top: 1em; margin-bottom: 0.4em;
+      text-shadow: 1px 1px 0 #353a5c, 0 0 7px #fffbe3b5; background: rgba(38, 39, 80, 0.44);
+      border-radius: 4px; padding: 5px 8px; border: 1px solid #ffe76455; display: inline-block;
+      font-style: italic; image-rendering: pixelated; font-weight: normal; letter-spacing: 0.5px;
+      line-height: 1.9; white-space: pre-line; text-align: center;
     }
     .button, .pixel-button {
-      font-family: 'Press Start 2P', monospace;
-      background: #191830;
-      color: #ffe764;
-      border: 2px solid #ffe764;
-      border-radius: 6px;
-      box-shadow: 0 2px 0 0 #353a5c, 0 0 8px #ffe76470 inset;
-      padding: 4px 10px 4px 10px;
-      cursor: pointer;
-      margin: 13px 0 0 0;
-      font-size: 10px;
-      font-weight: normal;
-      letter-spacing: 0.7px;
-      text-shadow: 1px 1px 0 #353a5c, 0 0 4px #fffbe3b5;
+      font-family: 'Press Start 2P', monospace; background: #191830; color: #ffe764;
+      border: 2px solid #ffe764; border-radius: 6px; box-shadow: 0 2px 0 0 #353a5c, 0 0 8px #ffe76470 inset;
+      padding: 4px 10px 4px 10px; cursor: pointer; margin: 13px 0 0 0; font-size: 10px;
+      font-weight: normal; letter-spacing: 0.7px; text-shadow: 1px 1px 0 #353a5c, 0 0 4px #fffbe3b5;
       transition: background 0.16s, color 0.13s, border-color 0.13s, transform 0.07s;
-      image-rendering: pixelated;
-      position: relative;
-      z-index: 1;
-      outline: 0;
-      min-width: 70px;
-      min-height: 26px;;
-      text-align: center;
-      display: inline-block;
+      image-rendering: pixelated; position: relative; z-index: 1; outline: 0; min-width: 70px;
+      min-height: 26px;; text-align: center; display: inline-block;
     }
     .button:hover, .pixel-button:hover {
-      background: #ffe764;
-      color: #191830;
-      border-color: #fffbe3;
-      transform: scale(1.07) translateY(-1px);
-      box-shadow: 0 0 14px #ffe764ad, 0 3px 0 0 #353a5c;
+      background: #ffe764; color: #191830; border-color: #fffbe3;
+      transform: scale(1.07) translateY(-1px); box-shadow: 0 0 14px #ffe764ad, 0 3px 0 0 #353a5c;
     }
     .center-btn, .mewby-center-btn, .aria-btn-center {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      text-align: center;
+      display: flex; justify-content: center; align-items: center; width: 100%; text-align: center;
     }
     .center-btn > *, .mewby-center-btn > *, .aria-btn-center > * {
-      margin-left: 0 !important;
-      margin-right: 0 !important;
-      display: block;
-      text-align: center;
+      margin-left: 0 !important; margin-right: 0 !important; display: block; text-align: center;
     }
     .star-canvas {
-      position: absolute;
-      left: 0; top: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
     }
     .memory-fragment {
-      width: 22px;
-      height: 22px;
-      margin: 5px;
-      display: block;
+      width: 22px; height: 22px; margin: 5px; display: block;
       background: linear-gradient(145deg, #fffbe3 30%, #fcd34d 80%);
-      border-radius: 50%;
-      animation: glow 1.9s infinite alternate;
-      cursor: pointer;
-      box-shadow: 0 0 8px #fffbe3, 0 0 18px #ffe764;
-      transition: box-shadow 0.15s, background 0.15s, border-color 0.15s;
-      outline: 1.5px solid #fffbe3;
-      outline-offset: 2px;
-      border: 2px solid #ffe764;
-      background-clip: padding-box;
+      border-radius: 50%; animation: glow 1.9s infinite alternate; cursor: pointer;
+      box-shadow: 0 0 8px #fffbe3, 0 0 18px #ffe764; transition: box-shadow 0.15s, background 0.15s, border-color 0.15s;
+      outline: 1.5px solid #fffbe3; outline-offset: 2px; border: 2px solid #ffe764; background-clip: padding-box;
     }
     .memory-fragment.visited {
-      opacity: 0.22;
-      pointer-events: none;
-      background: #282840;
-      border: 2px solid #ffe764;
+      opacity: 0.22; pointer-events: none; background: #282840; border: 2px solid #ffe764;
     }
     #memoryFragments {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      max-width: 120px;
-      margin: 0 auto;
-      text-align: center;
-      justify-content: center;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 120px; margin: 0 auto;
+      text-align: center; justify-content: center;
     }
     #memoryInfoBox {
-      margin-top: 18px;
-      margin-bottom: 0;
-      min-height: 54px;
-      background: rgba(38,39,80,0.28);
-      border: 1px solid #ffe76444;
-      border-radius: 8px;
-      box-shadow: 0 0 7px #ffe76422;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      max-width: 230px;
-      padding: 13px 10px 13px 10px;
-      text-align: center;
-      transition: background 0.15s, border 0.15s, opacity 0.3s;
-      font-size: 11px;
-      opacity: 1;
-      margin-left: auto;
-      margin-right: auto;
+      margin-top: 18px; margin-bottom: 0; min-height: 54px;
+      background: rgba(38,39,80,0.28); border: 1px solid #ffe76444; border-radius: 8px;
+      box-shadow: 0 0 7px #ffe76422; display: none; flex-direction: column;
+      align-items: center; justify-content: center; max-width: 230px; padding: 13px 10px 13px 10px;
+      text-align: center; transition: background 0.15s, border 0.15s, opacity 0.3s;
+      font-size: 11px; opacity: 1; margin-left: auto; margin-right: auto;
     }
     #memoryInfoBox.visible {
-      display: flex;
-      opacity: 1;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
+      display: flex !important; opacity: 1; justify-content: center; align-items: center; text-align: center;
     }
     .memory-info-title {
-      font-size: 11px;
-      font-weight: bold;
-      color: #ffe764;
-      letter-spacing: 0.4px;
-      margin-bottom: 10px;
-      text-align: center;
-      text-shadow: 0 0 2px #fffbe3;
-      display: block;
+      font-size: 11px; font-weight: bold; color: #ffe764; letter-spacing: 0.4px;
+      margin-bottom: 10px; text-align: center; text-shadow: 0 0 2px #fffbe3; display: block;
     }
     .memory-info-desc {
-      font-size: 11px;
-      color: #fffbe3;
-      line-height: 1.7;
-      letter-spacing: 0.2px;
-      text-align: center;
-      font-weight: normal;
-      display: block;
-      margin-bottom: 0;
-      margin-top: 0;
+      font-size: 11px; color: #fffbe3; line-height: 1.7; letter-spacing: 0.2px;
+      text-align: center; font-weight: normal; display: block; margin-bottom: 0; margin-top: 0;
     }
     .aria-box {
-      background: rgba(38, 39, 80, 0.56);
-      border-radius: 7px;
-      padding: 10px 8px 12px 8px;
-      margin: 14px 0 0 0;
-      box-shadow: 0 0 7px #ffe76422;
-      font-size: 10px;
-      color: #ffeebc;
-      text-shadow: 0 0 4px #ffe76444, 1px 1px 0 #353a5c;
-      border: 1px solid #ffe76444;
-      font-family: 'Press Start 2P', monospace;
-      white-space: pre-line;
-      line-height: 1.5;
-      max-width: 330px;
-      min-width: 0;
-      min-height: 90px;
-      word-break: break-word;
-      margin-left: auto;
-      margin-right: auto;
-      width: 100%;
-      box-sizing: border-box;
-      transition: min-height 0.3s, max-width 0.3s;
-      overflow-wrap: break-word;
-      text-align: center;
+      background: rgba(38, 39, 80, 0.56); border-radius: 7px; padding: 10px 8px 12px 8px;
+      margin: 14px 0 0 0; box-shadow: 0 0 7px #ffe76422; font-size: 10px; color: #ffeebc;
+      text-shadow: 0 0 4px #ffe76444, 1px 1px 0 #353a5c; border: 1px solid #ffe76444;
+      font-family: 'Press Start 2P', monospace; white-space: pre-line; line-height: 1.5;
+      max-width: 330px; min-width: 0; min-height: 90px; word-break: break-word; margin-left: auto;
+      margin-right: auto; width: 100%; box-sizing: border-box;
+      transition: min-height 0.3s, max-width 0.3s; overflow-wrap: break-word; text-align: center;
     }
     #ariaSprite {
-      width: 44px;
-      height: 44px;
-      display: block;
-      margin: 0 auto 7px auto;
-      border-radius: 5px;
-      background: #191830;
-      border: 1px solid #ffe764;
-      box-shadow: 0 0 10px #ffe76455, 0 0 0 1px #ffe764;
-      image-rendering: pixelated;
-      margin-bottom: 4px;
-      text-align: center;
+      width: 44px; height: 44px; display: block; margin: 0 auto 7px auto; border-radius: 5px;
+      background: #191830; border: 1px solid #ffe764; box-shadow: 0 0 10px #ffe76455, 0 0 0 1px #ffe764;
+      image-rendering: pixelated; margin-bottom: 4px; text-align: center;
     }
     @keyframes glow {
       from { box-shadow: 0 0 8px #ffe764, 0 0 20px #fffbe3; }
@@ -328,7 +171,7 @@
   <div class="pixel-frame hidden" id="memoriesFrame">
     <canvas id="starCanvas" class="star-canvas"></canvas>
     <div id="memoryFragments"></div>
-    <div id="memoryInfoBox">
+    <div id="memoryInfoBox" class="hidden">
       <span id="memoryInfoTitle" class="memory-info-title"></span>
       <span id="memoryInfoDesc" class="memory-info-desc"></span>
     </div>
@@ -497,6 +340,7 @@
       infoTitle.textContent = "";
       infoDesc.textContent = "";
       infoBox.classList.remove('visible');
+      infoBox.classList.add('hidden');
       infoBox.style.opacity = 1;
       waitingForFade = false;
       memoriesNextBtnContainer.style.display = "none";
@@ -522,6 +366,7 @@
           waitingForFade = true;
 
           // Show the info box and set title/desc
+          infoBox.classList.remove('hidden');
           infoBox.classList.add('visible');
           infoTitle.textContent = memory.title;
           infoDesc.textContent = "";
@@ -537,6 +382,7 @@
               infoTitle.textContent = "";
               infoDesc.textContent = "";
               infoBox.classList.remove('visible');
+              infoBox.classList.add('hidden');
               infoBox.style.opacity = 1;
               waitingForFade = false;
             }, 600);
@@ -549,6 +395,7 @@
             memoriesNextBtn.setAttribute('aria-disabled', 'false');
             infoTitle.textContent = "All memories revisited.";
             infoDesc.textContent = "";
+            infoBox.classList.remove('hidden');
             infoBox.classList.add('visible');
             infoBox.style.opacity = 1;
             memoriesNextBtnContainer.style.display = "flex";
