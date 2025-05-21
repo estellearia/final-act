@@ -177,8 +177,6 @@
       background: #ffe76466;
       border-radius: 6px;
     }
-
-    /* Memory star lane */
     .star-canvas {
       position: absolute;
       left: 0; top: 0;
@@ -186,16 +184,6 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-    }
-    #memories {
-      position: relative;
-      min-height: 320px;
-      border-radius: 16px;
-      box-shadow: 0 0 60px 16px #1a1a46 inset;
-      background: transparent;
-      margin: 0 auto;
-      max-width: 650px;
-      margin-top: 20px;
     }
     .memory-fragment {
       width: 36px;
@@ -240,8 +228,8 @@
     <button class="button" id="mewbyContinue" style="display:none;">Continue</button>
   </div>
 
-  <!-- 2. MEMORIES SCENE (Dreamy star lane with interactive stars) -->
-  <div id="memories" class="pixel-frame hidden" aria-live="polite" role="region" aria-label="Memories Scene">
+  <!-- 2. MEMORIES SCENE -->
+  <div class="pixel-frame hidden" id="memoriesFrame">
     <canvas id="starCanvas" class="star-canvas"></canvas>
     <h2 style="font-size: 14px; margin-bottom: 8px; color: #ffe764; text-shadow: 0 0 7px #fffbe3;">Your memories with me</h2>
     <div id="memoryFragments" style="max-width: 480px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
@@ -331,14 +319,14 @@
 
     function showMemoryLane() {
       document.getElementById('mainFrame').classList.add('hidden');
-      document.getElementById('memories').classList.remove('hidden');
+      document.getElementById('memoriesFrame').classList.remove('hidden');
       initMemories();
     }
 
     function drawStars() {
       const canvas = document.getElementById('starCanvas');
       if (!canvas) return;
-      const parent = document.getElementById('memories');
+      const parent = document.getElementById('memoriesFrame');
       canvas.width = parent.offsetWidth;
       canvas.height = 340;
       const ctx = canvas.getContext('2d');
@@ -419,7 +407,7 @@
       memoriesNextBtn.setAttribute('aria-disabled', 'true');
 
       memoriesNextBtn.onclick = () => {
-        document.getElementById('memories').classList.add('hidden');
+        document.getElementById('memoriesFrame').classList.add('hidden');
         document.getElementById('finalFrame').classList.remove('hidden');
       };
     }
