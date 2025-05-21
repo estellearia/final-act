@@ -131,6 +131,18 @@
       transform: scale(1.07) translateY(-1px);
       box-shadow: 0 0 14px #ffe764ad, 0 3px 0 0 #353a5c;
     }
+    /* Center all buttons on the page */
+    .center-btn, .mewby-center-btn, .aria-btn-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+    .center-btn > *, .mewby-center-btn > *, .aria-btn-center > * {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      display: block;
+    }
     .star-canvas {
       position: absolute;
       left: 0; top: 0;
@@ -138,22 +150,6 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-    }
-    /* Center the Continue button in Mewby frame */
-    .mewby-center-btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      margin-top: 8px;
-    }
-    /* Center return home button */
-    .aria-btn-center {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      margin-top: 16px;
     }
     .memory-fragment {
       width: 22px;
@@ -184,7 +180,6 @@
       max-width: 120px;
       margin: 0 auto;
     }
-    /* Tooltip/desc for memories: centered and only shown when populated */
     #tooltip {
       font-size: 13px;
       color: #ffe764;
@@ -275,7 +270,6 @@
 <body>
   <div class="pixel-bg-stars" id="pixelBgStars"></div>
 
-  <!-- Memory Lane Title OUTSIDE the box -->
   <div class="memory-title" id="memoryTitle">Your memories with me</div>
 
   <!-- Main pixel frame -->
@@ -286,7 +280,7 @@
     <div id="mewbyQuoteContainer" style="width:100%;">
       <p id="mewbyQuote" class="pixel-quote"></p>
     </div>
-    <div class="mewby-center-btn">
+    <div class="center-btn mewby-center-btn">
       <button class="button" id="mewbyContinue" style="display:none;">Continue</button>
     </div>
   </div>
@@ -296,21 +290,25 @@
     <canvas id="starCanvas" class="star-canvas"></canvas>
     <div id="memoryFragments"></div>
     <div id="tooltip" aria-live="polite" role="alert" aria-atomic="true"></div>
-    <button class="button" id="memoriesNext" aria-label="Next to final scene" style="opacity:0.3;" disabled>Next</button>
+    <div class="center-btn">
+      <button class="button" id="memoriesNext" aria-label="Next to final scene" style="opacity:0.3;" disabled>Next</button>
+    </div>
   </div>
  
   <!-- Final Choice Scene -->
   <div class="pixel-frame hidden" id="finalFrame">
     <p class="pixel-text">You've remembered enough. What will you do?</p>
-    <button class="button" id="chooseEasyBtn" onclick="chooseEasy()">Choose Easy</button>
-    <button class="button" id="chooseHerBtn" onclick="chooseHer()">Choose Her</button>
+    <div class="center-btn">
+      <button class="button" id="chooseEasyBtn" onclick="chooseEasy()">Choose Easy</button>
+      <button class="button" id="chooseHerBtn" onclick="chooseHer()">Choose Her</button>
+    </div>
   </div>
 
   <!-- Aria message frame (hidden by default) -->
   <div class="pixel-frame centered hidden" id="ariaFrame">
     <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria" id="ariaSprite" />
     <div class="aria-box" id="ariaMsg"></div>
-    <div class="aria-btn-center">
+    <div class="center-btn aria-btn-center">
       <button class="pixel-button" id="ariaHomeBtn" onclick="window.location.href='https://frdffsdx.carrd.co/#home';" style="display:none;">
         return home
       </button>
@@ -471,14 +469,14 @@
           showingDesc = true;
           tooltipEl.innerHTML = `<span class="tooltip-title">${memory.title}</span><span class="tooltip-desc">${memory.desc}</span>`;
           tooltipEl.classList.add('active');
-          // Hide desc after 2 seconds unless all are visited
+          // Hide desc after 3.2 seconds unless all are visited (longer delay!)
           setTimeout(() => {
             showingDesc = false;
             if (!memoriesData.every(m => m.visited)) {
               tooltipEl.classList.remove('active');
               tooltipEl.innerHTML = '';
             }
-          }, 2000);
+          }, 3200);
 
           // If all visited, enable Next button and show last desc
           if (memoriesData.every(m => m.visited)) {
