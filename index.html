@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -335,8 +336,7 @@
     const memoryInstructionLines = [
       "Click each memory fragment one at a time.",
       "Wait for the memory to finish before choosing the next.",
-      "We’re about to take a little walk through memories and moments between you and Aria.",
-      "Click to start your journey."
+      "We’re about to take a little walk through memories and moments between you and Aria."
     ];
     let memoryInstructionLine = 0, memoryInstructionChar = 0;
     function typeMemoryInstructionLine() {
@@ -347,7 +347,7 @@
           setTimeout(typeMemoryInstructionLine, 60);
         } else {
           if (memoryInstructionLine < memoryInstructionLines.length - 1) {
-            el.innerHTML += '<br><br>';
+            el.innerHTML += '<br>';
           }
           memoryInstructionLine++;
           memoryInstructionChar = 0;
@@ -377,10 +377,10 @@
     window.addEventListener('resize', drawPixelStars);
 
     // --- MEWBIE INTRO TYPING ---
-    const mewbyGreetingText = "Hey! Mewby is herwe!";
+    const mewbyGreetingText = "Hey! Mewby is here!";
     const mewbyQuoteLines = [
       "We’re about to take a little walk through memories and moments between you and Aria.",
-      "Click to start your journey."
+      "Ready to start your journey?"
     ];
     let mewbyGreetingIndex = 0, mewbyQuoteLine = 0, mewbyQuoteChar = 0;
     function typeMewbyGreeting() {
