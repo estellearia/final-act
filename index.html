@@ -28,6 +28,18 @@
       min-width: 100vw;
     }
     .hidden { display: none !important; }
+    .memory-title {
+      font-size: 13px;
+      color: #ffe764;
+      text-shadow: 0 0 9px #fffbe3, 0 0 6px #ffe764b5;
+      font-family: 'Press Start 2P', monospace;
+      font-weight: bold;
+      letter-spacing: 1.2px;
+      margin-bottom: 11px;
+      margin-top: 24px;
+      text-align: center;
+      user-select: none;
+    }
     .pixel-frame {
       background: rgba(20,16,40,0.93);
       border-radius: 16px;
@@ -35,12 +47,13 @@
       max-width: 370px;
       width: 100%;
       margin: 0 auto;
-      margin-top: 25px;
+      margin-top: 0;
       margin-bottom: 25px;
       image-rendering: pixelated;
       padding: 28px 18px 24px 18px;
       box-sizing: border-box;
       position: relative;
+      display: block;
     }
     @media (max-width: 500px) {
       .pixel-frame { max-width: 98vw; padding: 7vw 1vw; }
@@ -80,7 +93,6 @@
       font-style: italic;
       image-rendering: pixelated;
     }
-    /* Improved Button */
     .button, .pixel-button {
       font-family: 'Press Start 2P', monospace;
       background: #191830;
@@ -149,13 +161,6 @@
       background: #282840;
       transition: opacity 0.5s;
     }
-    #memoriesFrame h2 {
-      font-size: 11px !important;
-      margin-bottom: 8px;
-      color: #ffe764;
-      text-shadow: 0 0 7px #fffbe3;
-      letter-spacing: 1.2px;
-    }
     #memoryFragments {
       max-width: 220px;
       margin: 0 auto;
@@ -166,6 +171,7 @@
       z-index: 2;
       position: relative;
     }
+    /* Tooltip/desc for memories: centered and only shown when populated */
     #tooltip {
       font-size: 10px;
       color: #ffe764;
@@ -176,15 +182,21 @@
       letter-spacing: 1px;
       background: rgba(16, 20, 56, 0.52);
       border-radius: 7px;
-      padding: 4px 7px;
+      padding: 8px 14px;
       border: 1px solid #ffe764;
       box-shadow: 0 0 7px #ffe76422;
-      display: block;
+      display: none;
       max-width: 220px;
       margin-left: auto;
       margin-right: auto;
       line-height: 1.28;
       opacity: 0.94;
+      text-align: center;
+      transition: opacity 0.2s, display 0.2s;
+    }
+    #tooltip.active {
+      display: block;
+      opacity: 1;
     }
     .aria-box {
       background: rgba(38, 39, 80, 0.56);
@@ -209,6 +221,7 @@
       box-sizing: border-box;
       transition: min-height 0.3s, max-width 0.3s;
       overflow-wrap: break-word;
+      text-align: center;
     }
     #ariaSprite {
       width: 54px;
@@ -229,6 +242,10 @@
 </head>
 <body>
   <div class="pixel-bg-stars" id="pixelBgStars"></div>
+
+  <!-- Memory Lane Title OUTSIDE the box -->
+  <div class="memory-title" id="memoryTitle">Your memories with me</div>
+
   <!-- Main pixel frame -->
   <div class="pixel-frame" id="mainFrame">
     <img src="https://64.media.tumblr.com/647ca06c5a608d1ea1c416b21b839ea3/9a98a57c72a06121-2a/s250x400/7f925df3ce70975efc97a7f0ffac27ea3838ae3e.gif"
@@ -241,7 +258,6 @@
   <!-- MEMORIES SCENE -->
   <div class="pixel-frame hidden" id="memoriesFrame">
     <canvas id="starCanvas" class="star-canvas"></canvas>
-    <h2>Your memories with me</h2>
     <div id="memoryFragments"></div>
     <div id="tooltip" aria-live="polite" role="alert" aria-atomic="true"></div>
     <button class="button" id="memoriesNext" aria-label="Next to final scene" style="opacity:0.3;" disabled>Next</button>
@@ -258,7 +274,7 @@
   <div class="pixel-frame centered hidden" id="ariaFrame">
     <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria" id="ariaSprite" />
     <div class="aria-box" id="ariaMsg"></div>
-    <button class="pixel-button" onclick="window.location.href='https://frdffsdx.carrd.co/#home';" style="margin-top:16px;">
+    <button class="pixel-button" id="ariaHomeBtn" onclick="window.location.href='https://frdffsdx.carrd.co/#home';" style="margin-top:16px; display:none;">
       return home
     </button>
   </div>
@@ -270,6 +286,8 @@
         document.getElementById(x).classList.add('hidden');
       });
       document.getElementById(id).classList.remove('hidden');
+      // Hide the memory lane title unless we're in memoriesFrame
+      document.getElementById('memoryTitle').style.display = (id === 'memoriesFrame') ? 'block' : 'none';
       window.scrollTo(0,0);
     }
 
@@ -320,9 +338,9 @@
     window.addEventListener("DOMContentLoaded", () => {
       typeMewbyGreeting();
       drawPixelStars();
+      document.getElementById('memoryTitle').style.display = "none";
     });
 
-    // Transitions
     document.getElementById('mewbyContinue').onclick = () => {
       showOnly('memoriesFrame');
       initMemories();
@@ -368,6 +386,10 @@
       const tooltipEl = document.getElementById('tooltip');
       const memoriesNextBtn = document.getElementById('memoriesNext');
       memoryFragmentsEl.innerHTML = '';
+      let showingDesc = false;
+      // Hide tooltip at first
+      tooltipEl.textContent = '';
+      tooltipEl.classList.remove('active');
       memoriesData.forEach((memory, i) => {
         const circle = document.createElement('div');
         circle.className = 'memory-fragment';
@@ -377,15 +399,15 @@
         circle.dataset.index = i;
 
         circle.addEventListener('mouseenter', () => {
-          if (!memory.visited) {
+          if (!memory.visited && !showingDesc) {
             tooltipEl.textContent = memory.title;
-            tooltipEl.style.opacity = '1';
+            tooltipEl.classList.add('active');
           }
         });
         circle.addEventListener('mouseleave', () => {
-          if (!memory.visited) {
+          if (!memory.visited && !showingDesc) {
+            tooltipEl.classList.remove('active');
             tooltipEl.textContent = '';
-            tooltipEl.style.opacity = '0.5';
           }
         });
 
@@ -393,16 +415,29 @@
           if (memory.visited) return;
           memory.visited = true;
           circle.classList.add('visited');
+          showingDesc = true;
           tooltipEl.textContent = memory.desc;
-          tooltipEl.style.opacity = '1';
+          tooltipEl.classList.add('active');
+          // Hide desc after 2 seconds unless all are visited
+          setTimeout(() => {
+            showingDesc = false;
+            if (!memoriesData.every(m => m.visited)) {
+              tooltipEl.classList.remove('active');
+              tooltipEl.textContent = '';
+            }
+          }, 2000);
 
+          // If all visited, enable Next button and show last desc
           if (memoriesData.every(m => m.visited)) {
             memoriesNextBtn.disabled = false;
             memoriesNextBtn.style.opacity = 1;
             memoriesNextBtn.setAttribute('aria-disabled', 'false');
+            tooltipEl.textContent = "All memories revisited.";
+            tooltipEl.classList.add('active');
           }
         });
 
+        // Keyboard accessibility: Enter or Space triggers click
         circle.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
@@ -413,8 +448,6 @@
         memoryFragmentsEl.appendChild(circle);
       });
 
-      tooltipEl.textContent = '';
-      tooltipEl.style.opacity = '0.5';
       memoriesNextBtn.disabled = true;
       memoriesNextBtn.style.opacity = 0.3;
       memoriesNextBtn.setAttribute('aria-disabled', 'true');
@@ -489,13 +522,17 @@ Thank you for letting me love you now.`;
     function showAriaMessage() {
       showOnly('ariaFrame');
       const box = document.getElementById('ariaMsg');
+      const homeBtn = document.getElementById('ariaHomeBtn');
       box.textContent = "";
+      homeBtn.style.display = "none";
       let idx = 0;
       function typeAria() {
         if(idx <= ariaMessage.length){
           box.textContent = ariaMessage.substring(0, idx);
           idx++;
-          setTimeout(typeAria, 60); // SLOWER TYPING SPEED
+          setTimeout(typeAria, 60);
+        } else {
+          homeBtn.style.display = "inline-block";
         }
       }
       typeAria();
