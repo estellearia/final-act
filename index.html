@@ -254,8 +254,8 @@
       text-align: center;
     }
     #ariaSprite {
-      width: 44px;
-      height: 44px;
+      width: 54px;
+      height: 54px;
       display: block;
       margin: 0 auto 7px auto;
       border-radius: 5px;
@@ -265,6 +265,15 @@
       image-rendering: pixelated;
       margin-bottom: 4px;
       text-align: center;
+    }
+	
+	.final-choice-btns {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px; /* Tiny gap between buttons */
+      width: 100%;
+      margin-top: 10px;
     }
     @keyframes glow {
       from { box-shadow: 0 0 8px #ffe764, 0 0 20px #fffbe3; }
@@ -304,13 +313,13 @@
   </div>
 
   <!-- FINAL CHOICE SCENE -->
-  <div class="pixel-frame hidden" id="finalFrame">
-    <p class="pixel-text">You've remembered enough. What will you do?</p>
-    <div class="center-btn">
-      <button class="button" id="chooseEasyBtn" onclick="chooseEasy()">Choose Easy</button>
-      <button class="button" id="chooseHerBtn" onclick="chooseHer()">Choose Her</button>
-    </div>
+<div class="pixel-frame hidden" id="finalFrame">
+  <p class="pixel-text">You've remembered enough. What will you do?</p>
+  <div class="center-btn final-choice-btns">
+    <button class="button" id="chooseEasyBtn" onclick="chooseEasy()">Choose Easy</button>
+    <button class="button" id="chooseHerBtn" onclick="chooseHer()">Choose Her</button>
   </div>
+</div>
 
   <!-- ARIA MESSAGE SCENE -->
   <div class="pixel-frame centered hidden" id="ariaFrame">
@@ -517,7 +526,7 @@
               messageBox.style.display = "none";
               messageBox.innerHTML = "";
             }, 600);
-          }, 3200);
+          }, 3200); // hide sec
 
           // If all visited, enable Next button and show last desc
           if (memoriesData.every(m => m.visited)) {
