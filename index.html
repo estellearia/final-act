@@ -147,7 +147,14 @@
       width: 100%;
       margin-top: 8px;
     }
-    /* Restored effects for memory fragments */
+    /* Center return home button */
+    .aria-btn-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-top: 16px;
+    }
     .memory-fragment {
       width: 22px;
       height: 22px;
@@ -276,7 +283,9 @@
     <img src="https://64.media.tumblr.com/647ca06c5a608d1ea1c416b21b839ea3/9a98a57c72a06121-2a/s250x400/7f925df3ce70975efc97a7f0ffac27ea3838ae3e.gif"
       alt="Mewby" class="avatar" />
     <p id="mewbyGreeting" class="pixel-text" style="min-height: 1.5em"></p>
-    <p id="mewbyQuote" class="pixel-quote"></p>
+    <div id="mewbyQuoteContainer" style="width:100%;">
+      <p id="mewbyQuote" class="pixel-quote"></p>
+    </div>
     <div class="mewby-center-btn">
       <button class="button" id="mewbyContinue" style="display:none;">Continue</button>
     </div>
@@ -301,9 +310,11 @@
   <div class="pixel-frame centered hidden" id="ariaFrame">
     <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria" id="ariaSprite" />
     <div class="aria-box" id="ariaMsg"></div>
-    <button class="pixel-button" id="ariaHomeBtn" onclick="window.location.href='https://frdffsdx.carrd.co/#home';" style="margin-top:16px; display:none;">
-      return home
-    </button>
+    <div class="aria-btn-center">
+      <button class="pixel-button" id="ariaHomeBtn" onclick="window.location.href='https://frdffsdx.carrd.co/#home';" style="display:none;">
+        return home
+      </button>
+    </div>
   </div>
 
   <script>
@@ -352,13 +363,17 @@
         el.textContent += mewbyGreetingText[mewbyGreetingIndex++];
         setTimeout(typeMewbyGreeting, 60);
       } else {
+        // Hide quote container after greeting is done
         setTimeout(() => { 
           document.getElementById('mewbyQuote').textContent = ""; // reset before typing quote lines
+          document.getElementById('mewbyQuoteContainer').style.display = 'block';
           typeMewbyQuoteLine();
         }, 440);
       }
     }
     function typeMewbyQuoteLine() {
+      const quoteContainer = document.getElementById('mewbyQuoteContainer');
+      quoteContainer.style.display = "block";
       const el = document.getElementById('mewbyQuote');
       if (mewbyQuoteLine < mewbyQuoteLines.length) {
         if (mewbyQuoteChar < mewbyQuoteLines[mewbyQuoteLine].length) {
@@ -376,10 +391,16 @@
       } else {
         setTimeout(() => {
           document.getElementById('mewbyContinue').style.display = 'inline-block';
+          // Hide the quote container for better appearance after typing
+          setTimeout(() => {
+            quoteContainer.style.display = "none";
+          }, 400);
         }, 400);
       }
     }
     window.addEventListener("DOMContentLoaded", () => {
+      // Hide the quote container initially
+      document.getElementById('mewbyQuoteContainer').style.display = "none";
       typeMewbyGreeting();
       drawPixelStars();
       document.getElementById('memoryTitle').style.display = "none";
