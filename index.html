@@ -9,8 +9,8 @@
     html, body {
       min-height: 100vh;
       min-width: 100vw;
-      background: radial-gradient(ellipse at 50% 75%, #353a5c 0%, #141332 70%, #06061a 100%);
-      color: #fff8e7;
+      background: radial-gradient(ellipse at 50% 75%, #232323 0%, #000 100%);
+      color: #fff;
       font-family: 'Press Start 2P', monospace;
       margin: 0;
       padding: 0;
@@ -23,15 +23,15 @@
       justify-content: center;
       background-image:
         repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 8px),
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 8px);
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.015) 0 1px, transparent 1px 8px);
       min-height: 100vh;
       min-width: 100vw;
     }
     .hidden { display: none !important; }
     .memory-title {
       font-size: 13px;
-      color: #ffe764;
-      text-shadow: 0 0 9px #fffbe3, 0 0 6px #ffe764b5;
+      color: #fff;
+      text-shadow: 0 0 8px #fff, 0 0 4px #fff;
       font-family: 'Press Start 2P', monospace;
       font-weight: bold;
       letter-spacing: 1.2px;
@@ -41,9 +41,9 @@
       user-select: none;
     }
     .pixel-frame {
-      background: rgba(20,16,40,0.93);
+      background: #181818;
       border-radius: 16px;
-      box-shadow: 0 0 0 3px #ffe76480, 0 0 0 6px #353a5c, 0 0 50px 8px #0a0a1a77, 0 0 0 1.5px #ffe764;
+      box-shadow: 0 0 0 3px #fff8, 0 0 0 6px #222, 0 0 50px 8px #0007, 0 0 0 1.5px #fff;
       max-width: 370px;
       width: 100%;
       margin: 0 auto;
@@ -64,14 +64,14 @@
       display: block;
       margin: 0 auto 16px auto;
       border-radius: 8px;
-      box-shadow: 0 0 12px #ffe76466, 0 0 0 2px #ffe764;
-      border: 1px solid #ffe764;
-      background: #191830;
+      box-shadow: 0 0 12px #fff6, 0 0 0 2px #fff;
+      border: 1px solid #fff;
+      background: #222;
       image-rendering: pixelated;
     }
     .pixel-text {
-      color: #fffbe3;
-      text-shadow: 1px 1px 0 #353a5c, 0 0 6px #ffe7646b;
+      color: #fff;
+      text-shadow: 1px 1px 0 #232323, 0 0 7px #fff6;
       font-size: 0.8em;
       margin: 0.7em 0 0.4em 0;
       line-height: 1.6;
@@ -80,33 +80,33 @@
       word-break: break-word;
     }
     .pixel-quote {
-      color: #ffe764;
+      color: #fff;
       font-size: 0.72em;
       margin-top: 1.3em;
       margin-bottom: 0.6em;
-      text-shadow: 1px 1px 0 #353a5c, 0 0 7px #fffbe3b5;
-      background: rgba(38, 39, 80, 0.44);
+      text-shadow: 1px 1px 0 #232323, 0 0 7px #fff;
+      background: rgba(38, 39, 80, 0.18);
       border-radius: 4px;
       padding: 7px 11px;
-      border: 1px solid #ffe76455;
+      border: 1px solid #fff3;
       display: inline-block;
       font-style: italic;
       image-rendering: pixelated;
     }
     .button, .pixel-button {
       font-family: 'Press Start 2P', monospace;
-      background: #191830;
-      color: #ffe764;
-      border: 2px solid #ffe764;
+      background: #232323;
+      color: #fff;
+      border: 2px solid #fff;
       border-radius: 6px;
-      box-shadow: 0 2px 0 0 #353a5c, 0 0 8px #ffe76470 inset;
+      box-shadow: 0 2px 0 0 #111, 0 0 8px #fff2 inset;
       padding: 5px 13px 6px 13px;
       cursor: pointer;
       margin: 18px 0 0 0;
       font-size: 11px;
       font-weight: bold;
       letter-spacing: 1.1px;
-      text-shadow: 1px 1px 0 #353a5c, 0 0 4px #fffbe3b5;
+      text-shadow: 1px 1px 0 #000, 0 0 4px #fff;
       transition: background 0.16s, color 0.13s, border-color 0.13s, transform 0.07s;
       image-rendering: pixelated;
       position: relative;
@@ -118,11 +118,11 @@
       display: inline-block;
     }
     .button:hover, .pixel-button:hover {
-      background: #ffe764;
-      color: #191830;
-      border-color: #fffbe3;
+      background: #fff;
+      color: #111;
+      border-color: #fff;
       transform: scale(1.07) translateY(-1px);
-      box-shadow: 0 0 14px #ffe764ad, 0 3px 0 0 #353a5c;
+      box-shadow: 0 0 14px #fff, 0 3px 0 0 #232323;
     }
     .star-canvas {
       position: absolute;
@@ -135,7 +135,7 @@
     .memory-fragment {
       width: 26px;
       height: 26px;
-      background: linear-gradient(145deg, #fffbe3 30%, #fcd34d 80%);
+      background: linear-gradient(145deg, #fff 30%, #bbb 80%);
       border-radius: 50%;
       margin: 14px 10px;
       display: inline-block;
@@ -143,13 +143,13 @@
       cursor: pointer;
       position: relative;
       z-index: 2;
-      box-shadow: 0 0 9px #fffbe3, 0 0 20px #ffe764;
+      box-shadow: 0 0 9px #fff, 0 0 20px #fff4;
       transition: box-shadow 0.3s, transform 0.2s;
-      outline: 1.5px solid #fffbe3;
+      outline: 1.5px solid #fff;
       outline-offset: 2px;
     }
     .memory-fragment:hover, .memory-fragment:focus {
-      box-shadow: 0 0 18px #ffe764, 0 0 28px #fcd34d;
+      box-shadow: 0 0 18px #fff, 0 0 28px #fff;
       transform: scale(1.09);
       z-index: 3;
     }
@@ -157,8 +157,8 @@
       opacity: 0.22;
       pointer-events: none;
       box-shadow: none;
-      outline: 1px dashed #ffe764;
-      background: #282840;
+      outline: 1px dashed #fff;
+      background: #444;
       transition: opacity 0.5s;
     }
     #memoryFragments {
@@ -171,26 +171,25 @@
       z-index: 2;
       position: relative;
     }
-    /* Tooltip/desc for memories: centered and only shown when populated */
     #tooltip {
-      font-size: 10px;
-      color: #ffe764;
-      margin-top: 10px;
+      font-size: 12px;
+      color: #fff;
+      margin-top: 14px;
       min-height: 26px;
       white-space: pre-wrap;
-      text-shadow: 0 0 4px #fffbe3;
+      text-shadow: 0 0 4px #fff;
       letter-spacing: 1px;
-      background: rgba(16, 20, 56, 0.52);
+      background: rgba(32, 32, 32, 0.85);
       border-radius: 7px;
-      padding: 8px 14px;
-      border: 1px solid #ffe764;
-      box-shadow: 0 0 7px #ffe76422;
+      padding: 12px 14px;
+      border: 1px solid #fff;
+      box-shadow: 0 0 7px #fff2;
       display: none;
-      max-width: 220px;
+      max-width: 240px;
       margin-left: auto;
       margin-right: auto;
-      line-height: 1.28;
-      opacity: 0.94;
+      line-height: 1.44;
+      opacity: 0.98;
       text-align: center;
       transition: opacity 0.2s, display 0.2s;
     }
@@ -199,15 +198,15 @@
       opacity: 1;
     }
     .aria-box {
-      background: rgba(38, 39, 80, 0.56);
+      background: #191919e0;
       border-radius: 7px;
       padding: 17px 14px 17px 14px;
       margin: 14px 0 0 0;
-      box-shadow: 0 0 7px #ffe76422;
+      box-shadow: 0 0 7px #fff1;
       font-size: 12px;
-      color: #ffeebc;
-      text-shadow: 0 0 4px #ffe76444, 1px 1px 0 #353a5c;
-      border: 1px solid #ffe76444;
+      color: #fff;
+      text-shadow: 0 0 4px #fff4, 1px 1px 0 #232323;
+      border: 1px solid #fff3;
       font-family: 'Press Start 2P', monospace;
       white-space: pre-line;
       line-height: 1.55;
@@ -229,22 +228,21 @@
       display: block;
       margin: 0 auto 7px auto;
       border-radius: 5px;
-      background: #191830;
-      border: 1px solid #ffe764;
-      box-shadow: 0 0 10px #ffe76455, 0 0 0 1px #ffe764;
+      background: #222;
+      border: 1px solid #fff;
+      box-shadow: 0 0 10px #fff5, 0 0 0 1px #fff;
       image-rendering: pixelated;
     }
     @keyframes glow {
-      from { box-shadow: 0 0 8px #ffe764, 0 0 20px #fffbe3; }
-      to { box-shadow: 0 0 16px #ffe764, 0 0 28px #fcd34d; }
+      from { box-shadow: 0 0 8px #fff, 0 0 20px #fff; }
+      to { box-shadow: 0 0 16px #fff, 0 0 28px #bbb; }
     }
   </style>
 </head>
 <body>
   <div class="pixel-bg-stars" id="pixelBgStars"></div>
-
   <!-- Memory Lane Title OUTSIDE the box -->
-  <div class="memory-title" id="memoryTitle">Your memories with me</div>
+  <div class="memory-title" id="memoryTitle" style="display:none;">Your memories with me</div>
 
   <!-- Main pixel frame -->
   <div class="pixel-frame" id="mainFrame">
@@ -286,7 +284,7 @@
         document.getElementById(x).classList.add('hidden');
       });
       document.getElementById(id).classList.remove('hidden');
-      // Hide the memory lane title unless we're in memoriesFrame
+      // Show the memory lane title only when in memory scene
       document.getElementById('memoryTitle').style.display = (id === 'memoriesFrame') ? 'block' : 'none';
       window.scrollTo(0,0);
     }
@@ -371,7 +369,7 @@
         const size = Math.random() < 0.8 ? 2 : 4;
         ctx.save();
         ctx.globalAlpha = Math.random() * 0.4 + 0.5;
-        ctx.fillStyle = Math.random() > 0.5 ? "#ffe764" : "#fffbe3";
+        ctx.fillStyle = "#fff";
         ctx.beginPath();
         ctx.arc(Math.floor(x), Math.floor(y), size, 0, 2 * Math.PI);
         ctx.fill();
@@ -386,10 +384,11 @@
       const tooltipEl = document.getElementById('tooltip');
       const memoriesNextBtn = document.getElementById('memoriesNext');
       memoryFragmentsEl.innerHTML = '';
-      let showingDesc = false;
-      // Hide tooltip at first
       tooltipEl.textContent = '';
       tooltipEl.classList.remove('active');
+
+      let descTimeout = null;
+
       memoriesData.forEach((memory, i) => {
         const circle = document.createElement('div');
         circle.className = 'memory-fragment';
@@ -399,15 +398,19 @@
         circle.dataset.index = i;
 
         circle.addEventListener('mouseenter', () => {
-          if (!memory.visited && !showingDesc) {
+          if (!memory.visited) {
+            if (descTimeout) clearTimeout(descTimeout);
             tooltipEl.textContent = memory.title;
             tooltipEl.classList.add('active');
+            tooltipEl.style.display = "block";
           }
         });
         circle.addEventListener('mouseleave', () => {
-          if (!memory.visited && !showingDesc) {
+          if (!memory.visited) {
+            if (descTimeout) clearTimeout(descTimeout);
             tooltipEl.classList.remove('active');
             tooltipEl.textContent = '';
+            tooltipEl.style.display = "none";
           }
         });
 
@@ -415,43 +418,46 @@
           if (memory.visited) return;
           memory.visited = true;
           circle.classList.add('visited');
-          showingDesc = true;
           tooltipEl.textContent = memory.desc;
           tooltipEl.classList.add('active');
-          // Hide desc after 2 seconds unless all are visited
-          setTimeout(() => {
-            showingDesc = false;
+          tooltipEl.style.display = "block";
+          if (descTimeout) clearTimeout(descTimeout);
+          // After 2s, if not all visited, revert to title if still hovered, else hide
+          descTimeout = setTimeout(() => {
             if (!memoriesData.every(m => m.visited)) {
-              tooltipEl.classList.remove('active');
-              tooltipEl.textContent = '';
+              if (circle.matches(':hover')) {
+                tooltipEl.textContent = memory.title;
+                tooltipEl.classList.add('active');
+                tooltipEl.style.display = "block";
+              } else {
+                tooltipEl.classList.remove('active');
+                tooltipEl.textContent = '';
+                tooltipEl.style.display = "none";
+              }
             }
           }, 2000);
 
-          // If all visited, enable Next button and show last desc
           if (memoriesData.every(m => m.visited)) {
             memoriesNextBtn.disabled = false;
             memoriesNextBtn.style.opacity = 1;
             memoriesNextBtn.setAttribute('aria-disabled', 'false');
             tooltipEl.textContent = "All memories revisited.";
             tooltipEl.classList.add('active');
+            tooltipEl.style.display = "block";
           }
         });
-
-        // Keyboard accessibility: Enter or Space triggers click
         circle.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             circle.click();
           }
         });
-
         memoryFragmentsEl.appendChild(circle);
       });
 
       memoriesNextBtn.disabled = true;
       memoriesNextBtn.style.opacity = 0.3;
       memoriesNextBtn.setAttribute('aria-disabled', 'true');
-
       memoriesNextBtn.onclick = () => {
         showOnly('finalFrame');
       };
