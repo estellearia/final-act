@@ -2,338 +2,255 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Act 6 - Final Choice</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Always Choose Her</title>
   <style>
-    @font-face {
-      font-family: 'Press Start 2P';
-      src: url('https://fonts.gstatic.com/s/pressstart2p/v11/e3t4euO8T-267oIAQAu6jDQyKzI.woff2') format('woff2');
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-    html, body {
+    body {
       margin: 0;
       padding: 0;
-      background: #000;
-      font-family: 'Press Start 2P', monospace;
+      background-color: black;
       color: white;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #background {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background:
-        radial-gradient(2px 2px at 10% 10%, #eee, transparent),
-        radial-gradient(1.5px 1.5px at 40% 30%, #ccc, transparent),
-        radial-gradient(2px 2px at 70% 70%, #ddd, transparent),
-        radial-gradient(1px 1px at 80% 50%, #bbb, transparent),
-        #000;
-      background-repeat: repeat;
-      animation: starDrift 60s linear infinite;
-      z-index: -1;
-    }
-
-    @keyframes starDrift {
-      0% { background-position: 0 0, 0 0, 0 0, 0 0; }
-      100% { background-position: -1000px 1000px, 500px -500px, -600px 1200px, 400px 200px; }
-    }
-
-    .screen {
-      display: none;
+      font-family: 'Press Start 2P', monospace;
+      overflow-x: hidden;
       text-align: center;
-      padding: 20px;
-      max-width: 80%;
-      animation: pixelFadeIn 1.5s ease forwards;
     }
 
-    @keyframes pixelFadeIn {
-      0% {
-        filter: brightness(0) contrast(0);
-        opacity: 0;
-      }
-      50% {
-        filter: brightness(1.5) contrast(3);
-        opacity: 0.5;
-      }
-      100% {
-        filter: none;
-        opacity: 1;
-      }
-    }
-
-    .typewriter {
-      display: inline-block;
-      overflow: hidden;
-      white-space: pre-wrap;
-      font-size: 12px;
-      line-height: 1.7;
-      max-width: 650px;
-    }
-
-    /* Memory container with pixelated glowing stars */
-    .memory-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 40px;
-      gap: 40px;
+    .scene {
+      display: none;
+      padding: 40px 20px;
       position: relative;
+      z-index: 0;
+    }
+
+    .visible {
+      display: block;
+    }
+
+    .avatar, .aria-sprite {
+      width: 100px;
+      height: 100px;
+      image-rendering: pixelated;
+      position: relative;
+      z-index: 2;
+      margin: 20px auto;
+      display: block;
+    }
+
+    .button, .pixel-button {
+      font-family: 'Press Start 2P', monospace;
+      background-color: black;
+      color: white;
+      border: 2px solid white;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 30px;
+      font-size: 12px;
+      position: relative;
+      z-index: 2;
+      display: inline-block;
+    }
+
+    .button:hover, .pixel-button:hover {
+      background-color: #444;
     }
 
     .memory {
+      border: 2px solid white;
+      padding: 10px;
+      margin: 10px auto;
+      max-width: 400px;
+      cursor: pointer;
       position: relative;
-      width: 18px;
-      height: 18px;
-      background: #fef08a;
-      box-shadow: 0 0 8px 3px #fef08a;
-      image-rendering: pixelated;
-      cursor: pointer;
-      animation: flicker 1s ease-in-out infinite;
-      border-radius: 4px;
+      z-index: 2;
     }
 
-    @keyframes flicker {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+    .memory.visited {
+      opacity: 0.4;
     }
 
-    /* Undertale style dialogue pop-up on hover */
-    .memory:hover::before {
-      content: attr(data-title);
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #111;
-      border: 2px solid #fef08a;
-      padding: 6px 12px;
-      font-size: 9px;
-      white-space: nowrap;
-      color: #fef08a;
-      font-family: 'Press Start 2P';
-      pointer-events: none;
-      z-index: 100;
-      filter: drop-shadow(0 0 1px #fef08a);
-      border-radius: 4px;
-    }
-
-    .dialogue {
-      font-size: 12px;
-      margin-top: 25px;
-      white-space: pre-line;
-      min-height: 70px;
-      max-width: 650px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.7;
-    }
-
-    .choice-button {
-      font-family: 'Press Start 2P';
-      background: #fff;
-      color: #000;
-      border: none;
-      padding: 12px 20px;
-      margin: 15px;
-      cursor: pointer;
+    .tooltip {
       font-size: 10px;
-      border-radius: 4px;
-      box-shadow: 0 0 8px #fef08a;
-      transition: background 0.3s ease;
+      color: #FFD700;
+      margin-top: 10px;
+      animation: fadeInText 0.3s ease forwards;
+      position: relative;
+      z-index: 2;
     }
 
-    .choice-button:hover {
-      background: #facc15;
-      box-shadow: 0 0 15px #facc15;
+    .message-box, #ariaText {
+      background-color: rgba(0, 0, 0, 0.85);
+      border: 2px solid white;
+      border-radius: 10px;
+      box-shadow: 0 0 8px white;
+      padding: 20px;
+      margin: 20px auto 0 auto;
+      max-width: 600px;
+      text-align: left;
+      font-size: 10px;
+      line-height: 1.8;
+      font-family: 'Press Start 2P', monospace;
+      color: white;
+      position: relative;
+      z-index: 2;
+      min-height: 150px;
     }
 
-    .aria-sprite {
-      margin-top: 30px;
-      width: 96px;
-      image-rendering: pixelated;
-      filter: drop-shadow(0 0 6px #fef08a);
+    /* Sparkle effect behind Aria */
+    .sparkle-bg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(white 1px, transparent 1px);
+      background-size: 10px 10px;
+      opacity: 0.05;
+      pointer-events: none;
+      animation: sparkleMove 10s linear infinite;
+      z-index: 1; /* behind avatar and text */
+    }
+
+    @keyframes sparkleMove {
+      from { background-position: 0 0; }
+      to { background-position: 100% 100%; }
+    }
+
+    @keyframes fadeInText {
+      to { opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <div id="background"></div>
 
-  <!-- Mewby Intro -->
-  <div class="screen" id="mewbyIntro">
-    <div class="typewriter" id="mewbyText"></div>
-  </div>
+<!-- Mewby Intro Scene -->
+<div id="mewby" class="scene visible">
+  <img src="https://i.imgur.com/9OC7GRw.gif" alt="Mewby" class="avatar" />
+  <p>Hey, you made it.</p>
+  <p style="color: #aaa; font-size: 10px; margin-top: 20px;">
+    "The journey wasn’t perfect. But it was real. And it brought you here."
+  </p>
+  <button class="button" onclick="showMemories()">Continue</button>
+</div>
 
-  <!-- Memory Scene -->
-  <div class="screen" id="memoryScene">
-    <p style="font-size:10px; margin-bottom: 15px;">Walk up to each memory.</p>
-    <div class="memory-container">
-      <div class="memory" data-title="The Break" onclick="collectMemory(0)"></div>
-      <div class="memory" data-title="The Return" onclick="collectMemory(1)"></div>
-      <div class="memory" data-title="The Hard Days" onclick="collectMemory(2)"></div>
-    </div>
-    <div class="dialogue" id="memoryDialogue"></div>
-  </div>
+<!-- Memory Selection Scene -->
+<div id="memories" class="scene">
+  <p>Tap each memory to remember...</p>
+  <div class="memory" data-title="The Break" data-line="We didn’t plan it. It just… fell apart." onclick="visitMemory(this)">The Break</div>
+  <div class="memory" data-title="The Return" data-line="I didn’t expect to see you again — but when I did, I saw you differently." onclick="visitMemory(this)">The Return</div>
+  <div class="memory" data-title="The Hard Days" data-line="It wasn’t easy. But we didn’t give up." onclick="visitMemory(this)">The Hard Days</div>
+  <div id="tooltip" class="tooltip"></div>
+</div>
 
-  <!-- Final Choice -->
-  <div class="screen" id="finalChoice">
-    <div class="dialogue">
-      Mewby  
-      <br>You’ve seen it all —  
-      <br>The good, the bad, and everything in between.  
-      <br><br>So...  
-      <br>What do you choose?
-    </div>
-    <button class="choice-button" onclick="chooseEasy()">Choose Easy</button>
-    <button class="choice-button" onclick="chooseHer()">Choose Her</button>
-  </div>
+<!-- Final Choice Scene -->
+<div id="final" class="scene">
+  <p>You've remembered enough. What will you do?</p>
+  <button class="button" id="finalChoice" onclick="chooseHer()">Choose Her</button>
+</div>
 
-  <!-- Aria Ending -->
-  <div class="screen" id="ariaScene">
-    <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria" class="aria-sprite" />
-    <div class="dialogue" style="white-space: pre-wrap; font-size: 11px; max-width: 700px; margin: 20px auto;">
-You made it.
+<!-- Aria Scene -->
+<div class="scene centered aria-scene" id="ariaScene" style="display:none; position: relative;">
+  <div class="sparkle-bg"></div>
+  <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria" class="aria-sprite" />
+  <div id="ariaText" class="message-box"></div>
+  <button class="pixel-button" id="endButton" style="display:none;" onclick="window.location.href='https://frdffsdx.carrd.co/#home';">
+    Return Home
+  </button>
+</div>
 
-After everything.
-Even after how messy things got before.
+<script>
+  // Memory scene tracking
+  let memoriesVisited = 0;
 
-I still remember how it all fell apart —
-the group, the friendships, everything.
+  function showMemories() {
+    document.getElementById("mewby").classList.remove("visible");
+    document.getElementById("memories").classList.add("visible");
+  }
 
-Back then, it hurt.
-And we didn’t really talk.
+  function visitMemory(element) {
+    const tooltip = document.getElementById("tooltip");
+    const line = element.getAttribute("data-line");
 
-But somehow… you came back into my life.
-And when you did,
-I saw you in a way I hadn’t before.
+    tooltip.textContent = `"${line}"`;
+    tooltip.style.display = "block";
 
-That’s when everything changed.
-That’s when we started.
-
-And honestly…
-Even if it means going through all the hard parts again,
-I’d still choose this.
-I’d still choose you.
-
-Because being with you —
-even on the hardest days —
-means more than any easy version of life without you.
-
-Thank you for loving me when I shut down.
-When I cry out of nowhere.
-When I’m not making sense.
-
-You love me on my worst days just as much as my best —
-and that means everything to me.
-
-Some people only want love when it's simple.
-But I’d go through the hard stuff all over again,
-as long as it leads me to you.
-
-You’re my home now.
-My everything.
-
-And just this once…
-I hope you choose you, too.
-
-Because I’ll keep choosing you.
-Every time.
-
-Happy Birthday.
-Thank you for coming back.
-Thank you for letting me love you now.
-    </div>
-  </div>
-
-  <!-- Easy Ending -->
-  <div class="screen" id="emptyScene">
-    <div class="dialogue" style="max-width: 700px; margin: auto;">
-      (You chose what felt easier. And sometimes, that’s okay too.)  
-
-      But some stories never get told that way.
-    </div>
-  </div>
-
-  <!-- Sounds -->
-  <audio id="wind" src="https://cdn.pixabay.com/download/audio/2023/03/27/audio_87d354e5fd.mp3" autoplay loop></audio>
-  <audio id="sparkle" src="https://cdn.pixabay.com/download/audio/2021/09/17/audio_5b8b555a12.mp3"></audio>
-
-  <script>
-    // Mewby typewriter text lines
-    const mewbyLines = [
-      "Mewby",
-      "The journey wasn’t perfect.",
-      "But it was real.",
-      "",
-      "And look — it brought you here.",
-      "Now, what do you choose?"
-    ];
-
-    let currentLine = 0;
-    let textEl = document.getElementById('mewbyText');
-
-    // Typewriter effect for mewbyLines
-    function typeMewbyLine() {
-      if(currentLine >= mewbyLines.length) {
-        setTimeout(() => {
-          showScreen('memoryScene');
-        }, 800);
-        return;
-      }
-      let line = mewbyLines[currentLine];
-      let i = 0;
-      textEl.textContent = '';
-      let interval = setInterval(() => {
-        textEl.textContent += line.charAt(i);
-        i++;
-        if(i > line.length) {
-          clearInterval(interval);
-          currentLine++;
-          setTimeout(typeMewbyLine, 800);
-        }
-      }, 40);
+    if (!element.classList.contains("visited")) {
+      element.classList.add("visited");
+      memoriesVisited++;
     }
 
-    // Memory dialogues on hover/click
-    const memories = [
-      "The group drifted apart, and silence filled the spaces we once shared. That time still stings.",
-      "You came back, unexpectedly, lighting a spark I thought was gone forever.",
-      "Even on days I shut down or cry for no reason, you stayed. You loved me through the chaos."
-    ];
+    if (memoriesVisited >= 3) {
+      setTimeout(() => {
+        document.getElementById("memories").classList.remove("visible");
+        tooltip.style.display = "none";
+        document.getElementById("final").classList.add("visible");
+      }, 1000);
+    }
+  }
 
-    function showScreen(screenId) {
-      document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
-      const screen = document.getElementById(screenId);
-      if(screen) {
-        screen.style.display = 'block';
-        screen.style.animation = 'none'; // Reset animation
-        // trigger reflow to restart
-        void screen.offsetWidth;
-        screen.style.animation = 'pixelFadeIn 1.5s ease forwards';
+  // Final choice to show Aria scene with typed lines
+  function chooseHer() {
+    document.getElementById("finalChoice").style.display = "none";
+    showAriaScene();
+  }
+
+  // Typing effect for Aria scene
+  const ariaLines = [
+    "You made it.",
+    "After everything. Even after how messy things got before.",
+    "I still remember how it all fell apart — the group, the friendships, everything.",
+    "Back then, it hurt. And we didn’t really talk.",
+    "But somehow… you came back into my life. And when you did, I saw you in a way I hadn’t before.",
+    "That’s when everything changed. That’s when we started.",
+    "And honestly… Even if it means going through all the hard parts again, I’d still choose this. I’d still choose you.",
+    "Because being with you — even on the hardest days — means more than any easy version of life without you.",
+    "Thank you for loving me when I shut down. When I cry out of nowhere. When I’m not making sense.",
+    "You love me on my worst days just as much as my best — and that means everything to me.",
+    "Some people only want love when it's simple. But I’d go through the hard stuff all over again, as long as it leads me to you.",
+    "You’re my home now. My everything.",
+    "And just this once… I hope you choose you, too.",
+    "Because I’ll keep choosing you. Every time.",
+    "",
+    "Happy Birthday.",
+    "Thank you for coming back.",
+    "Thank you for letting me love you now."
+  ];
+
+  function showAriaScene() {
+    const ariaScene = document.getElementById('ariaScene');
+    const ariaText = document.getElementById('ariaText');
+    const endButton = document.getElementById('endButton');
+    ariaScene.style.display = 'block';
+    ariaText.innerHTML = '';
+    endButton.style.display = 'none';
+
+    let i = 0;
+
+    function typeLine() {
+      if (i < ariaLines.length) {
+        const p = document.createElement('p');
+        p.textContent = "";
+        ariaText.appendChild(p);
+        let j = 0;
+        const line = ariaLines[i];
+        const interval = setInterval(() => {
+          if (j < line.length) {
+            p.textContent += line[j++];
+          } else {
+            clearInterval(interval);
+            i++;
+            setTimeout(typeLine, 300); // pause between lines
+          }
+        }, 25); // typing speed
+      } else {
+        endButton.style.display = 'inline-block';
       }
     }
 
-    // Initialize with Mewby Intro
-    showScreen('mewbyIntro');
-    typeMewbyLine();
+    typeLine();
+  }
+</script>
 
-    // Memory click function to show dialogue text
-    function collectMemory(index) {
-      const dialogueEl = document.getElementById('memoryDialogue');
-      dialogueEl.textContent = memories[index];
-      document.getElementById('sparkle').play();
-    }
-
-    // Choices
-    function chooseEasy() {
-      showScreen('emptyScene');
-    }
-
-    function chooseHer() {
-      showScreen('ariaScene');
-    }
-  </script>
 </body>
 </html>
