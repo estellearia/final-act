@@ -10,84 +10,120 @@
     body {
       margin: 0;
       padding: 0;
-      background-color: #000011; /* deep navy instead of black for dreamy starry feel */
-      color: white;
+      background: radial-gradient(ellipse at bottom, #202040 0%, #0a0a1a 100%);
+      color: #fff8e7;
       font-family: 'Press Start 2P', monospace;
       overflow-x: hidden;
       text-align: center;
-      user-select: none;
-      position: relative;
       min-height: 100vh;
     }
 
-    /* ---------- Starry Sky Background for Memories Scene ---------- */
-    #memories {
+    .scene {
+      display: none;
+      padding: 40px 20px;
       position: relative;
-      padding-top: 40px;
-      padding-bottom: 60px;
-      background: radial-gradient(ellipse at center, #0a0a2a 0%, #000011 80%);
-      overflow: hidden;
-      z-index: 0;
-      color: #fff;
-      font-size: 12px;
-    }
-    /* A bunch of tiny white dots to simulate stars */
-    #memories::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background:
-        radial-gradient(white 1.5px, transparent 2px),
-        radial-gradient(white 1.5px, transparent 2px),
-        radial-gradient(white 1.5px, transparent 2px);
-      background-position: 5px 5px, 15px 25px, 30px 40px;
-      background-size: 40px 40px;
-      opacity: 0.3;
-      pointer-events: none;
-      animation: twinkle 4s ease-in-out infinite alternate;
-      image-rendering: pixelated;
       z-index: 0;
     }
 
-    /* Memory fragments as glowing star-like circles */
-    .memory-fragment {
-      width: 40px;  /* bigger for more visible */
-      height: 40px;
-      background: radial-gradient(circle at center, #fffacd, #fcd34d);
-      border-radius: 50%;
-      margin: 25px 20px;
+    .visible {
+      display: block;
+    }
+
+    .avatar, .aria-sprite {
+      width: 100px;
+      height: 100px;
+      image-rendering: pixelated;
+      position: relative;
+      z-index: 2;
+      margin: 20px auto;
+      display: block;
+      filter: drop-shadow(0 0 12px #fff6a5);
+    }
+
+    .button, .pixel-button {
+      font-family: 'Press Start 2P', monospace;
+      background-color: rgba(17, 16, 40, 0.7);
+      color: #fff8e7;
+      border: 2px solid #fff8e7;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background 0.3s, border-color 0.3s;
+      margin-top: 30px;
+      font-size: 12px;
+      position: relative;
+      z-index: 2;
       display: inline-block;
-      animation: glow 2s infinite alternate;
+      margin-right: 10px;
+      box-shadow: 0 0 4px #fff8e7, 0 0 16px #3fc0fd inset;
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
+
+    .button:hover, .pixel-button:hover {
+      background-color: #292970;
+      border-color: #ffe764;
+      color: #ffe764;
+      box-shadow: 0 0 12px #ffe764, 0 0 20px #3fc0fd inset;
+    }
+
+    /* Starry dreamy background for memories scene */
+    #memories {
+      position: relative;
+      overflow: hidden;
+      padding-top: 40px;
+      min-height: 350px;
+      border-radius: 16px;
+      box-shadow: 0 0 60px 16px #1a1a46 inset;
+      background: transparent;
+      margin: 0 auto;
+      max-width: 650px;
+    }
+
+    .star-canvas {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .memory-fragment {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(145deg, #fffbe3 30%, #fcd34d 80%);
+      border-radius: 50%;
+      margin: 32px 22px;
+      display: inline-block;
+      animation: glow 1.9s infinite alternate;
       cursor: pointer;
       position: relative;
       z-index: 2;
-      box-shadow: 0 0 8px #fcd34d, 0 0 20px #ffec6a;
-      transition: box-shadow 0.3s ease;
-      filter: drop-shadow(0 0 3px #fcd34d);
+      box-shadow: 0 0 12px #fffbe3, 0 0 40px #ffe764;
+      transition: box-shadow 0.3s, transform 0.2s;
+      outline: 2px solid #fffbe3;
+      outline-offset: 2px;
     }
-
-    .memory-fragment:hover {
-      box-shadow: 0 0 30px #fcd34d, 0 0 40px #ffec6a;
-      transform: scale(1.1);
-      transition: all 0.3s ease;
+    .memory-fragment:hover, .memory-fragment:focus {
+      box-shadow: 0 0 26px #ffe764, 0 0 70px #fcd34d;
+      transform: scale(1.13);
+      z-index: 3;
     }
-
     .memory-fragment.visited {
-      opacity: 0.3;
+      opacity: 0.24;
       pointer-events: none;
-      filter: none;
-      transform: scale(0.9);
       box-shadow: none;
+      outline: 1px dashed #ffe764;
+      background: #282840;
+      transition: opacity 0.5s;
     }
 
-    /* Tooltip style - bigger, bold for visible titles */
+    /* Dreamy title tooltip */
     #tooltip {
-      font-size: 14px;
-      font-weight: bold;
-      color: #ffd700;
-      margin-top: 15px;
-      min-height: 60px;
+      font-size: 13px;
+      color: #ffe764;
+      margin-top: 16px;
+      min-height: 44px;
       white-space: pre-wrap;
       animation: fadeInText 0.3s ease forwards;
       position: relative;
@@ -95,385 +131,336 @@
       max-width: 420px;
       margin-left: auto;
       margin-right: auto;
-      line-height: 1.3;
-      text-shadow: 0 0 8px #ffd700aa;
-      user-select: text;
-      transition: opacity 0.3s ease;
-    }
-
-    /* -------- Typing effect styles for Mewby and Aria -------- */
-    #mewby p {
-      max-width: 420px;
-      margin: 8px auto;
-      font-size: 11px;
-      line-height: 1.4;
-      min-height: 1.4em;
-      white-space: pre-wrap;
-    }
-
-    #mewby p:first-child {
-      font-size: 14px;
-      margin-top: 40px;
-      margin-bottom: 12px;
-    }
-
-    #mewby {
-      color: #eee;
-      background: radial-gradient(circle at center, #001122 0%, #000011 90%);
-      padding: 40px 20px;
-      user-select: none;
-      min-height: 250px;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Buttons style */
-    .button, .pixel-button {
-      font-family: 'Press Start 2P', monospace;
-      background-color: transparent;
-      color: white;
-      border: 2px solid white;
-      padding: 10px 20px;
-      cursor: pointer;
-      transition: background 0.3s, color 0.3s;
-      margin-top: 30px;
-      font-size: 12px;
-      position: relative;
-      z-index: 2;
-      display: inline-block;
-      margin-right: 10px;
-      user-select: none;
-    }
-
-    .button:hover, .pixel-button:hover {
-      background-color: #444;
-      color: #ffec6a;
-      border-color: #ffec6a;
-    }
-
-    /* Scenes setup */
-    .scene {
-      display: none;
-      padding: 20px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .visible {
-      display: block;
-    }
-
-    /* Avatar images */
-    .avatar, .aria-sprite {
-      width: 100px;
-      height: 100px;
-      image-rendering: pixelated;
-      position: relative;
-      z-index: 2;
-      margin: 20px auto 10px;
-      display: block;
-      filter: drop-shadow(0 0 4px #7ad);
-    }
-
-    /* Final Aria scene - dreamy pixelated background */
-    #ariaScene {
-      position: relative;
-      padding: 30px 20px 60px;
-      max-width: 480px;
-      margin: 0 auto 60px;
-      background:
-        radial-gradient(circle at 20% 20%, #3a3a5e88, transparent 60%),
-        radial-gradient(circle at 80% 70%, #5e3a5e88, transparent 60%),
-        #000011;
-      border: 2px solid #fff;
+      line-height: 1.45;
+      text-shadow: 0 0 6px #fffbe3, 0 0 2px #3fc0fd;
+      letter-spacing: 1.5px;
+      background: rgba(16, 20, 56, 0.52);
       border-radius: 8px;
-      box-shadow: 0 0 20px #5577cc88 inset;
-      user-select: none;
-      color: #eee;
-      font-size: 12px;
-      line-height: 1.4;
-      font-weight: 600;
-      text-shadow: 0 0 8px #aabbffcc;
+      padding: 8px 12px;
+      border: 1px solid #ffe764;
+      box-shadow: 0 0 18px #ffe76433;
+      display: none;
     }
 
-    /* Sparkle animation behind Aria */
-    .sparkle-bg {
+    .memory-fragment::after {
+      content: attr(data-title);
       position: absolute;
-      top: 10px; left: 50%;
+      left: 50%;
+      top: -2.4em;
       transform: translateX(-50%);
-      width: 140px;
-      height: 140px;
+      font-size: 10px;
+      color: #ffe764;
+      background: rgba(33, 35, 80, 0.85);
+      border-radius: 4px;
+      padding: 3px 8px 2px 8px;
+      box-shadow: 0 0 8px #ffe76466;
+      letter-spacing: 1.5px;
+      font-family: 'Press Start 2P', monospace;
+      opacity: 0;
       pointer-events: none;
-      z-index: 0;
-      background:
-        radial-gradient(circle 2px at 20% 30%, #fff 90%, transparent),
-        radial-gradient(circle 2.5px at 70% 80%, #aaffffcc 90%, transparent),
-        radial-gradient(circle 1.5px at 50% 50%, #88ddffcc 90%, transparent),
-        radial-gradient(circle 1.2px at 30% 75%, #ffeeccbb 90%, transparent);
-      animation: twinkle 6s ease-in-out infinite alternate;
-      image-rendering: pixelated;
-      filter: drop-shadow(0 0 6px #aaddffaa);
-      border-radius: 50%;
+      transition: opacity 0.2s;
+      z-index: 5;
+      text-shadow: 0 0 4px #fffbe3;
+      border: 1px solid #ffe76488;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .memory-fragment:hover::after, .memory-fragment:focus::after {
+      opacity: 1;
     }
 
-    /* Aria message box */
-    #ariaText {
-      white-space: pre-wrap;
-      margin: 20px auto 0;
-      max-width: 420px;
-      min-height: 140px;
-      font-size: 14px;
-      font-weight: 600;
-      text-shadow: 0 0 6px #aaccee99;
-    }
-
-    /* End Button */
-    #endButton {
-      margin-top: 25px;
-      font-size: 12px;
-      background-color: transparent;
-      border-color: #ffec6a;
-      color: #ffec6a;
-      box-shadow: 0 0 8px #ffec6a99;
-      user-select: none;
-    }
-
-    /* Typing cursor style */
-    .typing-cursor {
-      display: inline-block;
-      width: 8px;
-      height: 14px;
-      background-color: #ffec6a;
-      margin-left: 3px;
-      animation: blink 1.2s steps(2, start) infinite;
-      vertical-align: bottom;
-    }
-
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      50.01%, 100% { opacity: 0; }
-    }
-
-    /* Animations reused */
     @keyframes glow {
-      from { box-shadow: 0 0 8px #fcd34d, 0 0 20px #ffec6a; }
-      to { box-shadow: 0 0 30px #fcd34d, 0 0 40px #ffec6a; }
-    }
-
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.3; }
-      50% { opacity: 0.7; }
+      from { box-shadow: 0 0 8px #ffe764, 0 0 20px #fffbe3; }
+      to { box-shadow: 0 0 26px #ffe764, 0 0 48px #fcd34d; }
     }
 
     @keyframes fadeInText {
       to { opacity: 1; }
     }
 
+    /* Final act style */
+    #final {
+      background: rgba(12, 14, 38, 0.7);
+      border-radius: 16px;
+      box-shadow: 0 0 32px 2px #fffbe355;
+      margin: 0 auto;
+      max-width: 440px;
+    }
+
+    /* Aria Scene styling */
+    .aria-scene {
+      padding-top: 40px;
+      min-height: 330px;
+      max-width: 500px;
+      margin: 0 auto;
+      background: rgba(14, 16, 38, 0.8);
+      border-radius: 16px;
+      box-shadow: 0 0 60px #fffbe322, 0 0 140px #3fc0fd22 inset;
+      position: relative;
+    }
+    .message-box {
+      font-size: 13px;
+      color: #fff8e7;
+      background: rgba(36, 38, 80, 0.66);
+      border-radius: 10px;
+      padding: 16px 14px 24px 14px;
+      margin: 0 auto;
+      box-shadow: 0 0 10px #ffe76444;
+      letter-spacing: 1.2px;
+      min-height: 120px;
+      line-height: 1.6;
+      text-shadow: 0 0 9px #fffbe3;
+      border: 1.5px solid #ffe76455;
+    }
+
+    /* Dreamy sparkles (static) */
+    .sparkle-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Pixelate effect for all */
+    .scene,
+    .avatar,
+    .aria-sprite,
+    .button,
+    .pixel-button,
+    .message-box,
+    #tooltip {
+      image-rendering: pixelated;
+    }
   </style>
 </head>
 <body>
 
-  <!-- 1. MEWBY INTRO SCENE WITH TYPING EFFECT -->
-  <div id="mewby" class="scene visible" aria-live="polite" role="region" aria-label="Mewby Introduction">
-    <img src="https://i.imgur.com/qpJz0Ro.gif" alt="Mewby pixel avatar" class="avatar" />
-    <div id="mewbyText" style="max-width: 420px; margin: 0 auto; font-size: 11px; line-height: 1.4; color: #eee;"></div>
+<!-- Mewby Intro Scene -->
+<div id="mewby" class="scene visible">
+  <img src="https://64.media.tumblr.com/647ca06c5a608d1ea1c416b21b839ea3/9a98a57c72a06121-2a/s250x400/7f925df3ce70975efc97a7f0ffac27ea3838ae3e.gif" alt="Mewby" class="avatar" />
+  <p id="mewbyGreeting" style="min-height: 1.5em"></p>
+  <p id="mewbyQuote" style="color: #ffe764; font-size: 10px; margin-top: 20px; min-height: 2em;"></p>
+  <button class="button" id="mewbyContinue" onclick="showMemories()" style="display:none;">Continue</button>
+</div>
+
+<!-- Memory Selection Scene -->
+<div id="memories" class="scene">
+  <canvas id="starCanvas" class="star-canvas"></canvas>
+  <p style="font-size: 14px; color: #ffe764; text-shadow: 0 0 7px #fffbe3;">Tap each star to remember...</p>
+  <div>
+    <div class="memory-fragment" data-title="The Break" data-line="The group drifted apart, and silence filled the spaces we once shared. That time still stings." tabindex="1" onclick="visitMemory(this)" title="The Break"></div>
+    <div class="memory-fragment" data-title="The Return" data-line="I didn’t expect to see you again — but when I did, I saw you differently." tabindex="2" onclick="visitMemory(this)" title="The Return"></div>
+    <div class="memory-fragment" data-title="The Hard Days" data-line="It wasn’t easy. But we didn’t give up." tabindex="3" onclick="visitMemory(this)" title="The Hard Days"></div>
   </div>
+  <div id="tooltip" class="tooltip"></div>
+</div>
 
-  <!-- 2. MEMORIES SCENE -->
-  <div id="memories" class="scene" aria-live="polite" role="region" aria-label="Memories Scene">
-    <h2 style="font-size: 14px; margin-bottom: 8px;">Your memories with me</h2>
-    <div id="memoryFragments" style="max-width: 480px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
-      <!-- Memory fragments circles inserted here by JS -->
-    </div>
-    <div id="tooltip" aria-live="polite" role="alert" aria-atomic="true"></div>
-    <button class="button" id="memoriesNext" aria-label="Next to final scene">Next</button>
-  </div>
+<!-- Final Choice Scene -->
+<div id="final" class="scene">
+  <p style="font-size: 13px;">You've remembered enough. What will you do?</p>
+  <button class="button" id="chooseEasyBtn" onclick="chooseEasy()">Choose Easy</button>
+  <button class="button" id="chooseHerBtn" onclick="chooseHer()">Choose Her</button>
+</div>
 
-  <!-- 3. FINAL CHOOSEHER SCENE -->
-  <div id="ariaScene" class="scene" aria-live="polite" role="region" aria-label="Final scene with Aria">
-    <div class="sparkle-bg" aria-hidden="true"></div>
-    <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria avatar" class="aria-sprite" />
-    <div id="ariaText" aria-atomic="true" aria-live="polite" style="min-height: 140px;"></div>
-    <button id="endButton" class="pixel-button" style="display:none;">End</button>
-  </div>
+<!-- Aria Scene -->
+<div class="scene centered aria-scene" id="ariaScene" style="display:none; position: relative;">
+  <div class="sparkle-bg"></div>
+  <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria" class="aria-sprite" />
+  <div id="ariaText" class="message-box" style="white-space: pre-wrap; margin: 20px auto; max-width: 400px; min-height: 120px;"></div>
+  <button class="pixel-button" id="endButton" style="display:none;" onclick="window.location.href='https://frdffsdx.carrd.co/#home';">
+    Return Home
+  </button>
+</div>
 
-  <script>
-    /* ====== 1. MEWBY INTRO TYPING ====== */
-    const mewbyTextEl = document.getElementById('mewbyText');
-    const mewbyLines = [
-      "Hey! I'm Mewby, your guide.",
-      "We’re about to take a little walk through memories and moments between us.",
-      "Click to start your journey."
-    ];
+<script>
+  // --- 1. TYPING EFFECT ON MEWBY INTRO ---
+  const mewbyGreetingText = "Hey, you made it.";
+  const mewbyQuoteText = "\"The journey wasn’t perfect. But it was real. And it brought you here.\"";
+  let mewbyGreetingIndex = 0;
+  let mewbyQuoteIndex = 0;
 
-    // Typewriter effect function for Mewby intro text
-    function typeWriter(element, text, speed = 40) {
-      return new Promise((resolve) => {
-        let i = 0;
-        element.textContent = '';
-        function typing() {
-          if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-            setTimeout(typing, speed);
-          } else {
-            resolve();
-          }
-        }
-        typing();
+  function typeMewbyGreeting() {
+    const el = document.getElementById('mewbyGreeting');
+    if (mewbyGreetingIndex < mewbyGreetingText.length) {
+      el.textContent += mewbyGreetingText[mewbyGreetingIndex++];
+      setTimeout(typeMewbyGreeting, 32);
+    } else {
+      setTimeout(() => {
+        typeMewbyQuote();
+      }, 400);
+    }
+  }
+  function typeMewbyQuote() {
+    const el = document.getElementById('mewbyQuote');
+    if (mewbyQuoteIndex < mewbyQuoteText.length) {
+      el.textContent += mewbyQuoteText[mewbyQuoteIndex++];
+      setTimeout(typeMewbyQuote, 23);
+    } else {
+      setTimeout(() => {
+        document.getElementById('mewbyContinue').style.display = 'inline-block';
+      }, 400);
+    }
+  }
+  window.addEventListener("DOMContentLoaded", () => {
+    typeMewbyGreeting();
+    drawStars();
+    drawSparkles();
+  });
+
+  // --- 2. DREAMY STAR SKY FOR MEMORY SCENE ---
+  function drawStars() {
+    const canvas = document.getElementById('starCanvas');
+    if (!canvas) return;
+    // Full size of memories box
+    const memoriesDiv = document.getElementById('memories');
+    canvas.width = memoriesDiv.offsetWidth;
+    canvas.height = 340;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // Draw pixel stars
+    for (let i = 0; i < 55; i++) {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height * 0.9 + 5;
+      const size = Math.random() < 0.8 ? 2 : 4;
+      ctx.save();
+      ctx.globalAlpha = Math.random() * 0.4 + 0.5;
+      ctx.fillStyle = Math.random() > 0.5 ? "#ffe764" : "#fffbe3";
+      ctx.beginPath();
+      ctx.arc(Math.floor(x), Math.floor(y), size, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+  window.addEventListener('resize', function() {
+    drawStars();
+  });
+
+  // --- Dreamy sparkles for Aria scene ---
+  function drawSparkles() {
+    const div = document.querySelector('.sparkle-bg');
+    if (!div) return;
+    div.innerHTML = '';
+    for (let i = 0; i < 35; i++) {
+      const star = document.createElement('div');
+      const s = Math.random() < 0.7 ? 2 : 4;
+      Object.assign(star.style, {
+        position: 'absolute',
+        left: (Math.random() * 98) + '%',
+        top: (Math.random() * 92) + '%',
+        width: s + 'px',
+        height: s + 'px',
+        borderRadius: '50%',
+        background: Math.random() > 0.5 ? '#ffe764' : '#fffbe3',
+        opacity: (Math.random() * 0.4 + 0.5),
+        boxShadow: `0 0 8px #ffe76499`,
+        animation: `sparkleFade ${1.2 + Math.random()}s infinite alternate`,
+        pointerEvents: 'none'
       });
+      div.appendChild(star);
+    }
+  }
+  // Add sparkle animation
+  const sparkleStyle = document.createElement('style');
+  sparkleStyle.innerHTML = `
+    @keyframes sparkleFade {
+      0% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+  `;
+  document.head.appendChild(sparkleStyle);
+
+  // --- 3. MEMORY INTERACTION ---
+  let memoriesVisited = 0;
+  function showMemories() {
+    document.getElementById("mewby").classList.remove("visible");
+    document.getElementById("memories").classList.add("visible");
+  }
+  function visitMemory(element) {
+    const tooltip = document.getElementById("tooltip");
+    const line = element.getAttribute("data-line");
+
+    tooltip.style.display = "block";
+    tooltip.textContent = line;
+    tooltip.style.opacity = 0;
+    setTimeout(() => { tooltip.style.opacity = 1; }, 30);
+
+    if (!element.classList.contains("visited")) {
+      element.classList.add("visited");
+      memoriesVisited++;
+      element.style.opacity = "0.24";
+      element.style.pointerEvents = "none";
     }
 
-    async function playMewbyIntro() {
-      for (const line of mewbyLines) {
-        await typeWriter(mewbyTextEl, line);
-        await new Promise(r => setTimeout(r, 700));
+    if (memoriesVisited >= 3) {
+      setTimeout(() => {
+        document.getElementById("memories").classList.remove("visible");
+        tooltip.textContent = "";
+        document.getElementById("final").classList.add("visible");
+      }, 1100);
+    }
+  }
+
+  function chooseHer() {
+    document.getElementById("chooseHerBtn").style.display = "none";
+    document.getElementById("chooseEasyBtn").style.display = "none";
+    showAriaScene();
+  }
+  function chooseEasy() {
+    alert("You chose the easy way out... But this story is about choosing love.");
+  }
+
+  // --- 4. FINAL ARIA SCENE: TYPE MESSAGES SEQUENTIALLY ---
+  const ariaLines = [
+    "You made it.",
+    "After everything. Even after how messy things got before.",
+    "I still remember how it all fell apart — the group, the friendships, everything.",
+    "Back then, it hurt. And we didn’t really talk.",
+    "But somehow… you came back into my life. And when you did, I saw you in a way I hadn’t before.",
+    "That’s when everything changed. That’s when we started.",
+    "And honestly… Even if it means going through all the hard parts again, I’d still choose this. I’d still choose you.",
+    "Because being with you — even on the hardest days — means more than any easy version of life without you.",
+    "Thank you for loving me when I shut down. When I cry out of nowhere. When I’m not making sense.",
+    "You love me on my worst days just as much as my best — and that means everything to me.",
+    "I love you. Always.",
+  ];
+  let ariaIndex = 0;
+  let ariaCharIndex = 0;
+
+  function showAriaScene() {
+    document.getElementById("final").classList.remove("visible");
+    const ariaScene = document.getElementById("ariaScene");
+    ariaScene.style.display = "block";
+    ariaScene.classList.add("visible");
+    ariaIndex = 0;
+    ariaCharIndex = 0;
+    document.getElementById("ariaText").textContent = "";
+    document.getElementById("endButton").style.display = "none";
+    typeAriaLine();
+  }
+
+  function typeAriaLine() {
+    const ariaText = document.getElementById("ariaText");
+    if (ariaIndex >= ariaLines.length) {
+      document.getElementById("endButton").style.display = "inline-block";
+      return;
+    }
+    ariaText.textContent = "";
+    ariaCharIndex = 0;
+    let currentLine = ariaLines[ariaIndex];
+    function typeChar() {
+      if (ariaCharIndex < currentLine.length) {
+        ariaText.textContent += currentLine[ariaCharIndex++];
+        setTimeout(typeChar, 28);
+      } else {
+        ariaIndex++;
+        setTimeout(typeAriaLine, 900);
       }
-      // Show a blinking cursor to indicate clickable (optional)
-      mewbyTextEl.innerHTML += ' <span class="typing-cursor"></span>';
     }
-
-    // On click anywhere in #mewby, go to memories scene
-    document.getElementById('mewby').addEventListener('click', () => {
-      document.getElementById('mewby').classList.remove('visible');
-      document.getElementById('memories').classList.add('visible');
-      initMemories();
-    });
-
-    playMewbyIntro();
-
-    /* ====== 2. MEMORIES SCENE ====== */
-    const memoriesData = [
-      { title: "First time we talked", desc: "That night when we stayed up late, just talking.", visited: false },
-      { title: "Hospital visit", desc: "When I was sick and you stayed by my side.", visited: false },
-      { title: "Long distance calls", desc: "Our endless phone calls across the miles.", visited: false },
-      { title: "Work stress days", desc: "You encouraged me even on my worst days.", visited: false },
-      { title: "Our first video game night", desc: "Laughing and playing like no distance existed.", visited: false },
-      { title: "The first 'I love you'", desc: "That shy, unforgettable moment.", visited: false },
-    ];
-
-    const memoryFragmentsEl = document.getElementById('memoryFragments');
-    const tooltipEl = document.getElementById('tooltip');
-    const memoriesNextBtn = document.getElementById('memoriesNext');
-
-    function initMemories() {
-      memoryFragmentsEl.innerHTML = '';
-      memoriesData.forEach((memory, i) => {
-        const circle = document.createElement('div');
-        circle.className = 'memory-fragment';
-        circle.tabIndex = 0;
-        circle.setAttribute('role', 'button');
-        circle.setAttribute('aria-label', `${memory.title} memory`);
-        circle.dataset.index = i;
-
-        circle.addEventListener('mouseenter', () => {
-          if (!memory.visited) {
-            tooltipEl.textContent = memory.title;
-            tooltipEl.style.opacity = '1';
-          }
-        });
-        circle.addEventListener('mouseleave', () => {
-          if (!memory.visited) {
-            tooltipEl.textContent = '';
-            tooltipEl.style.opacity = '0.5';
-          }
-        });
-
-        circle.addEventListener('click', () => {
-          if (memory.visited) return;
-          memory.visited = true;
-          circle.classList.add('visited');
-          tooltipEl.textContent = memory.desc;
-          tooltipEl.style.opacity = '1';
-
-          // If all visited, enable Next button
-          if (memoriesData.every(m => m.visited)) {
-            memoriesNextBtn.disabled = false;
-            memoriesNextBtn.style.opacity = 1;
-            memoriesNextBtn.setAttribute('aria-disabled', 'false');
-          }
-        });
-
-        // Keyboard accessibility: Enter or Space triggers click
-        circle.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            circle.click();
-          }
-        });
-
-        memoryFragmentsEl.appendChild(circle);
-      });
-
-      memoriesNextBtn.disabled = true;
-      memoriesNextBtn.style.opacity = 0.3;
-      memoriesNextBtn.setAttribute('aria-disabled', 'true');
-
-      memoriesNextBtn.addEventListener('click', () => {
-        document.getElementById('memories').classList.remove('visible');
-        startAriaScene();
-      });
-    }
-
-    /* ====== 3. FINAL CHOOSEHER SCENE TYPING SEQUENCE ====== */
-    const ariaTextEl = document.getElementById('ariaText');
-    const endButton = document.getElementById('endButton');
-    const ariaScene = document.getElementById('ariaScene');
-
-    const ariaMessages = [
-      "You are the strongest person I've ever met.",
-      "You put others before yourself every single day.",
-      "Even when it hurts you.",
-      "I wish you would choose yourself sometimes.",
-      "But know this:",
-      "I will always choose you.",
-      "No matter the distance, the hardships, or the silence.",
-      "You are my heart's home.",
-      "And I am grateful for you.",
-      "Always."
-    ];
-
-    // Typewriter function for aria messages with cursor
-    function typeWriterAria(text, speed = 40) {
-      return new Promise((resolve) => {
-        let i = 0;
-        ariaTextEl.textContent = '';
-        const cursor = document.createElement('span');
-        cursor.className = 'typing-cursor';
-        ariaTextEl.appendChild(cursor);
-
-        function typing() {
-          if (i < text.length) {
-            ariaTextEl.textContent = text.substring(0, i + 1);
-            ariaTextEl.appendChild(cursor);
-            i++;
-            setTimeout(typing, speed);
-          } else {
-            resolve();
-          }
-        }
-        typing();
-      });
-    }
-
-    async function playAriaMessages() {
-      for (const line of ariaMessages) {
-        await typeWriterAria(line);
-        await new Promise(r => setTimeout(r, 700));
-      }
-      endButton.style.display = 'inline-block';
-      endButton.focus();
-    }
-
-    function startAriaScene() {
-      ariaScene.classList.add('visible');
-      playAriaMessages();
-    }
-
-    endButton.addEventListener('click', () => {
-      alert("Thank you for viewing this gift. Always choose love ❤️");
-      // Optionally restart or close
-    });
-  </script>
+    typeChar();
+  }
+</script>
 </body>
 </html>
