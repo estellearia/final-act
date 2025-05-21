@@ -254,24 +254,22 @@
       text-align: center;
     }
     #ariaSprite {
-      width: 54px;
-      height: 54px;
+      width: 64px;
+      height: 64px;
       display: block;
-      margin: 0 auto 7px auto;
+      margin: 0 auto 10px auto;
       border-radius: 5px;
       background: #191830;
       border: 1px solid #ffe764;
       box-shadow: 0 0 10px #ffe76455, 0 0 0 1px #ffe764;
       image-rendering: pixelated;
-      margin-bottom: 4px;
       text-align: center;
     }
-	
-	.final-choice-btns {
+    .final-choice-btns {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 10px; /* Tiny gap between buttons */
+      gap: 10px;
       width: 100%;
       margin-top: 10px;
     }
@@ -313,13 +311,13 @@
   </div>
 
   <!-- FINAL CHOICE SCENE -->
-<div class="pixel-frame hidden" id="finalFrame">
-  <p class="pixel-text">You've remembered enough. What will you do?</p>
-  <div class="center-btn final-choice-btns">
-    <button class="button" id="chooseEasyBtn" onclick="chooseEasy()">Choose Easy</button>
-    <button class="button" id="chooseHerBtn" onclick="chooseHer()">Choose Her</button>
+  <div class="pixel-frame hidden" id="finalFrame">
+    <p class="pixel-text">You've remembered enough. What will you do?</p>
+    <div class="center-btn final-choice-btns">
+      <button class="button" id="chooseEasyBtn" onclick="chooseEasy()">Choose Easy</button>
+      <button class="button" id="chooseHerBtn" onclick="chooseHer()">Choose Her</button>
+    </div>
   </div>
-</div>
 
   <!-- ARIA MESSAGE SCENE -->
   <div class="pixel-frame centered hidden" id="ariaFrame">
@@ -336,15 +334,16 @@
     // --- INSTRUCTIONS TYPING ---
     const memoryInstructionLines = [
       "Click each memory fragment one at a time.",
-      "Wait for the memory to appear and fade before selecting another.",
-	  "Rushing will cause the stars to overlap and you might miss a story."
+      "Wait for the memory to finish before choosing the next.",
+      "We’re about to take a little walk through memories and moments between you and Aria.",
+      "Click to start your journey."
     ];
     let memoryInstructionLine = 0, memoryInstructionChar = 0;
     function typeMemoryInstructionLine() {
       const el = document.getElementById('memoryInstructionQuote');
       if (memoryInstructionLine < memoryInstructionLines.length) {
         if (memoryInstructionChar < memoryInstructionLines[memoryInstructionLine].length) {
-          el.textContent += memoryInstructionLines[memoryInstructionLine][memoryInstructionChar++];
+          el.innerHTML += memoryInstructionLines[memoryInstructionLine][memoryInstructionChar++];
           setTimeout(typeMemoryInstructionLine, 60);
         } else {
           if (memoryInstructionLine < memoryInstructionLines.length - 1) {
@@ -378,7 +377,7 @@
     window.addEventListener('resize', drawPixelStars);
 
     // --- MEWBIE INTRO TYPING ---
-    const mewbyGreetingText = "Hey! Mewby is here!";
+    const mewbyGreetingText = "Hey! Mewby is herwe!";
     const mewbyQuoteLines = [
       "We’re about to take a little walk through memories and moments between you and Aria.",
       "Click to start your journey."
@@ -391,7 +390,7 @@
         setTimeout(typeMewbyGreeting, 60);
       } else {
         setTimeout(() => {
-          document.getElementById('mewbyQuote').textContent = "";
+          document.getElementById('mewbyQuote').innerHTML = "";
           document.getElementById('mewbyQuoteContainer').style.display = 'block';
           typeMewbyQuoteLine();
         }, 440);
@@ -403,7 +402,7 @@
       const el = document.getElementById('mewbyQuote');
       if (mewbyQuoteLine < mewbyQuoteLines.length) {
         if (mewbyQuoteChar < mewbyQuoteLines[mewbyQuoteLine].length) {
-          el.textContent += mewbyQuoteLines[mewbyQuoteLine][mewbyQuoteChar++];
+          el.innerHTML += mewbyQuoteLines[mewbyQuoteLine][mewbyQuoteChar++];
           setTimeout(typeMewbyQuoteLine, 60);
         } else {
           if (mewbyQuoteLine < mewbyQuoteLines.length - 1) {
@@ -527,7 +526,7 @@
               messageBox.style.display = "none";
               messageBox.innerHTML = "";
             }, 600);
-          }, 3200); // hide sec
+          }, 3200);
 
           // If all visited, enable Next button and show last desc
           if (memoriesData.every(m => m.visited)) {
