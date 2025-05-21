@@ -87,68 +87,132 @@
       font-style: italic;
       image-rendering: pixelated;
     }
+    /* --- BUTTON IMPROVEMENT --- */
     .button, .pixel-button {
       font-family: 'Press Start 2P', monospace;
-      background: repeating-linear-gradient(135deg, #191830 0 5px, #ffe764 5px 7px, #191830 7px 14px);
+      background: #191830;
       color: #ffe764;
       border: 2px solid #ffe764;
       border-radius: 5px;
-      box-shadow: 0 0 6px #ffe76470, 0 2px 0 0 #353a5c;
-      padding: 7px 19px;
+      box-shadow:
+        0 2px 0 0 #353a5c,
+        0 0 8px #ffe76470 inset;
+      padding: 6px 13px;
       cursor: pointer;
-      margin: 26px 0 0 0;
-      font-size: 10px;
+      margin: 18px 0 0 0;
+      font-size: 11px;
       font-weight: bold;
-      text-shadow: 1px 1px 0 #353a5c, 0 0 6px #fffbe3b5;
-      letter-spacing: 1.5px;
-      transition: background 0.13s, color 0.13s, border-color 0.13s, transform 0.07s;
+      letter-spacing: 1.1px;
+      text-shadow: 1px 1px 0 #353a5c, 0 0 4px #fffbe3b5;
+      transition: background 0.16s, color 0.13s, border-color 0.13s, transform 0.07s;
       image-rendering: pixelated;
       position: relative;
       z-index: 1;
+      outline: 0;
     }
     .button:hover, .pixel-button:hover {
       background: #ffe764;
       color: #191830;
       border-color: #fffbe3;
-      transform: scale(1.05) translateY(-1px);
-      box-shadow: 0 0 14px #ffe764ad, 0 4px 0 0 #353a5c;
+      transform: scale(1.07) translateY(-1px);
+      box-shadow: 0 0 14px #ffe764ad, 0 3px 0 0 #353a5c;
     }
-    /* Star bg */
-    .pixel-bg-stars {
+    /* --- STAR CANVAS & MEMORY FRAGMENTS --- */
+    .star-canvas {
       position: absolute;
-      top: 0; left: 0; width: 100vw; height: 100vh;
+      left: 0; top: 0;
+      width: 100%;
+      height: 100%;
       z-index: 0;
       pointer-events: none;
-      overflow: hidden;
     }
-    .pixel-star {
-      position: absolute;
-      width: 3px; height: 3px;
-      background: #ffe764;
-      border-radius: 1px;
-      opacity: 0.7;
-      box-shadow: 0 0 7px #ffe764aa, 0 0 0 1.5px #fffbe3;
-      image-rendering: pixelated;
-      animation: pixel-star-blink 2.5s linear infinite;
+    #memoriesFrame {
+      position: relative;
+      min-height: 320px;
+      border-radius: 16px;
+      box-shadow: 0 0 60px 16px #1a1a46 inset;
+      background: transparent;
+      margin: 0 auto;
+      max-width: 650px;
+      margin-top: 20px;
     }
-    @keyframes pixel-star-blink {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 1; }
-      70% { opacity: 0.5; }
+    .memory-fragment {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(145deg, #fffbe3 30%, #fcd34d 80%);
+      border-radius: 50%;
+      margin: 18px 14px;
+      display: inline-block;
+      animation: glow 1.9s infinite alternate;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 0 10px #fffbe3, 0 0 26px #ffe764;
+      transition: box-shadow 0.3s, transform 0.2s;
+      outline: 1.5px solid #fffbe3;
+      outline-offset: 2px;
     }
+    .memory-fragment:hover, .memory-fragment:focus {
+      box-shadow: 0 0 22px #ffe764, 0 0 38px #fcd34d;
+      transform: scale(1.11);
+      z-index: 3;
+    }
+    .memory-fragment.visited {
+      opacity: 0.22;
+      pointer-events: none;
+      box-shadow: none;
+      outline: 1px dashed #ffe764;
+      background: #282840;
+      transition: opacity 0.5s;
+    }
+    /* MEMORIES FONT SIZES */
+    #memoriesFrame h2 {
+      font-size: 12px !important;
+      margin-bottom: 8px;
+      color: #ffe764;
+      text-shadow: 0 0 7px #fffbe3;
+      letter-spacing: 1.2px;
+    }
+    #tooltip {
+      font-size: 11px;
+      color: #ffe764;
+      margin-top: 14px;
+      min-height: 32px;
+      white-space: pre-wrap;
+      text-shadow: 0 0 5px #fffbe3;
+      letter-spacing: 1px;
+      background: rgba(16, 20, 56, 0.52);
+      border-radius: 7px;
+      padding: 5px 10px;
+      border: 1px solid #ffe764;
+      box-shadow: 0 0 10px #ffe76422;
+      display: block;
+      max-width: 280px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.35;
+      opacity: 0.94;
+    }
+    /* --- ARIA MESSAGE IMPROVEMENT --- */
     .aria-box {
       background: rgba(38, 39, 80, 0.56);
       border-radius: 7px;
-      padding: 15px 12px 14px 12px;
+      padding: 13px 12px 19px 12px;
       margin: 14px 0 0 0;
       box-shadow: 0 0 7px #ffe76422;
-      font-size: 0.81em;
+      font-size: 12px;
       color: #ffeebc;
       text-shadow: 0 0 4px #ffe76444, 1px 1px 0 #353a5c;
       border: 1px solid #ffe76444;
       font-family: 'Press Start 2P', monospace;
       white-space: pre-line;
-      line-height: 1.7;
+      line-height: 1.6;
+      max-width: 288px;
+      min-width: 0;
+      min-height: 110px;
+      word-break: break-word;
+      margin-left: auto;
+      margin-right: auto;
     }
     #ariaSprite {
       width: 54px;
@@ -161,64 +225,14 @@
       box-shadow: 0 0 10px #ffe76455, 0 0 0 1px #ffe764;
       image-rendering: pixelated;
     }
-    .centered {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .hidden { display: none; }
-    /* Custom scrollbar for aria */
-    .aria-box::-webkit-scrollbar {
-      width: 6px;
-      background: #222;
-    }
-    .aria-box::-webkit-scrollbar-thumb {
-      background: #ffe76466;
-      border-radius: 6px;
-    }
-    .star-canvas {
-      position: absolute;
-      left: 0; top: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .memory-fragment {
-      width: 36px;
-      height: 36px;
-      background: linear-gradient(145deg, #fffbe3 30%, #fcd34d 80%);
-      border-radius: 50%;
-      margin: 32px 22px;
-      display: inline-block;
-      animation: glow 1.9s infinite alternate;
-      cursor: pointer;
-      position: relative;
-      z-index: 2;
-      box-shadow: 0 0 12px #fffbe3, 0 0 40px #ffe764;
-      transition: box-shadow 0.3s, transform 0.2s;
-      outline: 2px solid #fffbe3;
-      outline-offset: 2px;
-    }
-    .memory-fragment:hover, .memory-fragment:focus {
-      box-shadow: 0 0 26px #ffe764, 0 0 70px #fcd34d;
-      transform: scale(1.13);
-      z-index: 3;
-    }
-    .memory-fragment.visited {
-      opacity: 0.24;
-      pointer-events: none;
-      box-shadow: none;
-      outline: 1px dashed #ffe764;
-      background: #282840;
-      transition: opacity 0.5s;
+    @keyframes glow {
+      from { box-shadow: 0 0 8px #ffe764, 0 0 20px #fffbe3; }
+      to { box-shadow: 0 0 26px #ffe764, 0 0 48px #fcd34d; }
     }
   </style>
 </head>
 <body>
   <div class="pixel-bg-stars" id="pixelBgStars"></div>
-
   <!-- Main pixel frame -->
   <div class="pixel-frame" id="mainFrame">
     <img src="https://64.media.tumblr.com/647ca06c5a608d1ea1c416b21b839ea3/9a98a57c72a06121-2a/s250x400/7f925df3ce70975efc97a7f0ffac27ea3838ae3e.gif"
@@ -231,8 +245,8 @@
   <!-- 2. MEMORIES SCENE -->
   <div class="pixel-frame hidden" id="memoriesFrame">
     <canvas id="starCanvas" class="star-canvas"></canvas>
-    <h2 style="font-size: 14px; margin-bottom: 8px; color: #ffe764; text-shadow: 0 0 7px #fffbe3;">Your memories with me</h2>
-    <div id="memoryFragments" style="max-width: 480px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+    <h2>Your memories with me</h2>
+    <div id="memoryFragments" style="max-width: 320px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;">
       <!-- Memory fragments circles inserted here by JS -->
     </div>
     <div id="tooltip" aria-live="polite" role="alert" aria-atomic="true"></div>
@@ -485,7 +499,7 @@ Thank you for letting me love you now.`;
         if(idx <= ariaMessage.length){
           box.textContent = ariaMessage.substring(0, idx);
           idx++;
-          setTimeout(typeAria, 10);
+          setTimeout(typeAria, 60); // SLOWER TYPING SPEED
         }
       }
       typeAria();
