@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Act 6 - Choose Her</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      font-family: 'Press Start 2P', monospace;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #mewbyText, #gameContainer {
+      opacity: 0;
+      transition: opacity 2s ease;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    #gameContainer {
+      margin-top: 30px;
+    }
+
+    .memory {
+      margin: 8px 0;
+    }
+
+    .choice-button {
+      font-family: 'Press Start 2P', monospace;
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 30px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .choice-button:hover {
+      background: #fcd34d;
+    }
+
+    #endingMessage {
+      margin-top: 30px;
+      font-size: 14px;
+      line-height: 1.5;
+      white-space: pre-line;
+      display: none;
+    }
+
+    @font-face {
+      font-family: 'Press Start 2P';
+      src: url('https://fonts.gstatic.com/s/pressstart2p/v11/e3t4euO8T-267oIAQAu6jDQyKzI.woff2') format('woff2');
+    }
+  </style>
+</head>
+<body>
+
+<div id="mewbyText">
+  <p>Mewby</p>
+  <p>The journey wasn’t perfect.<br>But it was real.</p>
+  <p>And look — it brought you here.<br>To the person who never stopped waiting.</p>
+</div>
+
+<div id="gameContainer">
+  <div id="memories"></div>
+  <button class="choice-button" onclick="showEnding()">Choose Her</button>
+  <div id="endingMessage"></div>
+</div>
+
+<script>
+  const memories = [
+    "🌙 Late night calls where words weren’t even needed.",
+    "💬 Laughing at things no one else would find funny.",
+    "🌧️ Crying, fighting, pausing… and still coming back.",
+    "🤝 Choosing each other even when it was hard.",
+    "💛 Realizing that no matter what — it was always her."
+  ];
+
+  const memoryDelay = 1500;
+
+  function fadeIn(element) {
+    element.style.opacity = 1;
+  }
+
+  function showMemories() {
+    const memoryBox = document.getElementById("memories");
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < memories.length) {
+        const p = document.createElement("p");
+        p.className = "memory";
+        p.textContent = memories[i];
+        memoryBox.appendChild(p);
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, memoryDelay);
+  }
+
+  function showEnding() {
+    const ending = document.getElementById("endingMessage");
+    ending.style.display = "block";
+    ending.innerText = `You made it.\n\nThrough the storm...\nThrough the noise...\nThrough everything that tried to stop you.\n\nShe saw every step.\nAnd never stopped hoping you'd arrive.\n\nNo matter the world...\nNo matter the silence...\nNo matter the pain...\n\nYou choose her.\nAnd she always chose you.\n\n💛 Happy Birthday, my love.\n\nThank you for existing.\nNow — just this once, I hope you choose you, too.`;
+  }
+
+  window.onload = () => {
+    const mewby = document.getElementById("mewbyText");
+    const game = document.getElementById("gameContainer");
+
+    setTimeout(() => {
+      fadeIn(mewby);
+    }, 500);
+
+    setTimeout(() => {
+      fadeIn(game);
+      showMemories();
+    }, 6000);
+  };
+</script>
+
+</body>
+</html>
