@@ -97,6 +97,8 @@
       image-rendering: pixelated;
       font-weight: normal;
       letter-spacing: 0.5px;
+      line-height: 1.9; /* Increased line spacing for quote readability */
+      white-space: pre-line;
     }
     .button, .pixel-button {
       font-family: 'Press Start 2P', monospace;
@@ -137,28 +139,22 @@
       z-index: 0;
       pointer-events: none;
     }
-
-    /* GLITCH-FREE GRID LAYOUT FOR MEMORY FRAGMENTS */
-    #memoryFragments {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      max-width: 300px;
-      margin: 0 auto;
-    }
+    /* Restored effects for memory fragments */
     .memory-fragment {
       width: 22px;
       height: 22px;
+      margin: 5px;
       display: block;
-      background: #ffe764;
+      background: linear-gradient(145deg, #fffbe3 30%, #fcd34d 80%);
       border-radius: 50%;
+      animation: glow 1.9s infinite alternate;
       cursor: pointer;
-      border: 2px solid #fffbe3;
-      transition: background 0.15s;
-    }
-    .memory-fragment:hover,
-    .memory-fragment:focus {
-      background: #fffbe3;
+      box-shadow: 0 0 8px #fffbe3, 0 0 18px #ffe764;
+      transition: box-shadow 0.15s, background 0.15s, border-color 0.15s;
+      outline: 1.5px solid #fffbe3;
+      outline-offset: 2px;
+      border: 2px solid #ffe764;
+      background-clip: padding-box;
     }
     .memory-fragment.visited {
       opacity: 0.22;
@@ -166,14 +162,20 @@
       background: #282840;
       border: 2px solid #ffe764;
     }
-
+    #memoryFragments {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 120px;
+      margin: 0 auto;
+    }
     /* Tooltip/desc for memories: centered and only shown when populated */
     #tooltip {
-      font-size: 9px;
+      font-size: 11px;
       color: #ffe764;
       margin-top: 10px;
       min-height: 26px;
-      white-space: pre-wrap;
+      white-space: pre-line;
       text-shadow: 0 0 4px #fffbe3;
       background: rgba(16, 20, 56, 0.52);
       border-radius: 7px;
@@ -183,12 +185,12 @@
       max-width: 220px;
       margin-left: auto;
       margin-right: auto;
-      line-height: 1.28;
+      line-height: 1.7;
       opacity: 0.94;
       text-align: center;
       transition: opacity 0.2s, display 0.2s;
       letter-spacing: 0.4px;
-      padding: 6px 10px;
+      padding: 8px 12px;
     }
     #tooltip.active {
       display: block;
@@ -310,22 +312,39 @@
 
     // Mewby intro typing
     const mewbyGreetingText = "Hey! Mewby is herwe!";
-    const mewbyQuoteText = "We’re about to take a little walk through memories and moments between you and Aria.\nClick to start your journey.";
-    let mewbyGreetingIndex = 0, mewbyQuoteIndex = 0;
+    // Each line will be typed with 60ms per character
+    const mewbyQuoteLines = [
+      "We’re about to take a little walk through memories and moments between you and Aria.",
+      "Click to start your journey."
+    ];
+    let mewbyGreetingIndex = 0, mewbyQuoteLine = 0, mewbyQuoteChar = 0;
     function typeMewbyGreeting() {
       const el = document.getElementById('mewbyGreeting');
       if (mewbyGreetingIndex < mewbyGreetingText.length) {
         el.textContent += mewbyGreetingText[mewbyGreetingIndex++];
-        setTimeout(typeMewbyGreeting, 30);
+        setTimeout(typeMewbyGreeting, 60);
       } else {
-        setTimeout(() => { typeMewbyQuote(); }, 440);
+        setTimeout(() => { 
+          document.getElementById('mewbyQuote').textContent = ""; // reset before typing quote lines
+          typeMewbyQuoteLine();
+        }, 440);
       }
     }
-    function typeMewbyQuote() {
+    function typeMewbyQuoteLine() {
       const el = document.getElementById('mewbyQuote');
-      if (mewbyQuoteIndex < mewbyQuoteText.length) {
-        el.textContent += mewbyQuoteText[mewbyQuoteIndex++];
-        setTimeout(typeMewbyQuote, 17);
+      if (mewbyQuoteLine < mewbyQuoteLines.length) {
+        if (mewbyQuoteChar < mewbyQuoteLines[mewbyQuoteLine].length) {
+          el.textContent += mewbyQuoteLines[mewbyQuoteLine][mewbyQuoteChar++];
+          setTimeout(typeMewbyQuoteLine, 60);
+        } else {
+          // After finishing the line, add line break except for last line
+          if (mewbyQuoteLine < mewbyQuoteLines.length - 1) {
+            el.innerHTML += '<br><br>';
+          }
+          mewbyQuoteLine++;
+          mewbyQuoteChar = 0;
+          setTimeout(typeMewbyQuoteLine, 400);
+        }
       } else {
         setTimeout(() => {
           document.getElementById('mewbyContinue').style.display = 'inline-block';
@@ -395,32 +414,20 @@
         circle.setAttribute('aria-label', `${memory.title} memory`);
         circle.dataset.index = i;
 
-        circle.addEventListener('mouseenter', () => {
-          if (!memory.visited && !showingDesc) {
-            tooltipEl.textContent = memory.title;
-            tooltipEl.classList.add('active');
-          }
-        });
-        circle.addEventListener('mouseleave', () => {
-          if (!memory.visited && !showingDesc) {
-            tooltipEl.classList.remove('active');
-            tooltipEl.textContent = '';
-          }
-        });
-
+        // Only show tooltip (title and description) when clicked
         circle.addEventListener('click', () => {
           if (memory.visited) return;
           memory.visited = true;
           circle.classList.add('visited');
           showingDesc = true;
-          tooltipEl.textContent = memory.desc;
+          tooltipEl.innerHTML = `<strong>${memory.title}</strong><br>${memory.desc}`;
           tooltipEl.classList.add('active');
           // Hide desc after 2 seconds unless all are visited
           setTimeout(() => {
             showingDesc = false;
             if (!memoriesData.every(m => m.visited)) {
               tooltipEl.classList.remove('active');
-              tooltipEl.textContent = '';
+              tooltipEl.innerHTML = '';
             }
           }, 2000);
 
@@ -429,7 +436,7 @@
             memoriesNextBtn.disabled = false;
             memoriesNextBtn.style.opacity = 1;
             memoriesNextBtn.setAttribute('aria-disabled', 'false');
-            tooltipEl.textContent = "All memories revisited.";
+            tooltipEl.innerHTML = "<strong>All memories revisited.</strong>";
             tooltipEl.classList.add('active');
           }
         });
