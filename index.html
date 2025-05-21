@@ -215,15 +215,20 @@
       border: 1px solid #ffe76444;
       border-radius: 8px;
       box-shadow: 0 0 7px #ffe76422;
-      display: flex;
+      display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       max-width: 230px;
       padding: 13px 10px 13px 10px;
       text-align: center;
-      transition: background 0.15s, border 0.15s;
+      transition: background 0.15s, border 0.15s, opacity 0.3s;
       font-size: 11px;
+      opacity: 1;
+    }
+    #memoryInfoBox.visible {
+      display: flex;
+      opacity: 1;
     }
     .memory-info-title {
       font-size: 11px;
@@ -452,7 +457,6 @@
     });
 
     document.getElementById('mewbyContinue').onclick = () => {
-      // Reset and type out the instructions when entering memory lane
       document.getElementById('memoryInstructionQuote').innerHTML = '';
       memoryInstructionLine = 0; memoryInstructionChar = 0;
       showOnly('memoriesFrame');
@@ -470,30 +474,6 @@
       { title: "The first 'I love you'", desc: "That shy, unforgettable moment.", visited: false }
     ];
 
-    function drawStars() {
-      const canvas = document.getElementById('starCanvas');
-      if (!canvas) return;
-      const parent = document.getElementById('memoriesFrame');
-      canvas.width = parent.offsetWidth;
-      canvas.height = 180;
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-
-      for (let i = 0; i < 40; i++) {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height * 0.9 + 5;
-        const size = Math.random() < 0.8 ? 2 : 4;
-        ctx.save();
-        ctx.globalAlpha = Math.random() * 0.4 + 0.5;
-        ctx.fillStyle = Math.random() > 0.5 ? "#ffe764" : "#fffbe3";
-        ctx.beginPath();
-        ctx.arc(Math.floor(x), Math.floor(y), size, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.restore();
-      }
-    }
-    window.addEventListener('resize', drawStars);
-
     let memoryInfoTimeout = null;
     let waitingForFade = false;
 
@@ -508,6 +488,7 @@
       memoryFragmentsEl.innerHTML = '';
       infoTitle.textContent = "";
       infoDesc.textContent = "";
+      infoBox.classList.remove('visible');
       infoBox.style.opacity = 1;
       waitingForFade = false;
       memoriesNextBtnContainer.style.display = "none";
@@ -532,7 +513,8 @@
           circle.classList.add('visited');
           waitingForFade = true;
 
-          // Show the title/desc, fade in
+          // Show the info box and set title/desc
+          infoBox.classList.add('visible');
           infoTitle.textContent = memory.title;
           infoDesc.textContent = "";
           setTimeout(() => {
@@ -546,6 +528,7 @@
             setTimeout(() => {
               infoTitle.textContent = "";
               infoDesc.textContent = "";
+              infoBox.classList.remove('visible');
               infoBox.style.opacity = 1;
               waitingForFade = false;
             }, 600);
@@ -558,6 +541,7 @@
             memoriesNextBtn.setAttribute('aria-disabled', 'false');
             infoTitle.textContent = "All memories revisited.";
             infoDesc.textContent = "";
+            infoBox.classList.add('visible');
             infoBox.style.opacity = 1;
             memoriesNextBtnContainer.style.display = "flex";
             if (memoryInfoTimeout) clearTimeout(memoryInfoTimeout);
