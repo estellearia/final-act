@@ -97,7 +97,7 @@
       image-rendering: pixelated;
       font-weight: normal;
       letter-spacing: 0.5px;
-      line-height: 1.9; /* Increased line spacing for quote readability */
+      line-height: 1.9;
       white-space: pre-line;
     }
     .button, .pixel-button {
@@ -139,6 +139,14 @@
       z-index: 0;
       pointer-events: none;
     }
+    /* Center the Continue button in Mewby frame */
+    .mewby-center-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-top: 8px;
+    }
     /* Restored effects for memory fragments */
     .memory-fragment {
       width: 22px;
@@ -171,7 +179,7 @@
     }
     /* Tooltip/desc for memories: centered and only shown when populated */
     #tooltip {
-      font-size: 11px;
+      font-size: 13px;
       color: #ffe764;
       margin-top: 10px;
       min-height: 26px;
@@ -195,6 +203,24 @@
     #tooltip.active {
       display: block;
       opacity: 1;
+    }
+    .tooltip-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: #ffe764;
+      display: block;
+      margin-bottom: 3px;
+      letter-spacing: 0.5px;
+      line-height: 1.4;
+    }
+    .tooltip-desc {
+      font-size: 9px;
+      color: #fffbe3;
+      display: block;
+      margin-top: 2px;
+      line-height: 1.7;
+      letter-spacing: 0.2px;
+      white-space: pre-line;
     }
     .aria-box {
       background: rgba(38, 39, 80, 0.56);
@@ -251,7 +277,9 @@
       alt="Mewby" class="avatar" />
     <p id="mewbyGreeting" class="pixel-text" style="min-height: 1.5em"></p>
     <p id="mewbyQuote" class="pixel-quote"></p>
-    <button class="button" id="mewbyContinue" style="display:none;">Continue</button>
+    <div class="mewby-center-btn">
+      <button class="button" id="mewbyContinue" style="display:none;">Continue</button>
+    </div>
   </div>
 
   <!-- MEMORIES SCENE -->
@@ -420,7 +448,7 @@
           memory.visited = true;
           circle.classList.add('visited');
           showingDesc = true;
-          tooltipEl.innerHTML = `<strong>${memory.title}</strong><br>${memory.desc}`;
+          tooltipEl.innerHTML = `<span class="tooltip-title">${memory.title}</span><span class="tooltip-desc">${memory.desc}</span>`;
           tooltipEl.classList.add('active');
           // Hide desc after 2 seconds unless all are visited
           setTimeout(() => {
@@ -436,7 +464,7 @@
             memoriesNextBtn.disabled = false;
             memoriesNextBtn.style.opacity = 1;
             memoriesNextBtn.setAttribute('aria-disabled', 'false');
-            tooltipEl.innerHTML = "<strong>All memories revisited.</strong>";
+            tooltipEl.innerHTML = `<span class="tooltip-title">All memories revisited.</span>`;
             tooltipEl.classList.add('active');
           }
         });
