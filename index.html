@@ -12,23 +12,14 @@
       background: radial-gradient(ellipse at 50% 75%, #353a5c 0%, #141332 70%, #06061a 100%);
       color: #fff8e7;
       font-family: 'Press Start 2P', monospace;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-      font-size: 13px;
-      text-align: center;
+      margin: 0; padding: 0; overflow-x: hidden; font-size: 13px; text-align: center;
     }
     body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       background-image:
         repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 8px),
         repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 8px);
-      min-height: 100vh;
-      min-width: 100vw;
-      text-align: center;
+      min-height: 100vh; min-width: 100vw; text-align: center;
     }
     .hidden { display: none !important; }
     .memory-title {
@@ -44,21 +35,31 @@
       user-select: none;
       line-height: 1.25;
     }
-    #memoryInstruction {
-      font-size: 11px;
-      color: #ffe764;
-      margin-bottom: 14px;
-      margin-top: 0;
-      line-height: 1.7;
+    #memoryInstructionLines {
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto 14px auto;
+      display: block;
       text-align: center;
-      letter-spacing: 0.2px;
-      background: rgba(38,39,80,0.22);
-      border-radius: 7px;
-      padding: 5px 9px 6px 9px;
+    }
+    .memory-instruction-quote {
+      color: #ffe764;
+      font-size: 0.64em;
+      background: rgba(38, 39, 80, 0.44);
+      border-radius: 4px;
+      padding: 9px 10px 8px 10px;
+      border: 1px solid #ffe76455;
       display: inline-block;
-      border: 1px solid #ffe76433;
-      box-shadow: 0 0 5px #ffe76411;
-      font-family: 'Press Start 2P', monospace;
+      font-style: italic;
+      image-rendering: pixelated;
+      font-weight: normal;
+      letter-spacing: 0.5px;
+      line-height: 1.8;
+      white-space: pre-line;
+      text-align: center;
+      margin: 0 auto 0 auto;
+      user-select: none;
+      box-shadow: 0 0 6px #ffe7641c;
     }
     .pixel-frame {
       background: rgba(20,16,40,0.93);
@@ -79,6 +80,7 @@
     @media (max-width: 500px) {
       .pixel-frame { max-width: 98vw; padding: 7vw 1vw; }
       .memory-title { font-size: 13px; }
+      #memoryInstructionLines { max-width: 98vw; }
     }
     .avatar {
       width: 54px;
@@ -292,9 +294,8 @@
   <div class="pixel-bg-stars" id="pixelBgStars"></div>
 
   <div class="memory-title" id="memoryTitle">Your memories with Aria</div>
-  <div id="memoryInstruction">
-    Click each memory fragment one at a time.<br>
-    Wait for the memory to finish before choosing the next.
+  <div id="memoryInstructionLines">
+    <span class="memory-instruction-quote" id="memoryInstructionQuote"></span>
   </div>
 
   <!-- Main pixel frame -->
@@ -344,6 +345,29 @@
   </div>
 
   <script>
+    // Instruction typing animation, similar to mewbyQuoteLines
+    const memoryInstructionLines = [
+      "Click each memory fragment one at a time.",
+      "Wait for the memory to finish before choosing the next."
+    ];
+    let memoryInstructionLine = 0, memoryInstructionChar = 0;
+    function typeMemoryInstructionLine() {
+      const el = document.getElementById('memoryInstructionQuote');
+      if (memoryInstructionLine < memoryInstructionLines.length) {
+        if (memoryInstructionChar < memoryInstructionLines[memoryInstructionLine].length) {
+          el.textContent += memoryInstructionLines[memoryInstructionLine][memoryInstructionChar++];
+          setTimeout(typeMemoryInstructionLine, 33);
+        } else {
+          if (memoryInstructionLine < memoryInstructionLines.length - 1) {
+            el.innerHTML += '<br><br>';
+          }
+          memoryInstructionLine++;
+          memoryInstructionChar = 0;
+          setTimeout(typeMemoryInstructionLine, 250);
+        }
+      }
+    }
+
     // Hide all scenes
     function showOnly(id) {
       ['mainFrame','memoriesFrame','finalFrame','ariaFrame'].forEach(x => {
@@ -353,7 +377,7 @@
       // Hide the memory lane title/instructions unless we're in memoriesFrame
       const showMemoryStuff = (id === 'memoriesFrame');
       document.getElementById('memoryTitle').style.display = showMemoryStuff ? 'block' : 'none';
-      document.getElementById('memoryInstruction').style.display = showMemoryStuff ? 'inline-block' : 'none';
+      document.getElementById('memoryInstructionLines').style.display = showMemoryStuff ? 'block' : 'none';
       window.scrollTo(0,0);
     }
 
@@ -390,7 +414,6 @@
         el.textContent += mewbyGreetingText[mewbyGreetingIndex++];
         setTimeout(typeMewbyGreeting, 60);
       } else {
-        // Show quote container after greeting is done
         setTimeout(() => {
           document.getElementById('mewbyQuote').textContent = ""; // reset before typing quote lines
           document.getElementById('mewbyQuoteContainer').style.display = 'block';
@@ -425,15 +448,19 @@
       typeMewbyGreeting();
       drawPixelStars();
       document.getElementById('memoryTitle').style.display = "none";
-      document.getElementById('memoryInstruction').style.display = "none";
+      document.getElementById('memoryInstructionLines').style.display = "none";
     });
 
     document.getElementById('mewbyContinue').onclick = () => {
+      // Reset and type out the instructions when entering memory lane
+      document.getElementById('memoryInstructionQuote').innerHTML = '';
+      memoryInstructionLine = 0; memoryInstructionChar = 0;
       showOnly('memoriesFrame');
+      setTimeout(typeMemoryInstructionLine, 420);
       initMemories();
     };
 
-    // MEMORY LANE DATA
+    // MEMORY LANE DATA (v29 logic)
     const memoriesData = [
       { title: "First time we talked", desc: "That night when we stayed up late, just talking.", visited: false },
       { title: "Hospital visit", desc: "When I was sick and you stayed by my side.", visited: false },
@@ -443,17 +470,29 @@
       { title: "The first 'I love you'", desc: "That shy, unforgettable moment.", visited: false }
     ];
 
-    // For fade effect on memoryInfoBox
-    function fadeMemoryInfoBoxOut() {
-      const box = document.getElementById('memoryInfoBox');
-      box.style.transition = "opacity 0.5s";
-      box.style.opacity = 0;
+    function drawStars() {
+      const canvas = document.getElementById('starCanvas');
+      if (!canvas) return;
+      const parent = document.getElementById('memoriesFrame');
+      canvas.width = parent.offsetWidth;
+      canvas.height = 180;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      for (let i = 0; i < 40; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height * 0.9 + 5;
+        const size = Math.random() < 0.8 ? 2 : 4;
+        ctx.save();
+        ctx.globalAlpha = Math.random() * 0.4 + 0.5;
+        ctx.fillStyle = Math.random() > 0.5 ? "#ffe764" : "#fffbe3";
+        ctx.beginPath();
+        ctx.arc(Math.floor(x), Math.floor(y), size, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.restore();
+      }
     }
-    function fadeMemoryInfoBoxIn() {
-      const box = document.getElementById('memoryInfoBox');
-      box.style.transition = "opacity 0.3s";
-      box.style.opacity = 1;
-    }
+    window.addEventListener('resize', drawStars);
 
     let memoryInfoTimeout = null;
     let waitingForFade = false;
@@ -499,15 +538,15 @@
           setTimeout(() => {
             infoDesc.textContent = memory.desc;
           }, 10);
-          fadeMemoryInfoBoxIn();
+          infoBox.style.opacity = 1;
 
           if (memoryInfoTimeout) clearTimeout(memoryInfoTimeout);
           memoryInfoTimeout = setTimeout(() => {
-            fadeMemoryInfoBoxOut();
+            infoBox.style.opacity = 0;
             setTimeout(() => {
               infoTitle.textContent = "";
               infoDesc.textContent = "";
-              fadeMemoryInfoBoxIn();
+              infoBox.style.opacity = 1;
               waitingForFade = false;
             }, 600);
           }, 3200);
@@ -519,7 +558,7 @@
             memoriesNextBtn.setAttribute('aria-disabled', 'false');
             infoTitle.textContent = "All memories revisited.";
             infoDesc.textContent = "";
-            fadeMemoryInfoBoxIn();
+            infoBox.style.opacity = 1;
             memoriesNextBtnContainer.style.display = "flex";
             if (memoryInfoTimeout) clearTimeout(memoryInfoTimeout);
           }
