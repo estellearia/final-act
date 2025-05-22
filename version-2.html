@@ -6,52 +6,236 @@
   <title>Always Choose Her</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-    body, html {
-      min-height: 100vh; min-width: 100vw;
+    html, body {
+      min-height: 100vh;
+      min-width: 100vw;
       margin: 0; padding: 0; overflow-x: hidden;
       font-family: 'Press Start 2P', monospace;
       font-size: 13px;
+      text-align: center;
       background:
         radial-gradient(ellipse at 60% 80%, #d6f3ff 0%, #a3d8ff 16%, #353a5c 55%, #141332 80%, #06061a 100%),
         linear-gradient(180deg, #23204488 0%, #292a5a40 100%);
       color: #fff8e7;
-      text-align: center;
     }
-    .star-bg, .star-bg-glow, .twinkle-bg, .nebula, .aurora, .lens-flare {
-      pointer-events: none; position: fixed; left: 0; top: 0;
-      width: 100vw; height: 100vh; z-index: 0; overflow: hidden;
+    body {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh; min-width: 100vw; text-align: center;
+    }
+    .star-bg, .star-bg-glow, .twinkle-bg {
+      pointer-events: none;
+      position: fixed;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+      opacity: 1;
+      overflow: hidden;
+    }
+    .star-bg-glow {
+      filter: blur(2px) brightness(1.3);
+      opacity: 0.7;
+      z-index: 1;
+    }
+    .twinkle-bg {
+      z-index: 2;
+      pointer-events: none;
+    }
+    .shooting-star {
+      position: absolute;
+      width: 2.2px; height: 86px;
+      background: linear-gradient(180deg, #fff7cb 15%, #aeeaff 60%, transparent 100%);
+      opacity: 0.68;
+      border-radius: 100px;
+      pointer-events: none;
+      animation: shooting-star 1.45s cubic-bezier(.8,.2,.2,1) forwards;
+      box-shadow: 0 0 8px 3px #fffbe3cc, 0 0 25px #aeeaff77;
       image-rendering: pixelated;
     }
-    .star-bg-glow { filter: blur(2px) brightness(1.3); opacity: 0.7; z-index: 1;}
-    .twinkle-bg { z-index: 2;}
-    .nebula { z-index: 0; opacity: 0.5; background: radial-gradient(ellipse at 40% 70%, #b5d3fb29 0%, #7fa8d144 33%, transparent 65%), radial-gradient(ellipse at 75% 30%, #c9b3ff25 0%, #a3e9ff19 35%, transparent 80%); animation: nebula-float 14s linear infinite alternate;}
-    @keyframes nebula-float {0%{background-position:0% 0%,100% 100%}100%{background-position:10% 8%,90% 92%}}
-    .aurora {z-index: 3;opacity:.18;background:radial-gradient(ellipse at 60% 0%,#8ef9ff22 0,transparent 60%),radial-gradient(ellipse at 15% 5%,#e5d3ff14 0,transparent 55%),radial-gradient(ellipse at 82% 20%,#ffeaff11 0,transparent 65%);animation:aurora-move 16s linear infinite alternate;}
-    @keyframes aurora-move {0%{background-position:0% 0%,100% 100%,50% 0%}100%{background-position:10% 8%,90% 92%,60% 10%}}
-    .lens-flare {z-index:50;left:50%;top:30%;width:110px;height:27px;transform:translate(-50%,-50%) rotate(-12deg) scale(1);opacity:.13;background:radial-gradient(ellipse at 60% 50%,#fff5d9cc 0,#fffbe3a0 40%,transparent 70%);filter:blur(4px);animation:flare-blink 8.6s infinite linear;}
-    @keyframes flare-blink {0%{opacity:.09}18%{opacity:.19}32%{opacity:.06}35%{opacity:.16}50%{opacity:.07}100%{opacity:.13}}
-    .shooting-star {position:absolute;width:2.2px;height:86px;background:linear-gradient(180deg,#fff7cb 15%,#aeeaff 60%,transparent 100%);opacity:.68;border-radius:100px;pointer-events:none;animation:shooting-star 1.45s cubic-bezier(.8,.2,.2,1) forwards;box-shadow:0 0 8px 3px #fffbe3cc,0 0 25px #aeeaff77;}
-    @keyframes shooting-star {0%{transform:translateY(-90px) scaleY(.94) scaleX(.8);opacity:0}8%{opacity:1}85%{opacity:1}100%{transform:translateY(110vh) scaleY(1.07) scaleX(.92);opacity:0}}
-    .twinkle-star {position:absolute;border-radius:50%;background:#fffbe3;width:2px;height:2px;pointer-events:none;animation:twinkle 2.1s infinite alternate;}
-    @keyframes twinkle {0%{opacity:.48;box-shadow:0 0 2px 1px #ffd}50%{opacity:1;box-shadow:0 0 7px 2px #fffbe3,0 0 13px #a3e9ff55}100%{opacity:.26;box-shadow:0 0 2px 1px #ffd}}
+    @keyframes shooting-star {
+      0%   { transform: translateY(-90px) scaleY(0.94) scaleX(0.8); opacity: 0; }
+      8%  { opacity: 1; }
+      85%  { opacity: 1; }
+      100% { transform: translateY(110vh) scaleY(1.07) scaleX(0.92); opacity: 0; }
+    }
+    .twinkle-star {
+      position: absolute;
+      border-radius: 50%;
+      background: #fffbe3;
+      width: 2px; height: 2px;
+      pointer-events: none;
+      animation: twinkle 2.1s infinite alternate;
+      image-rendering: pixelated;
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.48; box-shadow: 0 0 2px 1px #ffd; }
+      50% { opacity: 1; box-shadow: 0 0 7px 2px #fffbe3, 0 0 13px #a3e9ff55; }
+      100% { opacity: 0.26; box-shadow: 0 0 2px 1px #ffd; }
+    }
+    .nebula {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      /* Match avatars by using more blue/purple and less pink */
+      background: radial-gradient(ellipse at 35% 70%, #b5d3fb29 0%, #7fa8d144 33%, transparent 65%),
+                  radial-gradient(ellipse at 75% 30%, #c9b3ff25 0%, #a3e9ff19 35%, transparent 80%);
+      opacity: 0.58;
+      mix-blend-mode: lighten;
+      animation: nebula-float 14s linear infinite alternate;
+      image-rendering: pixelated;
+    }
+    @keyframes nebula-float {
+      0% { background-position: 0% 0%, 100% 100%; }
+      100% { background-position: 10% 8%, 90% 92%; }
+    }
+    .aurora {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 3;
+      background: radial-gradient(ellipse at 60% 0%, #8ef9ff22 0%, transparent 60%),
+                  radial-gradient(ellipse at 15% 5%, #e5d3ff14 0%, transparent 55%),
+                  radial-gradient(ellipse at 82% 20%, #ffeaff11 0%, transparent 65%);
+      opacity: 0.18;
+      mix-blend-mode: lighten;
+      animation: aurora-move 16s linear infinite alternate;
+      image-rendering: pixelated;
+    }
+    @keyframes aurora-move {
+      0% { background-position: 0% 0%, 100% 100%, 50% 0%; }
+      100% { background-position: 10% 8%, 90% 92%, 60% 10%; }
+    }
+    .lens-flare {
+      position: fixed;
+      pointer-events: none;
+      left: 50%; top: 30%;
+      width: 110px; height: 27px;
+      z-index: 50;
+      transform: translate(-50%, -50%) rotate(-12deg) scale(1);
+      opacity: 0.13;
+      background: radial-gradient(ellipse at 60% 50%, #fff5d9cc 0%, #fffbe3a0 40%, transparent 70%);
+      filter: blur(4px);
+      animation: flare-blink 8.6s infinite linear;
+      image-rendering: pixelated;
+    }
+    @keyframes flare-blink {
+      0% { opacity: 0.09; }
+      18% { opacity: 0.19; }
+      32% { opacity: 0.06; }
+      35% { opacity: 0.16; }
+      50% { opacity: 0.07; }
+      100% { opacity: 0.13; }
+    }
+    .hidden { display: none !important; }
+    .memory-title {
+      font-size: 15px;
+      color: #ffe764;
+      text-shadow: 0 0 11px #fffbe3, 0 0 17px #ffe764b5, 0 0 32px #7eeaff50;
+      letter-spacing: 0.5px;
+      margin-bottom: 7px;
+      margin-top: 26px;
+      text-align: center;
+      user-select: none;
+      line-height: 1.22;
+    }
+    #memoryInstructionLines {
+      width: 100%;
+      max-width: 340px;
+      margin: 0 auto 11px auto;
+      display: block;
+      text-align: center;
+    }
+    .memory-instruction-quote {
+      color: #ffe764;
+      font-size: 0.8em;
+      background: rgba(38, 39, 80, 0.42);
+      border-radius: 6px;
+      padding: 8px 13px 8px 13px;
+      border: 1.5px solid #ffe76455;
+      display: inline-block;
+      font-style: italic;
+      letter-spacing: 0.5px;
+      line-height: 1.7;
+      white-space: pre-line;
+      margin: 0 auto 0 auto;
+      user-select: none;
+      box-shadow: 0 0 10px #ffe7641c;
+    }
     .pixel-frame {
       background: rgba(24,16,40,0.97);
       border-radius: 13px;
       box-shadow: 0 0 0 2px #ffe76477, 0 0 0 6px #353a5c, 0 0 50px 8px #aeeaff25, 0 0 0 1.5px #ffe764;
-      max-width: 370px;
+      max-width: 350px;
       width: 98vw;
-      margin: 0 auto 21px auto;
-      padding: 20px 16px 20px 16px;
+      margin: 0 auto;
+      margin-bottom: 21px;
+      padding: 18px 11px 18px 11px;
+      box-sizing: border-box;
       position: relative;
+      display: block;
       text-align: center;
       z-index: 2;
       backdrop-filter: blur(0.7px);
       animation: float-in 1.2s cubic-bezier(.5,0,.2,1);
+      transition: box-shadow 0.12s;
       image-rendering: pixelated;
     }
-    @keyframes float-in {0%{opacity:0;transform:translateY(23px) scale(.96);}100%{opacity:1;transform:translateY(0) scale(1);}}
-    .avatar {width: 44px;height: 44px;margin: 0 auto 13px auto;border-radius: 8px;box-shadow: 0 0 12px #ffe76433, 0 0 0 1.5px #ffe764, 0 0 12px #7eeaff25;background: #191830;image-rendering: pixelated;}
-    .pixel-text {color: #fffbe3;text-shadow: 1px 1px 0 #353a5c, 0 0 5px #ffe7646b;font-size: 1em;margin: 0.5em 0 0.3em 0;line-height: 1.57;}
+    @keyframes float-in {
+      0% { opacity: 0; transform: translateY(23px) scale(0.96);}
+      100% { opacity: 1; transform: translateY(0) scale(1);}
+    }
+    @media (max-width: 500px) {
+      .pixel-frame { max-width: 99vw; padding: 5vw 1vw 4vw 1vw; }
+      .memory-title { font-size: 13px; }
+      #memoryInstructionLines { max-width: 98vw; }
+    }
+    .avatar {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 13px auto;
+      border-radius: 8px;
+      box-shadow: 0 0 12px #ffe76433, 0 0 0 1.5px #ffe764, 0 0 12px #7eeaff25;
+      border: 1px solid #ffe764;
+      background: #191830;
+      image-rendering: pixelated;
+      transition: box-shadow 0.2s;
+      animation: avatar-float 3.2s infinite cubic-bezier(.59,.03,.4,1.01) alternate;
+    }
+    @keyframes avatar-float {
+      from { transform: translateY(0);}
+      to   { transform: translateY(-8px);}
+    }
+    .pixel-text {
+      color: #fffbe3;
+      text-shadow: 1px 1px 0 #353a5c, 0 0 5px #ffe7646b;
+      font-size: 1em;
+      margin: 0.5em 0 0.3em 0;
+      line-height: 1.57;
+      letter-spacing: 0.5px;
+      font-family: 'Press Start 2P', monospace;
+      word-break: break-word;
+      font-weight: normal;
+      text-align: center;
+    }
+    .pixel-quote {
+      color: #ffe764;
+      font-size: 0.73em;
+      margin-top: 1.1em;
+      margin-bottom: 0.4em;
+      text-shadow: 1px 1px 0 #353a5c, 0 0 7px #fffbe3b5;
+      background: rgba(38, 39, 80, 0.31);
+      border-radius: 4px;
+      padding: 6px 8px;
+      border: 1px solid #ffe76455;
+      display: inline-block;
+      font-style: italic;
+      letter-spacing: 0.5px;
+      line-height: 1.7;
+      white-space: pre-line;
+      text-align: center;
+      box-shadow: 0 0 8px #ffe76410;
+    }
     .button, .pixel-button {
       font-family: 'Press Start 2P', monospace;
       background: linear-gradient(180deg, #191830 60%, #232e44 100%);
@@ -63,75 +247,211 @@
       cursor: pointer;
       margin: 13px 0 0 0;
       font-size: 12px;
+      font-weight: normal;
+      letter-spacing: 0.55px;
       text-shadow: 1px 1px 0 #353a5c, 0 0 5px #fffbe3b5;
+      transition: background 0.16s, color 0.13s, border-color 0.13s, transform 0.07s, box-shadow 0.17s;
+      image-rendering: pixelated;
+      outline: 0;
       min-width: 74px;
       min-height: 24px;
+      text-align: center;
+      display: inline-block;
+      z-index: 1;
+      position: relative;
     }
-    .button:hover, .pixel-button:hover {background: #ffe764;color: #191830;border-color: #fffbe3;}
-    .center-btn, .final-choice-btns, .aria-btn-center {display: flex;justify-content: center;align-items: center;width: 100%;text-align: center;gap: 13px;}
-    .aria-box {
-      margin: 13px auto 0 auto;
-      background: rgba(22, 22, 44, 0.98);
-      border-radius: 13px;
-      box-shadow: 0 0 18px #2e3a5c77, 0 0 0 1.5px #ffe764;
-      border: 1.5px solid #ffe7643a;
-      color: #f6f6f6;
-      font-family: 'Press Start 2P', monospace;
-      font-size: 12px;
+    .button:hover, .pixel-button:hover {
+      background: #ffe764;
+      color: #191830;
+      border-color: #fffbe3;
+      transform: scale(1.06) translateY(-1px);
+      box-shadow: 0 0 15px #ffe764ad, 0 3px 0 0 #353a5c;
+      text-shadow: 0 0 9px #fffbe3;
+    }
+    .center-btn, .final-choice-btns, .aria-btn-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      text-align: center;
+      gap: 13px;
+    }
+    .star-canvas {
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      image-rendering: pixelated;
+    }
+    .memory-fragment {
+      width: 18px;
+      height: 18px;
+      margin: 5px;
+      display: block;
+      background: linear-gradient(145deg, #fffbe3 30%, #fcd34d 80%);
+      border-radius: 50%;
+      animation: glow 2.1s infinite alternate;
+      cursor: pointer;
+      box-shadow: 0 0 7px #fffbe3, 0 0 13px #ffe764;
+      transition: box-shadow 0.15s, background 0.15s, border-color 0.15s, filter 0.12s;
+      outline: 1px solid #fffbe3;
+      outline-offset: 2px;
+      border: 1px solid #ffe764;
+      background-clip: padding-box;
+      filter: drop-shadow(0 0 4px #ffe76430);
+      image-rendering: pixelated;
+    }
+    .memory-fragment.visited {
+      opacity: 0.16;
+      pointer-events: none;
+      background: #282840;
+      border: 1px solid #ffe764;
+      filter: none;
+      box-shadow: 0 0 5px #ffe76422;
+    }
+    #memoryFragments {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 11px;
+      max-width: 102px;
+      margin: 0 auto 4px auto;
+      text-align: center;
+      justify-content: center;
+      z-index: 1;
+      position: relative;
+      image-rendering: pixelated;
+    }
+    #memoryMessageBox {
+      display: none;
+      font-size: 10px;
+      color: #ffe764;
+      background: rgba(38,39,80,0.21);
+      border-radius: 7px;
+      border: 1px solid #ffe76444;
+      box-shadow: 0 0 8px #ffe76422;
+      margin: 15px auto 0 auto;
+      padding: 10px 10px 8px 10px;
+      max-width: 210px;
+      text-align: center;
       line-height: 1.8;
-      max-width: 330px;
-      min-width: 0;
-      padding: 19px 18px 22px 18px;
-      letter-spacing: 0.04em;
-      text-align: left;
-      transition: box-shadow 0.3s;
-      word-break: break-word;
-      text-shadow: 0 1px 0 #222, 0 0 4px #aeeaff44;
-      white-space: pre-line;
-      animation: fadeinbox 1.1s cubic-bezier(.42,0,.58,1);
+      font-weight: normal;
+      letter-spacing: 0.13px;
+      opacity: 1;
+      transition: opacity 0.3s;
+      position: relative;
+      z-index: 2;
     }
-    @keyframes fadeinbox {from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
-    #ariaSprite { width: 48px; height: 48px;margin: 0 auto 10px auto; border-radius: 7px; background: #191830; border: 1px solid #ffe764; box-shadow: 0 0 12px #ffe76455, 0 0 0 1px #ffe764; image-rendering: pixelated; }
+    .aria-box {
+      background: rgba(38, 39, 80, 0.65);
+      border-radius: 10px;
+      padding: 13px 11px 14px 11px;
+      margin: 13px 0 0 0;
+      box-shadow: 0 0 9px #ffe76422;
+      font-size: 11px;
+      color: #ffeebc;
+      text-shadow: 0 0 5px #ffe76433, 1px 1px 0 #353a5c;
+      border: 1px solid #ffe76444;
+      font-family: 'Press Start 2P', monospace;
+      white-space: pre-line;
+      line-height: 1.8;
+      max-width: 260px;
+      min-width: 0;
+      min-height: 60px;
+      word-break: break-word;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      box-sizing: border-box;
+      transition: min-height 0.3s, max-width 0.3s;
+      overflow-wrap: break-word;
+      
+      animation: float-in 1.4s cubic-bezier(.5,0,.2,1);
+    }
+    #ariaSprite {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 10px auto;
+      border-radius: 7px;
+      background: #191830;
+      border: 1px solid #ffe764;
+      box-shadow: 0 0 12px #ffe76455, 0 0 0 1px #ffe764;
+      image-rendering: pixelated;
+      text-align: center;
+      animation: avatar-float 4.3s infinite alternate;
+    }
+    .final-choice-btns {
+      gap: 14px;
+      margin-top: 10px;
+    }
+    @keyframes glow {
+      from { box-shadow: 0 0 8px #ffe764, 0 0 17px #fffbe3; }
+      to { box-shadow: 0 0 11px #ffe764, 0 0 18px #fcd34d; }
+    }
+    @media (max-width: 500px) {
+      .aria-box { font-size: 9.5px; max-width: 93vw; }
+      #ariaSprite { width: 36px; height: 36px; }
+      .pixel-frame { padding: 5vw 1vw 4vw 1vw;}
+    }
     /* Meeting (journey) animation */
     #meetingScene {
-      min-height: 120px;
+      min-height: 110px;
       overflow: visible;
       background: transparent !important;
       box-shadow: none !important;
       image-rendering: pixelated;
     }
+    #meetingBg {
+      position: absolute;
+      left: 0; top: 0; width: 100%; height: 100%;
+      z-index: 0;
+    }
     #herAvatar, #yourAvatar {
-      transition: opacity 0.7s, left 1.2s cubic-bezier(.4,0,.5,1.2), right 1.2s cubic-bezier(.4,0,.5,1.2), box-shadow 0.6s;
+      transition: opacity 0.7s, left 1.6s cubic-bezier(.4,0,.5,1.2), box-shadow 0.6s, right 1.6s cubic-bezier(.4,0,.5,1.2);
       image-rendering: pixelated;
-      bottom: 34px;
+      bottom: 20px;
       position: absolute;
       z-index: 2;
-      width: 72px; height: 72px;
+      width: 62px; height: 62px;
       border-radius: 7px;
       background: #1c2340;
       box-shadow: 0 0 0 #fff;
     }
-    #herAvatar { left: 10%; opacity: 0;}
-    #yourAvatar { right: 10%; opacity: 0.85;}
+    #herAvatar {
+      left: 3%;
+      opacity: 0;
+    }
+    #yourAvatar {
+      right: 3%;
+      opacity: 0.77;
+    }
+    /* When they meet in the middle, overlap slightly */
     #herAvatar.meet {
-      left: 50%; transform: translateX(-54%); box-shadow: 0 0 18px #ffe4ff, 0 0 40px #c1e1ff; opacity: 1;
+      left: 51%;
+      transform: translateX(-100%);
+      box-shadow: 0 0 18px #ffe4ff, 0 0 40px #c1e1ff;
+      opacity: 1;
     }
     #yourAvatar.meet {
-      right: 50%; transform: translateX(54%); box-shadow: 0 0 10px #aeeaff, 0 0 22px #ffe4ff; opacity: 1;
-    }
-    @media (max-width: 500px) {
-      .aria-box { font-size: 10.5px; max-width: 93vw; padding: 16px 7vw; }
-      #ariaSprite { width: 36px; height: 36px; }
-      .pixel-frame { max-width: 99vw; padding: 5vw 1vw 4vw 1vw;}
-      #herAvatar, #yourAvatar { width: 44px; height: 44px; }
+      right: 46%;
+      transform: translateX(0%);
+      box-shadow: 0 0 10px #aeeaff, 0 0 22px #ffe4ff;
+      opacity: 1;
     }
   </style>
 </head>
 <body>
+  <!-- Dreamy cosmic background layers -->
   <audio id="dreamyBgAudio" loop preload="auto">
     <source src="https://cdn.pixabay.com/audio/2023/03/22/audio_128b6f4415.mp3" type="audio/mp3">
   </audio>
-  <button id="muteBtn" style="position:fixed;top:14px;right:14px;z-index:1000;background:rgba(38,39,80,0.6);border-radius:50%;border:2px solid #ffe764;width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:#ffe764;font-size:13px;cursor:pointer;box-shadow:0 0 8px #ffe76450;">&#128266;</button>
+  <button id="muteBtn" style="position:fixed;top:14px;right:14px;z-index:1000;
+    background:rgba(38,39,80,0.6);border-radius:50%;border:2px solid #ffe764;
+    width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+    color:#ffe764;font-size:13px;cursor:pointer;box-shadow:0 0 8px #ffe76450;">
+    &#128266;
+  </button>
   <div class="nebula"></div>
   <div class="star-bg" id="starBg"></div>
   <div class="star-bg-glow" id="starBgGlow"></div>
@@ -144,6 +464,7 @@
     <span class="memory-instruction-quote" id="memoryInstructionQuote"></span>
   </div>
 
+  <!-- MEWBIE INTRO SCENE -->
   <div class="pixel-frame" id="mainFrame">
     <img src="https://64.media.tumblr.com/647ca06c5a608d1ea1c416b21b839ea3/9a98a57c72a06121-2a/s250x400/7f925df3ce70975efc97a7f0ffac27ea3838ae3e.gif"
       alt="Mewby" class="avatar" />
@@ -156,6 +477,7 @@
     </div>
   </div>
 
+  <!-- MEMORIES SCENE -->
   <div class="pixel-frame hidden" id="memoriesFrame" style="position:relative;">
     <canvas id="starCanvas" class="star-canvas"></canvas>
     <div id="memoryFragments"></div>
@@ -165,6 +487,7 @@
     </div>
   </div>
 
+  <!-- FINAL CHOICE SCENE -->
   <div class="pixel-frame hidden" id="finalFrame">
     <p class="pixel-text" style="font-size:13px; margin-bottom:9px; color:#ffe764; text-shadow:0 0 9px #fffbe3;">
       You've remembered enough. What will you do?</p>
@@ -174,6 +497,7 @@
     </div>
   </div>
 
+  <!-- MEETING/JOURNEY SCENE -->
   <div class="pixel-frame hidden" id="meetingScene">
     <div id="meetingBg"></div>
     <img src="https://pixels.crd.co/assets/images/gallery115/4ff484db.gif?v=99d3974e" id="herAvatar"/>
@@ -183,6 +507,7 @@
     </audio>
   </div>
 
+  <!-- ARIA MESSAGE SCENE -->
   <div class="pixel-frame centered hidden" id="ariaFrame">
     <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria" id="ariaSprite" />
     <div class="aria-box" id="ariaMsg"></div>
@@ -197,12 +522,13 @@
     // Dreamy audio logic
     const dreamyAudio = document.getElementById('dreamyBgAudio');
     const muteBtn = document.getElementById('muteBtn');
-    let isMuted = false, dreamyStarted = false;
+    let isMuted = false;
+    let dreamyStarted = false;
     function startDreamyAudio() {
       if (!dreamyStarted) {
         dreamyAudio.volume = 0.22;
         dreamyAudio.currentTime = 0;
-        dreamyAudio.play().catch(()=>{});
+        dreamyAudio.play();
         dreamyStarted = true;
       }
     }
@@ -213,7 +539,7 @@
       muteBtn.innerHTML = isMuted ? "&#128263;" : "&#128266;";
     };
 
-    // Cosmic Background
+    // --- COSMIC STAR BACKGROUND ---
     function makeStars(container, count, colors, blur = false) {
       container.innerHTML = '';
       for(let i=0;i<count;i++){
@@ -277,9 +603,7 @@
 
     // --- INSTRUCTIONS TYPING ---
     const memoryInstructionLines = [
-      "Click each memory fragment one at a time.",
-      "Wait for the memory to finish before choosing the next.",
-      "Rushing will cause the stars to overlap and you might miss a story."
+      "Click each memory fragment one at a time."
     ];
     let memoryInstructionLine = 0, memoryInstructionChar = 0;
     function typeMemoryInstructionLine() {
@@ -354,6 +678,7 @@
         document.getElementById(x).classList.add('hidden');
       });
       document.getElementById(id).classList.remove('hidden');
+      // Hide the memory lane title/instructions unless we're in memoriesFrame
       const showMemoryStuff = (id === 'memoriesFrame');
       document.getElementById('memoryTitle').style.display = showMemoryStuff ? 'block' : 'none';
       document.getElementById('memoryInstructionLines').style.display = showMemoryStuff ? 'block' : 'none';
@@ -433,6 +758,7 @@
           if (memory.visited) return;
           memory.visited = true;
           circle.classList.add('visited');
+          // Show message
           messageBox.innerHTML =
             `<span style="font-size:11px;font-weight:bold;color:#ffe764;display:block;margin-bottom:6px;">${memory.title}</span>
             <span style="font-size:11px;color:#fffbe3;font-weight:normal;display:block;">${memory.desc}</span>`;
@@ -447,6 +773,7 @@
             }, 500);
           }, 2200);
 
+          // If all visited, enable Next button and show last desc
           if (memoriesData.every(m => m.visited)) {
             memoriesNextBtn.disabled = false;
             memoriesNextBtn.style.opacity = 1;
@@ -458,12 +785,15 @@
             if (memoryMessageTimeout) clearTimeout(memoryMessageTimeout);
           }
         });
+
+        // Keyboard accessibility: Enter or Space triggers click
         circle.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             circle.click();
           }
         });
+
         memoryFragmentsEl.appendChild(circle);
       });
 
@@ -476,22 +806,25 @@
     function chooseHer() {
       document.getElementById("chooseHerBtn").style.display = "none";
       document.getElementById("chooseEasyBtn").style.display = "none";
+      // Animate meeting scene
       showOnly('meetingScene');
       let her = document.getElementById('herAvatar');
       let you = document.getElementById('yourAvatar');
       her.style.opacity = "1";
       her.classList.remove('meet');
       you.classList.remove('meet');
-      her.style.left = "10%";
+      her.style.left = "3%";
       her.style.transform = "";
-      you.style.opacity = "0.85";
-      you.style.right = "10%";
+      you.style.opacity = "0.77";
+      you.style.right = "3%";
       you.style.transform = "";
+      // Animate both moving to center to "meet"
       setTimeout(() => {
         her.classList.add('meet');
         you.classList.add('meet');
         document.getElementById('meetingSfx').play();
       }, 600);
+      // After a while, show final letter
       setTimeout(() => {
         showAriaMessage();
         her.style.opacity = "0";
