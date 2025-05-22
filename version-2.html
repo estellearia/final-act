@@ -49,6 +49,7 @@
       pointer-events: none;
       animation: shooting-star 1.45s cubic-bezier(.8,.2,.2,1) forwards;
       box-shadow: 0 0 8px 3px #fffbe3cc, 0 0 25px #aeeaff77;
+      image-rendering: pixelated;
     }
     @keyframes shooting-star {
       0%   { transform: translateY(-90px) scaleY(0.94) scaleX(0.8); opacity: 0; }
@@ -63,6 +64,7 @@
       width: 2px; height: 2px;
       pointer-events: none;
       animation: twinkle 2.1s infinite alternate;
+      image-rendering: pixelated;
     }
     @keyframes twinkle {
       0% { opacity: 0.48; box-shadow: 0 0 2px 1px #ffd; }
@@ -80,6 +82,7 @@
       opacity: 0.6;
       mix-blend-mode: lighten;
       animation: nebula-float 14s linear infinite alternate;
+      image-rendering: pixelated;
     }
     @keyframes nebula-float {
       0% { background-position: 0% 0%, 100% 100%; }
@@ -96,6 +99,7 @@
       opacity: 0.28;
       mix-blend-mode: lighten;
       animation: aurora-move 16s linear infinite alternate;
+      image-rendering: pixelated;
     }
     @keyframes aurora-move {
       0% { background-position: 0% 0%, 100% 100%, 50% 0%; }
@@ -112,6 +116,7 @@
       background: radial-gradient(ellipse at 60% 50%, #fff5d9cc 0%, #fffbe3a0 40%, transparent 70%);
       filter: blur(4px);
       animation: flare-blink 8.6s infinite linear;
+      image-rendering: pixelated;
     }
     @keyframes flare-blink {
       0% { opacity: 0.11; }
@@ -173,6 +178,7 @@
       backdrop-filter: blur(0.7px);
       animation: float-in 1.2s cubic-bezier(.5,0,.2,1);
       transition: box-shadow 0.12s;
+      image-rendering: pixelated;
     }
     @keyframes float-in {
       0% { opacity: 0; transform: translateY(23px) scale(0.96);}
@@ -276,6 +282,7 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
+      image-rendering: pixelated;
     }
     .memory-fragment {
       width: 16px;
@@ -293,6 +300,7 @@
       border: 1px solid #ffe764;
       background-clip: padding-box;
       filter: drop-shadow(0 0 4px #ffe76430);
+      image-rendering: pixelated;
     }
     .memory-fragment.visited {
       opacity: 0.16;
@@ -312,6 +320,7 @@
       justify-content: center;
       z-index: 1;
       position: relative;
+      image-rendering: pixelated;
     }
     #memoryMessageBox {
       display: none;
@@ -386,10 +395,11 @@
     }
     /* Meeting (journey) animation */
     #meetingScene {
-      min-height: 82px;
+      min-height: 96px;
       overflow: visible;
       background: transparent !important;
       box-shadow: none !important;
+      image-rendering: pixelated;
     }
     #meetingBg {
       position: absolute;
@@ -397,26 +407,41 @@
       z-index: 0;
     }
     #herAvatar, #yourAvatar {
-      transition: opacity 0.6s, left 1.8s cubic-bezier(.4,0,.5,1.2), box-shadow 0.6s;
+      transition: opacity 0.6s, left 1.8s cubic-bezier(.4,0,.5,1.2), box-shadow 0.6s, right 1.8s cubic-bezier(.4,0,.5,1.2);
+      image-rendering: pixelated;
     }
     #herAvatar {
       position: absolute;
       left: 8%;
       bottom: 12px;
-      width: 32px; height: 32px;
+      width: 48px; height: 48px;
       opacity: 0;
       z-index: 2;
       box-shadow: 0 0 0 #fff;
+      border-radius: 7px;
     }
     #yourAvatar {
       position: absolute;
       right: 8%;
       bottom: 12px;
-      width: 29px; height: 29px;
+      width: 48px; height: 48px;
       opacity: 0.77;
       z-index: 2;
-      border-radius: 8px;
+      border-radius: 7px;
       box-shadow: 0 0 0 #fff;
+    }
+    /* When they meet in the center, overlap slightly */
+    #herAvatar.meet {
+      left: 51%;
+      transform: translateX(-100%);
+      box-shadow: 0 0 18px #ffe4ff, 0 0 40px #c1e1ff;
+      opacity: 1;
+    }
+    #yourAvatar.meet {
+      right: 46%;
+      transform: translateX(0%);
+      box-shadow: 0 0 10px #aeeaff, 0 0 22px #ffe4ff;
+      opacity: 1;
     }
   </style>
 </head>
@@ -479,8 +504,8 @@
   <!-- MEETING/JOURNEY SCENE -->
   <div class="pixel-frame hidden" id="meetingScene">
     <div id="meetingBg"></div>
-    <img src="https://i.imgur.com/9OC7GRw.gif" id="herAvatar"/>
-    <img src="https://cdn.pixabay.com/photo/2016/04/01/09/27/avatar-1295391_1280.png" id="yourAvatar"/>
+    <img src="https://pixels.crd.co/assets/images/gallery115/4ff484db.gif?v=99d3974e" id="herAvatar"/>
+    <img src="https://pixels.crd.co/assets/images/gallery115/7a912bf8.gif?v=99d3974e" id="yourAvatar"/>
     <audio id="meetingSfx" preload="auto">
       <source src="https://cdn.pixabay.com/audio/2022/07/26/audio_124b8b7e9e.mp3" type="audio/mp3">
     </audio>
@@ -502,7 +527,6 @@
     const dreamyAudio = document.getElementById('dreamyBgAudio');
     const muteBtn = document.getElementById('muteBtn');
     let isMuted = false;
-    // Start bg sound on first user action
     let dreamyStarted = false;
     function startDreamyAudio() {
       if (!dreamyStarted) {
@@ -537,6 +561,7 @@
           : "0 0 6px #fff8ef, 0 0 13px #ffe764";
         s.style.filter = blur ? "blur(1.2px)" : "";
         s.style.pointerEvents = "none";
+        s.style.imageRendering = "pixelated";
         container.appendChild(s);
       }
     }
@@ -549,7 +574,6 @@
       sky.appendChild(star);
       setTimeout(() => star.remove(), 1500);
     }
-    // Twinkling stars
     function makeTwinkles(container, count) {
       container.innerHTML = '';
       for(let i=0;i<count;i++) {
@@ -560,16 +584,15 @@
         let size = Math.random() < 0.8 ? 2 : 3;
         t.style.width = t.style.height = `${size}px`;
         t.style.animationDelay = `${Math.random()*2.1}s`;
+        t.style.imageRendering = "pixelated";
         container.appendChild(t);
       }
     }
-    // Flare occasionally
     function flareLoop() {
       const flare = document.querySelector('.lens-flare');
       flare.style.opacity = Math.random()*0.09 + 0.09;
       setTimeout(flareLoop, 6000+Math.random()*4000);
     }
-    // Main background refresh
     function refreshStars() {
       makeStars(document.getElementById('starBg'), 30, ["#fffbe3", "#ffe764", "#a3e9ff"], false);
       makeStars(document.getElementById('starBgGlow'), 12, ["#fffbe3", "#a3e9ff"], true);
@@ -580,7 +603,8 @@
       flareLoop();
     });
     window.addEventListener("resize", refreshStars);
-    setInterval(() => { if(Math.random()<0.83) spawnShootingStar(); }, 350);
+    // LESS frequent shooting stars for a dreamier vibe:
+    setInterval(() => { if(Math.random()<0.14) spawnShootingStar(); }, 1200);
 
     // --- INSTRUCTIONS TYPING ---
     const memoryInstructionLines = [
@@ -794,24 +818,26 @@
       let her = document.getElementById('herAvatar');
       let you = document.getElementById('yourAvatar');
       her.style.opacity = "1";
+      her.classList.remove('meet');
+      you.classList.remove('meet');
       her.style.left = "8%";
       her.style.transform = "";
       you.style.opacity = "0.77";
-      // Animate her moving to you
+      you.style.right = "8%";
+      you.style.transform = "";
+      // Animate both moving to center to "meet"
       setTimeout(() => {
-        her.style.left = "50%";
-        her.style.transform = "translateX(-50%)";
+        her.classList.add('meet');
+        you.classList.add('meet');
         // Play a chime or "found" sfx
         document.getElementById('meetingSfx').play();
-        her.style.boxShadow = "0 0 15px #ffe4ff, 0 0 46px #c1e1ff";
-        you.style.boxShadow = "0 0 10px #aeeaff, 0 0 20px #ffe4ff";
-      }, 420);
+      }, 500);
       // After a while, show final letter
       setTimeout(() => {
         showAriaMessage();
         her.style.opacity = "0";
         you.style.opacity = "0";
-      }, 2000);
+      }, 2200);
     }
     function chooseEasy() {
       alert("You chose the easy way out... But this story is about choosing love.");
