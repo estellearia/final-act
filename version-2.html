@@ -182,7 +182,6 @@
       transition: box-shadow 0.12s;
       image-rendering: auto;
     }
-    /* WIDE PIXEL-FRAME FOR ARIA SCENE */
     #ariaFrame.pixel-frame {
       background: none;
       box-shadow: none;
@@ -361,38 +360,39 @@
       background: linear-gradient(135deg, #fbf6e9 90%, #ffe0f2 100%);
       border-radius: 18px;
       box-shadow: 0 8px 40px 0 #ffe3f7cc, 0 0 0 2px #ffeecb99, 0 0 0 7px #ffe0f233, 0 0 60px 15px #aeeaff18;
-      padding: 44px 40px 36px 40px;
+      padding: 34px 24px 24px 24px;
       margin: 0 auto;
       position: relative;
       max-width: 700px;
       width: 98vw;
-      min-height: 360px;
+      min-height: 280px;
       text-align: left;
-      animation: aria-letter-fadein 1.7s cubic-bezier(.4,0,.2,1);
+      animation: aria-letter-fadein 1.3s cubic-bezier(.4,0,.2,1);
       color: #473a24;
       font-family: 'Press Start 2P', monospace;
-      line-height: 2.1;
+      font-size: 11px; /* -2 smaller than before */
+      line-height: 1.8;
       letter-spacing: 0.06em;
       border: 1.5px solid #ffeecb;
       z-index: 4;
     }
     @media (max-width: 700px) {
-      .aria-letter-bg { padding: 9vw 3vw 7vw 3vw; max-width: 97vw; }
+      .aria-letter-bg { padding: 7vw 2vw 6vw 2vw; max-width: 97vw; }
     }
     @keyframes aria-letter-fadein {
-      0% { opacity: 0; transform: translateY(34px) scale(0.98);}
+      0% { opacity: 0; transform: translateY(40px) scale(0.97);}
       100% { opacity: 1; transform: translateY(0) scale(1);}
     }
     .aria-letter-header {
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      margin-bottom: 6px;
-      gap: 11px;
+      margin-bottom: 3px;
+      gap: 7px;
     }
     .aria-letter-name {
       font-family: 'Pacifico', cursive;
-      font-size: 2.13em;
+      font-size: 1.5em;
       color: #e07ebf;
       letter-spacing: 0.028em;
       text-shadow: 0 2px 10px #ffe8f6cc, 0 0 1px #d863a7;
@@ -404,18 +404,18 @@
       filter: drop-shadow(0 1px 3px #fcc8eb88);
     }
     .aria-letter-subtitle {
-      font-size: 0.98em;
+      font-size: 1em;
       font-style: italic;
       color: #e07ebf;
       opacity: 0.68;
-      margin-bottom: 22px;
+      margin-bottom: 13px;
       margin-left: 2px;
       font-family: 'Press Start 2P';
       letter-spacing: 0.07em;
     }
     .aria-letter-content {
-      margin-top: 13px;
-      font-size: 1.06em;
+      margin-top: 8px;
+      font-size: 1em;
       color: #473a24;
       font-family: 'Press Start 2P', monospace;
       background: none;
@@ -424,29 +424,29 @@
       white-space: pre-line;
     }
     .aria-letter-signoff {
-      margin-top: 36px;
+      margin-top: 24px;
       font-family: 'Pacifico', cursive;
-      font-size: 1.5em;
+      font-size: 1.15em;
       color: #e07ebf;
       text-align: right;
       text-shadow: 0 1px 7px #ffe0f288, 0 0 1px #d863a7;
     }
     .aria-letter-stars {
       position: absolute;
-      top: 18px; right: 24px;
+      top: 11px; right: 17px;
       pointer-events: none;
-      font-size: 1.35em;
+      font-size: 1.15em;
       color: #ffe764;
       opacity: 0.7;
-      text-shadow: 0 0 9px #ffe764bb, 0 0 14px #fcd34d99;
+      text-shadow: 0 0 7px #ffe764bb, 0 0 10px #fcd34d99;
     }
     .aria-letter-stars.left {
-      left: 24px; right: unset; top: 18px; transform: scaleX(-1) rotate(-6deg);
+      left: 17px; right: unset; top: 11px; transform: scaleX(-1) rotate(-6deg);
     }
     .aria-letter-tape {
       position: absolute;
-      left: 19px; top: -19px;
-      width: 58px; height: 29px;
+      left: 9px; top: -15px;
+      width: 38px; height: 18px;
       background: linear-gradient(96deg, #ffe2e7 70%, #fffbe3 100%);
       border-radius: 7px 15px 9px 13px;
       box-shadow: 0 2px 8px #fdd3d822, 0 0 2px #ffe0f2;
@@ -458,21 +458,27 @@
     @media (max-width: 600px) {
       .aria-letter-bg { padding: 7vw 2vw 7vw 2vw; }
       .aria-letter-header { flex-direction: column; align-items: flex-start; }
-      .aria-letter-name { font-size: 1.3em; }
-      .aria-letter-signoff { font-size: 1.1em; }
+      .aria-letter-name { font-size: 1.2em; }
+      .aria-letter-signoff { font-size: 1em; }
     }
     #ariaSprite {
-      width: 48px;
-      height: 48px;
+      width: 64px;
+      height: 64px;
       margin: 0 auto 10px auto;
       border-radius: 7px;
       background: #191830;
       border: 1px solid #ffe764;
       box-shadow: 0 0 11px #ffe76433, 0 0 0 1px #ffe764;
-      image-rendering: auto;
+      image-rendering: pixelated;
       text-align: center;
-      animation: avatar-float 4.3s infinite alternate;
+      animation: avatar-fadein 1.2s cubic-bezier(.4,0,.2,1) both;
       display: block;
+      opacity: 0;
+      /* Start hidden, fade in with the letter */
+    }
+    @keyframes avatar-fadein {
+      0% { opacity: 0; transform: scale(0.95) translateY(30px);}
+      100% { opacity: 1; transform: scale(1) translateY(0);}
     }
     .final-choice-btns {
       gap: 14px;
@@ -878,9 +884,18 @@
         you.classList.add('meet');
         document.getElementById('meetingSfx').play();
       }, 600);
-      // After a while, show final letter
+      // After a while, show final letter with SMOOTH transition
       setTimeout(() => {
-        showAriaMessage();
+        // Fade out meeting scene before showing letter
+        document.getElementById('meetingScene').style.transition = "opacity 0.8s cubic-bezier(.4,0,.2,1)";
+        document.getElementById('meetingScene').style.opacity = "1";
+        setTimeout(() => {
+          document.getElementById('meetingScene').style.opacity = "0";
+          setTimeout(() => {
+            document.getElementById('meetingScene').style.opacity = "";
+            showAriaMessage();
+          }, 820);
+        }, 900);
         her.style.opacity = "0";
         you.style.opacity = "0";
       }, 2300);
@@ -922,6 +937,14 @@ Happy Happy Birthdaaaay love.`;
 
     function showAriaMessage() {
       showOnly('ariaFrame');
+      // Smooth fade-in for Aria's sprite
+      const sprite = document.getElementById('ariaSprite');
+      sprite.style.opacity = "0";
+      sprite.style.animation = "none";
+      setTimeout(() => {
+        sprite.style.animation = "avatar-fadein 1.2s cubic-bezier(.4,0,.2,1) both";
+      }, 100);
+
       const box = document.getElementById('ariaMsg');
       const homeBtn = document.getElementById('ariaHomeBtn');
       const signoff = document.getElementById('ariaSignoff');
@@ -939,7 +962,7 @@ Happy Happy Birthdaaaay love.`;
           homeBtn.style.display = "inline-block";
         }
       }
-      typeAria();
+      setTimeout(typeAria, 350); // Give a moment for fade-in before typing
     }
   </script>
 </body>
