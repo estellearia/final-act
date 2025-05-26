@@ -731,13 +731,15 @@
       window.scrollTo(0,0);
     }
 
-    document.getElementById('mewbyContinue').onclick = () => {
-      document.getElementById('memoryInstructionQuote').innerHTML = '';
-      memoryInstructionLine = 0; memoryInstructionChar = 0;
-      showOnly('memoriesFrame');
-      setTimeout(typeMemoryInstructionLine, 420);
-      initMemories();
-    };
+document.getElementById('mewbyContinue').onclick = () => {
+  document.getElementById('memoryInstructionQuote').innerHTML = '';
+  memoryInstructionLine = 0; memoryInstructionChar = 0;
+  showOnly('memoriesFrame');
+  setTimeout(() => {
+    typeMemoryInstructionLine();
+    initMemories();
+  }, 420);
+};
 
     // --- STAR CANVAS FOR MEMORY LANE ---
     function drawStars() {
