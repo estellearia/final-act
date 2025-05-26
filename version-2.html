@@ -415,7 +415,7 @@
     }
     .aria-letter-content {
       margin-top: 13px;
-      font-size: 1em;
+      font-size: 1.06em;
       color: #473a24;
       font-family: 'Press Start 2P', monospace;
       background: none;
@@ -485,7 +485,7 @@
   </style>
 </head>
 <body>
-  <!-- Dreamy cosmic background layers -->
+  <!-- Dreamy cosmic background layers and all your UI -->
   <audio id="dreamyBgAudio" loop preload="auto">
     <source src="https://cdn.pixabay.com/audio/2023/03/22/audio_128b6f4415.mp3" type="audio/mp3">
   </audio>
@@ -540,16 +540,6 @@
     </div>
   </div>
 
-  <!-- MEETING/JOURNEY SCENE -->
-  <div class="pixel-frame hidden" id="meetingScene">
-    <div id="meetingBg"></div>
-    <img src="https://pixels.crd.co/assets/images/gallery115/4ff484db.gif?v=99d3974e" id="herAvatar" loading="lazy"/>
-    <img src="https://pixels.crd.co/assets/images/gallery115/7a912bf8.gif?v=99d3974e" id="yourAvatar" loading="lazy"/>
-    <audio id="meetingSfx" preload="auto">
-      <source src="https://cdn.pixabay.com/audio/2022/07/26/audio_124b8b7e9e.mp3" type="audio/mp3">
-    </audio>
-  </div>
-
   <!-- ARIA MESSAGE SCENE -->
   <div class="pixel-frame centered hidden" id="ariaFrame">
     <img src="https://i.imgur.com/9OC7GRw.gif" alt="Aria" id="ariaSprite" loading="lazy" style="margin-bottom:14px;" />
@@ -571,6 +561,7 @@
       </button>
     </div>
   </div>
+
 
   <script>
     // Dreamy audio logic
@@ -860,30 +851,17 @@
     function chooseHer() {
       document.getElementById("chooseHerBtn").style.display = "none";
       document.getElementById("chooseEasyBtn").style.display = "none";
-      // Animate meeting scene
-      showOnly('meetingScene');
-      let her = document.getElementById('herAvatar');
-      let you = document.getElementById('yourAvatar');
-      her.style.opacity = "1";
-      her.classList.remove('meet');
-      you.classList.remove('meet');
-      her.style.left = "3%";
-      her.style.transform = "";
-      you.style.opacity = "0.77";
-      you.style.right = "3%";
-      you.style.transform = "";
-      // Animate both moving to center to "meet"
+      // Directly fade to letter, SKIP meetingScene
+      const finalFrame = document.getElementById('finalFrame');
+      finalFrame.style.transition = "opacity 0.8s cubic-bezier(.4,0,.2,1)";
+      finalFrame.style.opacity = "1";
       setTimeout(() => {
-        her.classList.add('meet');
-        you.classList.add('meet');
-        document.getElementById('meetingSfx').play();
-      }, 600);
-      // After a while, show final letter
-      setTimeout(() => {
-        showAriaMessage();
-        her.style.opacity = "0";
-        you.style.opacity = "0";
-      }, 2300);
+        finalFrame.style.opacity = "0";
+        setTimeout(() => {
+          finalFrame.style.opacity = "";
+          showAriaMessage();
+        }, 820);
+      }, 200);
     }
     function chooseEasy() {
       alert("You chose the easy way out... But this story is about choosing love.");
