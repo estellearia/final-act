@@ -77,7 +77,6 @@
       z-index: 0;
       left: 0; top: 0;
       width: 100vw; height: 100vh;
-      /* Match avatars by using more blue/purple and less pink */
       background: radial-gradient(ellipse at 35% 70%, #b5d3fb29 0%, #7fa8d144 33%, transparent 65%),
                   radial-gradient(ellipse at 75% 30%, #c9b3ff25 0%, #a3e9ff19 35%, transparent 80%);
       opacity: 0.58;
@@ -138,7 +137,7 @@
       text-align: center;
       user-select: none;
       line-height: 1.25;
-	  font-family: 'Press Start 2P', monospace;
+      font-family: 'Press Start 2P', monospace;
     }
     #memoryInstructionLines {
       width: 100%;
@@ -182,6 +181,11 @@
       transition: box-shadow 0.12s;
       image-rendering: pixelated;
     }
+    /* WIDE PIXEL-FRAME FOR ARIA SCENE */
+    #ariaFrame.pixel-frame {
+      max-width: 820px;
+      width: 100vw;
+    }
     @keyframes float-in {
       0% { opacity: 0; transform: translateY(23px) scale(0.96);}
       100% { opacity: 1; transform: translateY(0) scale(1);}
@@ -190,6 +194,7 @@
       .pixel-frame { max-width: 99vw; padding: 5vw 1vw 4vw 1vw; }
       .memory-title { font-size: 13px; }
       #memoryInstructionLines { max-width: 98vw; }
+      #ariaFrame.pixel-frame { max-width: 99vw; }
     }
     .avatar {
       width: 58px;
@@ -348,28 +353,26 @@
       position: relative;
       z-index: 2;
     }
-	
-	.aria-box {
-  background: rgba(38, 39, 80, 0.56);
-  border-radius: 7px;
-  box-shadow: 0 0 7px #ffe76422;
-  font-size: 13.2px;
-  color: #ffeebc;
-  text-shadow: 0 0 0px #ffe76444, 0px 0px 0 #353a5c;
-  border: 1px solid #ffe76444;
-  font-family: 'Press Start 2P', monospace;
-  white-space: pre-line;
-  line-height: 1.85;
-  max-width: 820px;       /* Correct max width */
-  width: 100%;            /* Full width within parent */
-  margin: 0 auto;         /* Centered */
-  padding: 32px 36px 30px 36px;
-  word-break: break-word;
-  box-sizing: border-box;
-  text-align: left;
-  animation: float-in 1.4s cubic-bezier(.5,0,.2,1);
-}
-
+    .aria-box {
+      background: rgba(38, 39, 80, 0.56);
+      border-radius: 7px;
+      box-shadow: 0 0 7px #ffe76422;
+      font-size: 13.2px;
+      color: #ffeebc;
+      text-shadow: 0 0 0px #ffe76444, 0px 0px 0 #353a5c;
+      border: 1px solid #ffe76444;
+      font-family: 'Press Start 2P', monospace;
+      white-space: pre-line;
+      line-height: 1.85;
+      max-width: 820px;       /* Correct max width */
+      width: 100%;            /* Full width within parent */
+      margin: 0 auto;         /* Centered */
+      padding: 32px 36px 30px 36px;
+      word-break: break-word;
+      box-sizing: border-box;
+      text-align: left;
+      animation: float-in 1.4s cubic-bezier(.5,0,.2,1);
+    }
     #ariaSprite {
       width: 64px;
       height: 64px;
