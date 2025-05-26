@@ -720,26 +720,28 @@
     // --- SCENE MANAGEMENT ---
     function showOnly(id) {
       ['mainFrame','memoriesFrame','finalFrame','ariaFrame','meetingScene'].forEach(x => {
-        document.getElementById(x).classList.add('hidden');
+        const el = document.getElementById(x);
+        if (el) el.classList.add('hidden');
       });
       document.getElementById(id).classList.remove('hidden');
       // Hide the memory lane title/instructions unless we're in memoriesFrame
       const showMemoryStuff = (id === 'memoriesFrame');
       document.getElementById('memoryTitle').style.display = showMemoryStuff ? 'block' : 'none';
       document.getElementById('memoryInstructionLines').style.display = showMemoryStuff ? 'block' : 'none';
-      if (showMemoryStuff) drawStars();
+      // Make sure to call drawStars only after the scene is shown and DOM is ready
+      if (showMemoryStuff) setTimeout(drawStars, 0);
       window.scrollTo(0,0);
     }
 
-document.getElementById('mewbyContinue').onclick = () => {
-  document.getElementById('memoryInstructionQuote').innerHTML = '';
-  memoryInstructionLine = 0; memoryInstructionChar = 0;
-  showOnly('memoriesFrame');
-  setTimeout(() => {
-    typeMemoryInstructionLine();
-    initMemories();
-  }, 420);
-};
+    document.getElementById('mewbyContinue').onclick = () => {
+      document.getElementById('memoryInstructionQuote').innerHTML = '';
+      memoryInstructionLine = 0; memoryInstructionChar = 0;
+      showOnly('memoriesFrame');
+      setTimeout(() => {
+        typeMemoryInstructionLine();
+        initMemories();
+      }, 420);
+    };
 
     // --- STAR CANVAS FOR MEMORY LANE ---
     function drawStars() {
