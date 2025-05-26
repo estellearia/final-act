@@ -349,30 +349,29 @@
       z-index: 2;
     }
     .aria-box {
-      background: rgba(38, 39, 80, 0.56);
-      border-radius: 7px;
-      box-shadow: 0 0 7px #ffe76422;
-      font-size: 11px;
-      color: #ffeebc;
-      text-shadow: 0 0 0px #ffe76444, 0px 0px 0 #353a5c;
-      border: 1px solid #ffe76444;
-      font-family: 'Press Start 2P', monospace;
-      white-space: pre-line;
-      line-height: 1.8;
-      width: 360px;
-      min-height: 248px;
-      max-width: 600px;
-      padding: 32px 24px 24px 24px;
-      word-break: break-word;
-      margin-left: auto;
-      margin-right: auto;
-      width: 100%;
-      box-sizing: border-box;
-      transition: min-height 0.3s, max-width 0.3s;
-      overflow: visible;
-      text-align: left;
-      animation: float-in 1.4s cubic-bezier(.5,0,.2,1);
-    }
+  background: rgba(38, 39, 80, 0.56);
+  border-radius: 7px;
+  box-shadow: 0 0 7px #ffe76422;
+  font-size: 12.2px;
+  color: #ffeebc;
+  text-shadow: 0 0 0px #ffe76444, 0px 0px 0 #353a5c;
+  border: 1px solid #ffe76444;
+  font-family: 'Press Start 2P', monospace;
+  white-space: pre-line;
+  line-height: 1.9;
+  width: 100%;
+  max-width: 600px;
+  padding: 32px 24px 24px 24px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  text-align: left;
+  animation: float-in 1.4s cubic-bezier(.5,0,.2,1);
+}
+
+.aria-box p {
+  margin-bottom: 1.6em;
+}
+
     #ariaSprite {
       width: 64px;
       height: 64px;
@@ -432,14 +431,14 @@
     }
     /* When they meet in the middle, overlap slightly */
     #herAvatar.meet {
-      left: 51%;
-      transform: translateX(-100%);
+      left: 50%;
+      transform: translateX(-55%);
       box-shadow: 0 0 18px #ffe4ff, 0 0 40px #c1e1ff;
       opacity: 1;
     }
     #yourAvatar.meet {
-      right: 46%;
-      transform: translateX(0%);
+      right: 50%;
+      transform: translateX(55%);
       box-shadow: 0 0 10px #aeeaff, 0 0 22px #ffe4ff;
       opacity: 1;
     }
@@ -879,7 +878,12 @@ Happy Happy Birthdaaaay love.`;
       let idx = 0;
       function typeAria() {
         if(idx <= ariaMessage.length){
-          box.textContent = ariaMessage.substring(0, idx);
+          box.innerHTML = ariaMessage
+          .substring(0, idx)
+          .replace(/\n{2,}/g, '</p><p>')
+          .replace(/\n/g, ' ')
+          .replace(/^/, '<p>')
+          .replace(/$/, '</p>');
           idx++;
           setTimeout(typeAria, 60);
         } else {
