@@ -570,14 +570,14 @@
     const muteBtn = document.getElementById('muteBtn');
     let isMuted = false;
     let dreamyStarted = false;
-    function startDreamyAudio() {
-      if (!dreamyStarted) {
-        dreamyAudio.volume = 0.22;
-        dreamyAudio.currentTime = 0;
-        dreamyAudio.play();
-        dreamyStarted = true;
-      }
-    }
+function startDreamyAudio() {
+  if (!dreamyStarted) {
+    dreamyAudio.volume = 0.22;
+    dreamyAudio.currentTime = 13; // Start playing at 13 seconds
+    dreamyAudio.play();
+    dreamyStarted = true;
+  }
+}
     window.addEventListener('pointerdown', startDreamyAudio, {once:true});
     muteBtn.onclick = () => {
       isMuted = !isMuted;
@@ -899,9 +899,10 @@ I’ll always be thankful you were born, because you bring so much color to my l
 
 I can’t wait for us to meet again in person, imagine hugging and kissing you? that's the dream my looove!!
 So you better get your ass here soon! Char!
+I'm really proud that i get to call you MIIIINE!
 I love you more than most, baby.
 You really are the best-EST thing that ever happened to me.
-Happy Happy Birthdaaaay love.`;
+Happy Happiest Birthdaaaay, my love!`;
 
     function showAriaMessage() {
       showOnly('ariaFrame');
